@@ -20,5 +20,5 @@ setup(name='vgc_adhd',
       include_package_data=True,
       python_requires='>=3.6',
       extras_require=extras,
-      packages=find_packages(include=['vergence_adhd_classifier.src.*']),
+      packages=find_packages(include=['vgc_clf.*']),
       zip_safe=False)
