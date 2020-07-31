@@ -1,0 +1,4 @@
+get_pip.py
+*.pyc
+.ipynb_checkpoints
+__pycache__
