@@ -13,8 +13,44 @@ class Ensemble:
         self.kwargs_list = kwargs_list
         self.nodes = []
         self.node_names = []
+        self.ensemble_input_variables = None
+        self.ensemble_target_variable = None
+
+    def _check_batches(self, batch_list_train, batch_list_test):
+        """
+        Checks the integrity of train and test batches before fitting the ensmeble.
+        Args:
+            batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
+            batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
+
+        Returns:
+
+        """
+
+        assert type(batch_list_train) == Sampler, "batch_list_train expects an object of class vgc_clf.sampler.Sampler."
+        assert type(batch_list_test) == Sampler, "batch_list_test expects an object of class vgc_clf.sampler.Sampler."
+        assert batch_list_train.target_variable == batch_list_test.target_variable, "Train and test have different" \
+                                                                                    "target variables"
+        assert all([var in batch_list_test.input_variables for var in batch_list_train.input_variables]), "Mismatch" \
+                                                                                                          "in input" \
+                                                                                                          "variables"
+        assert all([var in batch_list_train.input_variables for var in batch_list_test.input_variables]), "Mismatch" \
+                                                                                                          "in input" \
+                                                                                                          "variables"
+
+        self.ensemble_input_variables = batch_list_train.input_variables
+        self.ensemble_target_variable = batch_list_train.target_variable
 
     def _filter_nodes(self, get_best=100):
+        """
+        In the event that get_best is not None when calling fit, this will filter the get_best weak classifiers and
+        keep them, discarding the rest.
+        Args:
+            get_best: The number of best weak classifiers to keep.
+
+        Returns:
+
+        """
 
         clf_names = pd.DataFrame(self.node_names, columns=["idx", "classifier"])
 
@@ -26,9 +62,21 @@ class Ensemble:
         self.node_names = list(ensemble_names)
 
     def fit(self, batch_list_train, batch_list_test, score_cap=0.5, get_best=None, verbose=False):
+        """
+        Fits the ensemble with train and test batches by randomly picking couples and fitting a weak classifier from
+        a list provided by the user.
+        Args:
+            batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
+            batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
+            score_cap: Minimum accuracy of a weak classifier to be eligible.
+            get_best: The number of best weak classifiers to keep.
+            verbose: Whether to print progress on screen.
 
-        assert type(batch_list_train) == Sampler
-        assert type(batch_list_test) == Sampler
+        Returns:
+
+        """
+
+        self._check_batches(batch_list_train, batch_list_test)
 
         print("---Fitting...")
 
@@ -37,14 +85,14 @@ class Ensemble:
             n = 1
             while n <= length:
 
-                ind_train = np.random.choice(len(batch_list_train))
-                ind_test = np.random.choice(len(batch_list_test))
+                ind_train = np.random.choice(batch_list_train.n_batches)
+                ind_test = np.random.choice(batch_list_test.n_batches)
 
-                x_train = batch_list_train.extract_btch(ind_train)
-                y_train = batch_list_train.extract_btch(ind_train, y=True)
+                x_train = batch_list_train.extract_batch(ind_train)
+                y_train = batch_list_train.extract_batch(ind_train, y=True)
 
-                x_test = batch_list_train.extract_btch(ind_test)
-                y_test = batch_list_train.extract_btch(ind_test, y=True)
+                x_test = batch_list_train.extract_batch(ind_test)
+                y_test = batch_list_train.extract_batch(ind_test, y=True)
 
                 _save_args = args.copy()
 
@@ -78,12 +126,47 @@ class Ensemble:
 
         print("---Fitting complete.")
 
-    def predict(self, df, threshold=0.5):
+    def predict_proba(self, df):
+        """
+        Return the probabilities that the instances of a batch of data stored in a pandas.DataFrame belong to the
+        positive class. This data frame such contain compatible variable names. Note that the user will still have to
+        make sure that such names refer to the right variables.
+        Args:
+            df: pandas.DataFrame with data to predict.
+
+        Returns:
+            numpy.array with prediction probabilities.
+
+        """
+
+        assert self.ensemble_target_variable is not None, "Ensemble not fitted yet."
+        assert type(df) == pd.DataFrame, "df expects a pandas.DataFrame."
+        assert all([var in list(df.columns) for var in self.ensemble_input_variables]), "Data frame has mismatching" \
+                                                                                        "input variables."
 
         predictions = []
         for node in self.nodes:
-            predictions.append(list(node.predict(np.array(df))))
+            predictions.append(list(node.predict(np.array(df.loc[:, self.ensemble_input_variables]))))
 
         predictions = np.array(predictions).T
 
-        return (np.mean(predictions, axis=0) > threshold) * 1
+        return np.mean(predictions, axis=0)
+
+    def predict(self, df, threshold=0.5):
+        """
+        Classifies the instances of a batch of data contained in pandas.DataFrame into the positive or negative classes
+        according to a certain probability threshold.
+        Args:
+            df: pandas.DataFrame containing the batch of data to be classified.
+            threshold: Float between 0 and 1 stating the probability threshold to label an instance as positive.
+
+        Returns:
+            numpy.array with class labels.
+
+        """
+
+        assert 0. < threshold < 1., "threshold expects a float between 0 and 1."
+
+        predictions = self.predict_proba(df=df)
+
+        return (predictions > threshold) * 1
