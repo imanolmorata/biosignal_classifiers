@@ -107,7 +107,7 @@ class Sampler:
     def generate_batches(self, df, n_batches, batch_len, target_variable, input_variables=None, balanced=True,
                          resample=True, verbose=True):
         """
-        Generates batches from a pandas.DataFrame.
+        Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.
         Args:
             df: pandas.DataFrame from which to sample.
             n_batches: Total number of batches to generate.
