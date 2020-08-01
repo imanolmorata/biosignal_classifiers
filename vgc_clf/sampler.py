@@ -229,7 +229,7 @@ class Sampler:
     def __repr__(self):
 
         if self.balanced is None:
-            print("Empty Sampler object.")
+            out_string = "Empty Sampler object."
         else:
             out_string = f"Sampler object consisting of {self.n_batches} "
             if self.balanced:
@@ -240,4 +240,4 @@ class Sampler:
             out_string += f"generated with target variable {self.target_variable} and input variables" \
                           f" {self.input_variables}."
 
-            print(out_string)
+        return out_string
