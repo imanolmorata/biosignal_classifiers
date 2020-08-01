@@ -1,30 +1,83 @@
+import json
 import numpy as np
+import os
+import pickle
 
 
 class Sampler:
 
-    def __init__(self, df, target_variable, input_variables=None):
-        
+    def __init__(self):
+
+        self.df = None
+        self.input_variables = None
+        self.target_variable = None
+        self.batches = {}
+        self.n_batches = 0
+        self.balanced = None
+        self.resample = None
+
+    def save_sampling(self, path, sampling_name, mode="pickle"):
+
+        assert self.balanced is not None and self.resample is not None, "No sampling has been done yet."
+
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+        output_dictionary = {
+            "input_variables": self.input_variables,
+            "target_variable": self.target_variable,
+            "balanced": self.balanced,
+            "resample": self.resample,
+            "batches": self.batches
+        }
+
+        if mode == "pickle":
+            pickle.dump(output_dictionary, open(f"{path}/{sampling_name}.pkl", "wb"))
+        elif mode == "json":
+            json.dump(output_dictionary, open(f"{path}/{sampling_name}.json", "w"))
+        else:
+            raise Exception(f"File save in format {mode} not implemented yet.")
+
+    def load_sampling(self, path, sampling_name):
+
+        assert os.path.exists(path), f"Directory {path} not found."
+
+        path_contents = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+        if sampling_name + ".pkl" in path_contents:
+            input_dictionary = pickle.load(open(f"{path}/{sampling_name}.pkl", "rb"))
+        elif sampling_name + ".json" in path_contents:
+            input_dictionary = json.load(open(f"{path}/{sampling_name}.json", "r"))
+        else:
+            raise Exception(f"No valid file formats found in {path}")
+
+        self.input_variables = input_dictionary["input_variables"]
+        self.target_variable = input_dictionary["target_variable"]
+        self.balanced = input_dictionary["balanced"]
+        self.resample = input_dictionary["resample"]
+        self.batches = input_dictionary["batches"]
+        self.n_batches = len(input_dictionary["batches"].keys())
+
+    def _get_data_frame_info(self, df, target_variable, input_variables=None):
+
         assert target_variable in list(df.columns), "Target variable not present in data frame columns."
-        
+
         if input_variables is None:
             input_variables = list(df.columns)
-            
+
         if target_variable in input_variables:
             input_variables.remove(target_variable)
-            
+
         assert all([var in list(df.columns) for var in input_variables]), "Some input variables are not present in" \
                                                                           "data frame columns."
 
         self.df = df
         self.input_variables = input_variables
         self.target_variable = target_variable
-        self.batches = {}
-        self.n_batches = 0
-        self.balanced = None
-        self.resample = None
 
-    def generate_batches(self, n_batches, batch_len, balanced=True, resample=True, verbose=True):
+    def generate_batches(self, df, n_batches, batch_len, target_variable, input_variables=None, balanced=True,
+                         resample=True, verbose=True):
+
+        self._get_data_frame_info(df=df, target_variable=target_variable, input_variables=input_variables)
 
         self.balanced = balanced
         self.resample = resample
@@ -96,3 +149,19 @@ class Sampler:
 
         if not self.resample and new_sampling.resample:
             self.resample = True
+
+    def __repr__(self):
+
+        if self.balanced is None:
+            print("Empty Sampler object.")
+        else:
+            out_string = f"Sampler object consisting of {self.n_batches} "
+            if self.balanced:
+                out_string += "balanced "
+            out_string += f"batches "
+            if self.resample:
+                out_string += "with resampling "
+            out_string += f"generated with target variable {self.target_variable} and input variables" \
+                          f" {self.input_variables}."
+
+            print(out_string)
