@@ -1,0 +1,8 @@
+{
+	"patient_id_column": "patient",
+	"patient_data_columns": ["patient", "group", "age", "sex", "oculomotor_deficiences",
+		"school_performance", "diagnosis"
+	],
+	"patient_strata_column": "group",
+	"patient_strata_delimiter": "ADHD"
+}
