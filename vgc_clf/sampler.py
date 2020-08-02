@@ -131,7 +131,7 @@ class Sampler:
         for i in np.arange(n_batches):
 
             if verbose:
-                print(f"Working on batch {i + 1} of {n_batches}...", flush=True)
+                print(f"Working on batch {i + 1} of {n_batches}...", flush=True, end="\r")
 
             if balanced:
                 _df_0 = self.df[self.df[self.target_variable] == 0]

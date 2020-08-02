@@ -89,7 +89,7 @@ class Ensemble:
 
         print("---Fitting...")
 
-        l = 1
+        m = 1
         for clf, length, args in zip(self.classifier_list, self.node_sizes, self.kwargs_list):
             n = 1
             while n <= length:
@@ -123,11 +123,11 @@ class Ensemble:
                 if test_score >= score_cap:
 
                     if verbose:
-                        print(l, f"node_test_acc_{test_score}_train_acc_{train_score}", flush=True)
+                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}", flush=True, end="\r")
 
-                    self.node_names.append([l, f"node_test_acc_{test_score}_train_acc_{train_score}"])
+                    self.node_names.append([m, f"node_test_acc_{test_score}_train_acc_{train_score}"])
                     self.nodes.append(_clf)
-                    l += 1
+                    m += 1
                     n += 1
 
         if get_best is not None:
@@ -135,13 +135,14 @@ class Ensemble:
 
         print("---Fitting complete.")
 
-    def predict_proba(self, df):
+    def predict_proba(self, df, verbose=False):
         """
         Return the probabilities that the instances of a batch of data stored in a pandas.DataFrame belong to the
         positive class. This data frame such contain compatible variable names. Note that the user will still have to
         make sure that such names refer to the right variables.
         Args:
             df: pandas.DataFrame with data to predict.
+            verbose: Whether to print progress on screen.
 
         Returns:
             numpy.array with prediction probabilities.
@@ -154,20 +155,26 @@ class Ensemble:
                                                                                         "input variables."
 
         predictions = []
-        for node in self.nodes:
+        for k, node in enumerate(self.nodes):
+            if verbose:
+                print(f"Prediction with node {k + 1} of {len(self.nodes)}...", flush=True, end="\r")
             predictions.append(list(node.predict(np.array(df.loc[:, self.ensemble_input_variables]))))
 
         predictions = np.array(predictions).T
 
-        return np.mean(predictions, axis=0)
+        if verbose:
+            print("Predict completed.", flush=True)
 
-    def predict(self, df, threshold=0.5):
+        return np.mean(predictions, axis=1)
+
+    def predict(self, df, threshold=0.5, verbose=False):
         """
         Classifies the instances of a batch of data contained in pandas.DataFrame into the positive or negative classes
         according to a certain probability threshold.
         Args:
             df: pandas.DataFrame containing the batch of data to be classified.
             threshold: Float between 0 and 1 stating the probability threshold to label an instance as positive.
+            verbose: Whether to print progress on screen.
 
         Returns:
             numpy.array with class labels.
@@ -176,6 +183,6 @@ class Ensemble:
 
         assert 0. < threshold < 1., "threshold expects a float between 0 and 1."
 
-        predictions = self.predict_proba(df=df)
+        predictions = self.predict_proba(df=df, verbose=verbose)
 
         return (predictions > threshold) * 1
