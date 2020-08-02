@@ -12,8 +12,8 @@
 		"feat_286", "feat_287", "feat_288", "feat_289", "feat_290", "feat_291", "feat_292", "feat_293", "feat_294",
 		"feat_295", "feat_296", "feat_297", "feat_298", "feat_299", "feat_300", "feat_301", "feat_302", "feat_303",
 		"feat_304", "feat_305", "feat_306", "feat_307", "feat_308", "feat_309", "feat_310", "feat_311", "feat_312",
-		"feat_313", "feat_314", "feat_315", "trial_num", "sti_time", "reaction_time", "red_frog_time", "broken_fixations",
-		"total_session_time", "age", "sex", "oculomotor_deficiences", "school_performance"
+		"feat_313", "feat_314", "feat_315", "trial_num", "sti_time", "reaction_time", "red_frog_time",
+		"broken_fixations", "total_session_time", "age", "sex"
 	],
 	"target_variable": "diagnosis",
 	"n_train_batches": 100,

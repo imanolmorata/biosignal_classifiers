@@ -1,9 +1,7 @@
 {
-	"classifier_list": ["Ridge", "tree"],
-	"node_sizes": [750, 250],
+	"classifier_list": ["tree"],
+	"node_sizes": [1000],
 	"kwargs_list": [{
-		"alpha": 1.2
-	}, {
 		"max_depth": 30,
 		"max_features": 30,
 		"min_samples_leaf": 30

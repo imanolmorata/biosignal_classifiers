@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import warnings
 
+from sklearn.metrics import roc_auc_score
+
 from vgc_clf.sampler.sampler import Sampler
 from vgc_clf.ensemble.ensemble import Ensemble
 from vgc_clf.utils import data_frame_utils as df_utils
@@ -41,6 +43,7 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
     get_best = ensemble_dictionary["get_best"]
     class_threshold = ensemble_dictionary["class_threshold"]
 
+    scores = []
     for k, (df_fit, df_val, train_index, _) in enumerate(cv_dfs):
         print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
 
@@ -72,9 +75,24 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
         vgc_classifier.fit(batch_list_train=train_samplings, batch_list_test=test_samplings,
                            score_cap=score_cap, get_best=get_best, verbose=verbose)
 
-        prd = vgc_classifier.predict(df=df_val, threshold=class_threshold, verbose=verbose)
+        prd_prb = vgc_classifier.predict_proba(df=df_val, verbose=verbose)
+        prd = (prd_prb > class_threshold) * 1
+        it_performance = [(prd == df_val[target_variable]).mean(),
+                          1. - (prd[df_val[target_variable] == 0] == [0] * len(df_val[df_val[target_variable] == 0])).mean(),
+                          1. - (prd[df_val[target_variable] == 1] == [1] * len(df_val[df_val[target_variable] == 1])).mean(),
+                          roc_auc_score(df_val[target_variable], prd_prb)]
+        scores.append(it_performance)
 
-        print(f"---SCORE: {(prd == df_val[target_variable]).mean()}", flush=True)
+        print(f"---SCORE: {scores[-1][0]}", flush=True)
+
+    print("------END OF CROSS VALIDATION", flush=True)
+
+    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc"])
+
+    print(f"Average score: {np.round(scores.accuracy.mean(), 6)}")
+    print(f"Average FNR: {np.round(scores.FNR.mean(), 6)}")
+    print(f"Average FPR: {np.round(scores.FPR.mean(), 6)}")
+    print(f"Average ROC AUC: {np.round(scores.roc_auc.mean(), 6)}")
 
 
 if __name__ == "__main__":

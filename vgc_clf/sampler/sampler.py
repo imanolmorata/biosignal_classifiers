@@ -171,7 +171,7 @@ class Sampler:
 
         self.n_batches = len(self.batches.keys())
 
-        print("Batch sampling complete.", flush=True)
+        print("\nBatch sampling complete.", flush=True)
 
     def extract_batch(self, index, y=False):
         """

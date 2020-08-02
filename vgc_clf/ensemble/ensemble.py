@@ -134,7 +134,7 @@ class Ensemble:
         if get_best is not None:
             self._filter_nodes(get_best=get_best)
 
-        print("---Fitting complete.")
+        print("\n---Fitting complete.")
 
     def predict_proba(self, df, verbose=False):
         """
