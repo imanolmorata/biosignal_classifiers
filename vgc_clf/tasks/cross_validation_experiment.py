@@ -13,18 +13,18 @@ warnings.filterwarnings(action="ignore")
 
 
 def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_dictionary, ensemble_dictionary,
-                                    verbose=False):
-
+                                    test_set_size=10, verbose=False):
     patient_column = patient_dictionary["patient_id_column"]
+    patient_info = patient_dictionary["patient_data_columns"]
+    patient_target = patient_dictionary["target_variable"]
 
     df_dgn = df_utils.get_patients_data_frame(df=df, patient_column_name=patient_column,
-                                              patient_info_columns=patient_dictionary["patient_data_columns"])
+                                              patient_info_columns=patient_info)
 
     cv_dfs = df_utils.generate_cross_validation_batch(n_batches=cv_batches, signal_df=df, patients_df=df_dgn,
                                                       patient_id_column=patient_column,
-                                                      strata=patient_dictionary["patient_strata_column"],
-                                                      strata_delimiter=patient_dictionary["patient_strata_delimiter"],
-                                                      test_size=10)
+                                                      target_variable=patient_target,
+                                                      test_size=test_set_size)
 
     fraction = sampler_dictionary["train_test_fraction"]
     valid_variables = sampler_dictionary["input_variables"]
@@ -42,16 +42,14 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
     class_threshold = ensemble_dictionary["class_threshold"]
 
     for k, (df_fit, df_val, train_index, _) in enumerate(cv_dfs):
-
         print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
 
-        patients_fit = list(df_dgn.loc[train_index, patient_column])
-
-        train_patients = np.random.choice(patients_fit, size=int(np.ceil(fraction * len(patients_fit))), replace=False)
-        test_patients = list(set(patients_fit) - set(train_patients))
-
-        df_train = df_fit[df_fit.patient.isin(train_patients)].copy()
-        df_test = df_fit[df_fit.patient.isin(test_patients)].copy()
+        ts = int(np.ceil((1. - fraction) * len(train_index)))
+        df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(signal_df=df_fit,
+                                                                                patients_df=df_dgn.loc[train_index, :],
+                                                                                patient_id_column=patient_column,
+                                                                                target_variable=patient_target,
+                                                                                test_size=ts)
 
         train_samplings = Sampler()
         test_samplings = Sampler()
@@ -80,7 +78,6 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-d", "--data_frame", help="Path to data frame containing signal data to build the experiment.",

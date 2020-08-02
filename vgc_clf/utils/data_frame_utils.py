@@ -15,9 +15,10 @@ def get_patients_data_frame(df, patient_column_name="patient", patient_info_colu
     return df_patients
 
 
-def get_train_validation_from_data_frame(signal_df, patients_df, patient_id_column, strata, strata_delimiter,
-                                         test_size):
-    condition = patients_df[strata] == strata_delimiter
+def get_train_validation_from_data_frame(signal_df, patients_df, patient_id_column, target_variable, test_size):
+    assert len(patients_df[target_variable].unique()) == 2
+
+    condition = patients_df[target_variable] == 1
     max_len = np.min([len(patients_df[~condition]), len(patients_df[condition])])
 
     if test_size > max_len:
@@ -35,12 +36,10 @@ def get_train_validation_from_data_frame(signal_df, patients_df, patient_id_colu
     return signal_fit, signal_val, index_fit, index_val
 
 
-def generate_cross_validation_batch(n_batches, signal_df, patients_df, patient_id_column, strata, strata_delimiter,
-                                    test_size):
+def generate_cross_validation_batch(n_batches, signal_df, patients_df, patient_id_column, target_variable, test_size):
     for _ in np.arange(n_batches):
         yield get_train_validation_from_data_frame(signal_df=signal_df,
                                                    patients_df=patients_df,
                                                    patient_id_column=patient_id_column,
-                                                   strata=strata,
-                                                   strata_delimiter=strata_delimiter,
+                                                   target_variable=target_variable,
                                                    test_size=test_size)

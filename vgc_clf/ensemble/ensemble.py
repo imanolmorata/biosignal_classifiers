@@ -123,7 +123,8 @@ class Ensemble:
                 if test_score >= score_cap:
 
                     if verbose:
-                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}", flush=True, end="\r")
+                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}                ",
+                              flush=True, end="\r")
 
                     self.node_names.append([m, f"node_test_acc_{test_score}_train_acc_{train_score}"])
                     self.nodes.append(_clf)
