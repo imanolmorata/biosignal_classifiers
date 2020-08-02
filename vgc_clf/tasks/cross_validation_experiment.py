@@ -4,9 +4,10 @@ import numpy as np
 import pandas as pd
 import warnings
 
-from vgc_clf.sampler import Sampler
-from vgc_clf.ensemble import Ensemble
+from vgc_clf.sampler.sampler import Sampler
+from vgc_clf.ensemble.ensemble import Ensemble
 from vgc_clf.utils import data_frame_utils as df_utils
+from vgc_clf.utils import ensemble_utils as ens_utils
 
 warnings.filterwarnings(action="ignore")
 
@@ -20,17 +21,24 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
 
     cv_dfs = df_utils.generate_cross_validation_batch(n_batches=cv_batches, signal_df=df, patients_df=df_dgn,
                                                       patient_id_column=patient_column,
-                                                      strata=patient_dictionary["patient_strata_columns"],
+                                                      strata=patient_dictionary["patient_strata_column"],
                                                       strata_delimiter=patient_dictionary["patient_strata_delimiter"],
                                                       test_size=10)
 
     fraction = sampler_dictionary["train_test_fraction"]
     valid_variables = sampler_dictionary["input_variables"]
     target_variable = sampler_dictionary["target_variable"]
+    n_train_batches = sampler_dictionary["n_train_batches"]
+    train_batches_size = sampler_dictionary["train_batches_size"]
+    n_test_batches = sampler_dictionary["n_test_batches"]
+    test_batches_size = sampler_dictionary["test_batches_size"]
 
-    classifier_list = ensemble_dictionary["classifier_list"]
+    classifier_list = [clf for clf in ens_utils.get_classifier_objects(ensemble_dictionary["classifier_list"])]
     node_sizes = ensemble_dictionary["node_sizes"]
     kwargs_list = ensemble_dictionary["kwargs_list"]
+    score_cap = ensemble_dictionary["score_cap"]
+    get_best = ensemble_dictionary["get_best"]
+    class_threshold = ensemble_dictionary["class_threshold"]
 
     for k, (df_fit, df_val, train_index, _) in enumerate(cv_dfs):
 
@@ -48,24 +56,24 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
         test_samplings = Sampler()
 
         train_samplings.generate_batches(df_train,
-                                         n_batches=100,
-                                         batch_len=1600,
+                                         n_batches=n_train_batches,
+                                         batch_len=train_batches_size,
                                          target_variable=target_variable,
                                          input_variables=valid_variables,
                                          verbose=True)
 
         test_samplings.generate_batches(df_test,
-                                        n_batches=100,
-                                        batch_len=400,
+                                        n_batches=n_test_batches,
+                                        batch_len=test_batches_size,
                                         target_variable=target_variable,
                                         input_variables=valid_variables,
                                         verbose=True)
 
         vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes, kwargs_list=kwargs_list)
         vgc_classifier.fit(batch_list_train=train_samplings, batch_list_test=test_samplings,
-                           score_cap=0.6, get_best=100, verbose=True)
+                           score_cap=score_cap, get_best=get_best, verbose=True)
 
-        prd = vgc_classifier.predict(df=df_val, verbose=True)
+        prd = vgc_classifier.predict(df=df_val, threshold=class_threshold, verbose=True)
 
         print(f"---SCORE: {(prd == df_val[target_variable]).mean()}", flush=True)
 

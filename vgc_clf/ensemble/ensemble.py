@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from vgc_clf.sampler import Sampler
+from vgc_clf.sampler.sampler import Sampler
 
 
 class Ensemble:
