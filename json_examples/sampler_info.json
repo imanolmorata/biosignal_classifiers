@@ -15,5 +15,9 @@
 		"feat_313", "feat_314", "feat_315", "trial_num", "sti_time", "reaction_time", "red_frog_time", "broken_fixations",
 		"total_session_time", "age", "sex", "oculomotor_deficiences", "school_performance"
 	],
-	"target_variable": "diagnosis"
+	"target_variable": "diagnosis",
+	"n_train_batches": 100,
+	"n_test_batches": 100,
+	"train_batches_len": 1600,
+	"test_batches_len": 400
 }
