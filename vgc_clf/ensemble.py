@@ -16,6 +16,15 @@ class Ensemble:
         self.ensemble_input_variables = None
         self.ensemble_target_variable = None
 
+        self._check_nodes()
+
+    def _check_nodes(self):
+
+        assert all([hasattr(clf, "fit") for clf in self.classifier_list]), "At least one classifier object is not " \
+                                                                           "compatible with 'fit' method."
+        assert all([hasattr(clf, "predict") for clf in self.classifier_list]), "At least one classifier object is " \
+                                                                               "not compatible with 'predict' method."
+
     def _check_batches(self, batch_list_train, batch_list_test):
         """
         Checks the integrity of train and test batches before fitting the ensmeble.
@@ -41,7 +50,7 @@ class Ensemble:
         self.ensemble_input_variables = batch_list_train.input_variables
         self.ensemble_target_variable = batch_list_train.target_variable
 
-    def _filter_nodes(self, get_best=100):
+    def _filter_nodes(self, get_best):
         """
         In the event that get_best is not None when calling fit, this will filter the get_best weak classifiers and
         keep them, discarding the rest.
