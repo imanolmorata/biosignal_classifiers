@@ -78,8 +78,8 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
         prd_prb = vgc_classifier.predict_proba(df=df_val, verbose=verbose)
         prd = (prd_prb > class_threshold) * 1
         it_performance = [(prd == df_val[target_variable]).mean(),
-                          1. - (prd[df_val[target_variable] == 0] == [0] * len(df_val[df_val[target_variable] == 0])).mean(),
-                          1. - (prd[df_val[target_variable] == 1] == [1] * len(df_val[df_val[target_variable] == 1])).mean(),
+                          1-(prd[df_val[target_variable] == 0] == [0]*len(df_val[df_val[target_variable] == 0])).mean(),
+                          1-(prd[df_val[target_variable] == 1] == [1]*len(df_val[df_val[target_variable] == 1])).mean(),
                           roc_auc_score(df_val[target_variable], prd_prb)]
         scores.append(it_performance)
 
