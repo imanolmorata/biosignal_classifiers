@@ -134,7 +134,7 @@ class Ensemble:
         if get_best is not None:
             self._filter_nodes(get_best=get_best)
 
-        print("---Fitting complete.                  ")
+        print("---Fitting complete.                                                                        ")
 
     def predict_proba(self, df, verbose=False):
         """
@@ -164,7 +164,7 @@ class Ensemble:
         predictions = np.array(predictions).T
 
         if verbose:
-            print("Predict completed.", flush=True)
+            print("Predict completed.                                                                     ", flush=True)
 
         return np.mean(predictions, axis=1)
 
