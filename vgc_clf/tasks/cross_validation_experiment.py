@@ -12,7 +12,8 @@ from vgc_clf.utils import ensemble_utils as ens_utils
 warnings.filterwarnings(action="ignore")
 
 
-def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_dictionary, ensemble_dictionary):
+def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_dictionary, ensemble_dictionary,
+                                    verbose=False):
 
     patient_column = patient_dictionary["patient_id_column"]
 
@@ -60,20 +61,20 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
                                          batch_len=train_batches_size,
                                          target_variable=target_variable,
                                          input_variables=valid_variables,
-                                         verbose=True)
+                                         verbose=verbose)
 
         test_samplings.generate_batches(df_test,
                                         n_batches=n_test_batches,
                                         batch_len=test_batches_size,
                                         target_variable=target_variable,
                                         input_variables=valid_variables,
-                                        verbose=True)
+                                        verbose=verbose)
 
         vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes, kwargs_list=kwargs_list)
         vgc_classifier.fit(batch_list_train=train_samplings, batch_list_test=test_samplings,
-                           score_cap=score_cap, get_best=get_best, verbose=True)
+                           score_cap=score_cap, get_best=get_best, verbose=verbose)
 
-        prd = vgc_classifier.predict(df=df_val, threshold=class_threshold, verbose=True)
+        prd = vgc_classifier.predict(df=df_val, threshold=class_threshold, verbose=verbose)
 
         print(f"---SCORE: {(prd == df_val[target_variable]).mean()}", flush=True)
 
@@ -93,6 +94,7 @@ if __name__ == "__main__":
                         required=True)
     parser.add_argument("-e", "--ensemble_json", help="Path to json file containing ensemble generation info.",
                         type=str, required=True)
+    parser.add_argument("--verbose", help="Be verbose on progress on screen", default=False, action="store_true")
 
     args = parser.parse_args()
 
@@ -106,4 +108,5 @@ if __name__ == "__main__":
                                     cv_batches=cv_batches,
                                     patient_dictionary=patient_dictionary,
                                     sampler_dictionary=sampler_dictionary,
-                                    ensemble_dictionary=ensemble_dictionary)
+                                    ensemble_dictionary=ensemble_dictionary,
+                                    verbose=args.verbose)
