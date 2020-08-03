@@ -88,7 +88,7 @@ def run_leave_one_out_experiment(df, strata_variable, subject_dictionary, sample
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
 
-    print("------END OF CROSS VALIDATION", flush=True)
+    print("------END OF STRATIFIED CROSS VALIDATION", flush=True)
 
     scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc"])
 
