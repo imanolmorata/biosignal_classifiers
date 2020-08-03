@@ -47,10 +47,9 @@ def get_balanced_sample_from_data_frame(df, balancing_variable, max_len=None):
     if max_len is None:
         max_len = len(df)
 
-    allowed_len = np.min([max_len, len(df[df[balancing_variable] == ref_val]),
-                          len(df[df[balancing_variable] != ref_val])])
-
     condition = df[balancing_variable] == ref_val
+
+    allowed_len = np.min([max_len, len(df[condition]), len(df[~condition])])
 
     negative_index = np.random.choice(df[~condition].index, size=allowed_len)
     positive_index = np.random.choice(df[condition].index, size=allowed_len)
