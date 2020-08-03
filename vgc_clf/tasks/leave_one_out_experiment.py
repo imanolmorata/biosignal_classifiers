@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import warnings
 
-from sklearn.metrics import roc_auc_score
-
 from vgc_clf.sampler.sampler import Sampler
 from vgc_clf.ensemble.ensemble import Ensemble
 from vgc_clf.utils import data_frame_utils as df_utils
