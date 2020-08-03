@@ -11,6 +11,16 @@ VALID_CLASSIFIER_CLASSES = {
 
 
 def get_classifier_objects(classifier_list):
+    """
+    Imports the necessary module for each potential classifier model stored in a list. Such models shall be among the
+    ones present in VALID_CLASSIFIER_CLASSES.
+    Args:
+        classifier_list: A list containing the objects to import, represented by their actual names as strings.
+
+    Returns:
+        An iterable that sequentially imports the needed module for each object.
+
+    """
 
     assert all([clf in VALID_CLASSIFIER_CLASSES.keys() for clf in classifier_list]), "Found some non-compatible " \
                                                                                      "classifiers in classifier list."
