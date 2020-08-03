@@ -81,8 +81,7 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
                           1 - (prd[df_val[target_variable] == 0] == [0] * len(
                               df_val[df_val[target_variable] == 0])).mean(),
                           1 - (prd[df_val[target_variable] == 1] == [1] * len(
-                              df_val[df_val[target_variable] == 1])).mean(),
-                          roc_auc_score(df_val[target_variable], prd_prb)]
+                              df_val[df_val[target_variable] == 1])).mean()]
         scores.append(it_performance)
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
@@ -94,7 +93,6 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
     print(f"Average score: {np.round(scores.accuracy.mean(), 6)}")
     print(f"Average FNR: {np.round(scores.FNR.mean(), 6)}")
     print(f"Average FPR: {np.round(scores.FPR.mean(), 6)}")
-    print(f"Average ROC AUC: {np.round(scores.roc_auc.mean(), 6)}")
 
 
 if __name__ == "__main__":
