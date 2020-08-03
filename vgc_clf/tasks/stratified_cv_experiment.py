@@ -90,19 +90,20 @@ def run_leave_one_out_experiment(df, strata_variable, subject_dictionary, sample
                               df_val[df_val[target_variable] == 0])).mean(),
                           1 - (prd[df_val[target_variable] == 1] == [1] * len(
                               df_val[df_val[target_variable] == 1])).mean(),
-                          roc_score]
+                          roc_score,
+                          len(df_test) / (len(df_test) + len(df_train))]
         scores.append(it_performance)
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
 
     print("------END OF STRATIFIED CROSS VALIDATION", flush=True)
 
-    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc"])
+    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc", "weights"])
 
-    print(f"Average score: {np.round(scores.accuracy.mean(), 6)}")
-    print(f"Average FNR: {np.round(scores.FNR.mean(), 6)}")
-    print(f"Average FPR: {np.round(scores.FPR.mean(), 6)}")
-    print(f"Average ROC AUC: {np.round(scores.roc_auc.mean(), 6)}")
+    print(f"Average score: {np.round((scores.accuracy * scores.weights).sum(), 6)}")
+    print(f"Average FNR: {np.round((scores.FNR * scores.weights).sum(), 6)}")
+    print(f"Average FPR: {np.round((scores.FPR * scores.weights).sum(), 6)}")
+    print(f"Average ROC AUC: {np.round((scores.roc_auc * scores.weights).sum(), 6)}")
 
 
 if __name__ == "__main__":
