@@ -14,18 +14,18 @@ from vgc_clf.utils import ensemble_utils as ens_utils
 warnings.filterwarnings(action="ignore")
 
 
-def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_dictionary, ensemble_dictionary,
+def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_dictionary, ensemble_dictionary,
                                     test_set_size=10, verbose=False):
-    patient_column = patient_dictionary["patient_id_column"]
-    patient_info = patient_dictionary["patient_data_columns"]
-    patient_target = patient_dictionary["target_variable"]
+    subject_column = subject_dictionary["subject_id_column"]
+    subject_info = subject_dictionary["subject_data_columns"]
+    subject_target = subject_dictionary["target_variable"]
 
-    df_dgn = df_utils.get_patients_data_frame(df=df, patient_column_name=patient_column,
-                                              patient_info_columns=patient_info)
+    df_dgn = df_utils.get_subjects_data_frame(df=df, subject_column_name=subject_column,
+                                              subject_info_columns=subject_info)
 
-    cv_dfs = df_utils.generate_cross_validation_batch(n_batches=cv_batches, signal_df=df, patients_df=df_dgn,
-                                                      patient_id_column=patient_column,
-                                                      target_variable=patient_target,
+    cv_dfs = df_utils.generate_cross_validation_batch(n_batches=cv_batches, signal_df=df, subjects_df=df_dgn,
+                                                      subject_id_column=subject_column,
+                                                      target_variable=subject_target,
                                                       test_size=test_set_size)
 
     fraction = sampler_dictionary["train_test_fraction"]
@@ -49,9 +49,9 @@ def run_cross_validation_experiment(df, cv_batches, patient_dictionary, sampler_
 
         ts = int(np.ceil((1. - fraction) * len(train_index)))
         df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(signal_df=df_fit,
-                                                                                patients_df=df_dgn.loc[train_index, :],
-                                                                                patient_id_column=patient_column,
-                                                                                target_variable=patient_target,
+                                                                                subjects_df=df_dgn.loc[train_index, :],
+                                                                                subject_id_column=subject_column,
+                                                                                target_variable=subject_target,
                                                                                 test_size=ts)
 
         train_samplings = Sampler()
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                         type=str, required=True)
     parser.add_argument("-b", "--n_batches", help="Number of batches to generate during cross-validation.", type=int,
                         required=False, default=10)
-    parser.add_argument("-p", "--patient_json", help="Path to json file containing patient/subject data frame "
+    parser.add_argument("-p", "--subject_json", help="Path to json file containing subject/patient data frame "
                                                      "generation info.", type=str,
                         required=True)
     parser.add_argument("-s", "--sampler_json", help="Path to json file containing sampler generation info.", type=str,
@@ -113,15 +113,14 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    df = pd.read_csv(args.data_frame, sep=",")
-    cv_batches = args.n_batches
-    patient_dictionary = json.load(open(args.patient_json, "r"))
-    sampler_dictionary = json.load(open(args.sampler_json, "r"))
-    ensemble_dictionary = json.load(open(args.ensemble_json, "r"))
+    df_in = pd.read_csv(args.data_frame, sep=",")
+    subject_dict = json.load(open(args.subject_json, "r"))
+    sampler_dict = json.load(open(args.sampler_json, "r"))
+    ensemble_dict = json.load(open(args.ensemble_json, "r"))
 
-    run_cross_validation_experiment(df=df,
-                                    cv_batches=cv_batches,
-                                    patient_dictionary=patient_dictionary,
-                                    sampler_dictionary=sampler_dictionary,
-                                    ensemble_dictionary=ensemble_dictionary,
+    run_cross_validation_experiment(df=df_in,
+                                    cv_batches=args.n_batches,
+                                    subject_dictionary=subject_dict,
+                                    sampler_dictionary=sampler_dict,
+                                    ensemble_dictionary=ensemble_dict,
                                     verbose=args.verbose)
