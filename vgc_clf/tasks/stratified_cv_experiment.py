@@ -14,7 +14,7 @@ from vgc_clf.utils import ensemble_utils as ens_utils
 warnings.filterwarnings(action="ignore")
 
 
-def run_leave_one_out_experiment(df, strata_variable, subject_dictionary, sampler_dictionary, ensemble_dictionary,
+def run_stratified_cv_experiment(df, strata_variable, subject_dictionary, sampler_dictionary, ensemble_dictionary,
                                  balanced_by=None, verbose=False):
     subject_column = subject_dictionary["subject_id_column"]
     subject_info = subject_dictionary["subject_data_columns"]
@@ -91,7 +91,7 @@ def run_leave_one_out_experiment(df, strata_variable, subject_dictionary, sample
                           1 - (prd[df_val[target_variable] == 1] == [1] * len(
                               df_val[df_val[target_variable] == 1])).mean(),
                           roc_score,
-                          len(df_test) / (len(df_test) + len(df_train))]
+                          len(df_val) / (len(df_val) + len(df_fit))]
         scores.append(it_performance)
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     sampler_dict = json.load(open(args.sampler_json, "r"))
     ensemble_dict = json.load(open(args.ensemble_json, "r"))
 
-    run_leave_one_out_experiment(df=df_in,
+    run_stratified_cv_experiment(df=df_in,
                                  strata_variable=args.strata_variable,
                                  subject_dictionary=subject_dict,
                                  sampler_dictionary=sampler_dict,
