@@ -78,12 +78,19 @@ def run_leave_one_out_experiment(df, strata_variable, subject_dictionary, sample
 
         prd_prb = vgc_classifier.predict_proba(df=df_val, verbose=verbose)
         prd = (prd_prb > class_threshold) * 1
-        it_performance = [(prd == df_val[target_variable]).mean(),
+
+        acc_score = (prd == df_val[target_variable]).mean()
+        if len(df_val[target_variable].unique()) == 1:
+            roc_score = acc_score
+        else:
+            roc_score = roc_auc_score(df_val[target_variable], prd_prb)
+
+        it_performance = [acc_score,
                           1 - (prd[df_val[target_variable] == 0] == [0] * len(
                               df_val[df_val[target_variable] == 0])).mean(),
                           1 - (prd[df_val[target_variable] == 1] == [1] * len(
                               df_val[df_val[target_variable] == 1])).mean(),
-                          roc_auc_score(df_val[target_variable], prd_prb)]
+                          roc_score]
         scores.append(it_performance)
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
