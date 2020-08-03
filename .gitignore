@@ -3,4 +3,3 @@ get-pip.py
 .ipynb_checkpoints
 __pycache__
 venv
-test
