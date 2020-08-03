@@ -88,7 +88,7 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
 
     print("------END OF LEAVE-ONE-OUT VALIDATION", flush=True)
 
-    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc"])
+    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR"])
 
     print(f"Average score: {np.round(scores.accuracy.mean(), 6)}")
     print(f"Average FNR: {np.round(scores.FNR.mean(), 6)}")
