@@ -67,7 +67,7 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
     signal_compressors_clusters = transformer_dictionary["Signal_compressor_clusters"]
     signal_compressor_input_columns = transformer_dictionary["Signal_compressor_input_columns"]
     signal_compressor_apply_functions = \
-        [ap for ap in cm_utils.get_apply_functions(transformer_dictionary["signal_compressor_apply_functions"])]
+        [ap for ap in cm_utils.get_apply_functions(transformer_dictionary["signal_compressor_apply_estimators"])]
 
     df_dgn = df_utils.get_subjects_data_frame(df=df, subject_column_name=subject_column,
                                               subject_info_columns=subject_info)
