@@ -1,5 +1,7 @@
 from vgc_clf.dataset_transformer.dataset_transformer import DatasetTransformer
 
+VALID_NORMALIZERS = ["MinMaxScaler", "StandardScaler", "type"]
+
 
 class Normalizer(DatasetTransformer):
 
@@ -16,9 +18,10 @@ class Normalizer(DatasetTransformer):
 
         """
 
-        assert all([trf.__class__.__name__ == 'type' for trf in self.transformer_list]), "Non-normalizer objects " \
-                                                                                         "present in transformer " \
-                                                                                         "list."
+        assert all([trf.__class__.__name__ in VALID_NORMALIZERS for trf in self.transformer_list]), "Non-normalizer " \
+                                                                                                    "objects present " \
+                                                                                                    "in transformer " \
+                                                                                                    "list."
 
     def fit(self, df, verbose=False):
         """

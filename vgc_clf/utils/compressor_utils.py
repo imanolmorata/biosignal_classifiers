@@ -21,8 +21,8 @@ def get_apply_functions(apply_function_list):
     """
 
     assert all([trf in VALID_APPLY_FUNCTIONS.keys() for trf in apply_function_list]), "Found some non-compatible " \
-                                                                                       "transformers in transformer " \
-                                                                                       "list."
+                                                                                      "estimators in apply function " \
+                                                                                      "list."
 
     for trf in apply_function_list:
         module = ".".join(VALID_APPLY_FUNCTIONS[trf].split(".")[:-1])

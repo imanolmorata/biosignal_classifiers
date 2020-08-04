@@ -6,15 +6,13 @@ import warnings
 
 from sklearn.metrics import roc_auc_score
 
-from vgc_clf.dataset_transformer.encoder import Encoder
-from vgc_clf.dataset_transformer.normalizer import Normalizer
-from vgc_clf.dataset_transformer.signal_compressor import SignalCompressor as sg_com
 from vgc_clf.ensemble.ensemble import Ensemble
 from vgc_clf.sampler.sampler import Sampler
 from vgc_clf.utils import data_frame_utils as df_utils
 from vgc_clf.utils import ensemble_utils as ens_utils
 from vgc_clf.utils import transformer_utils as trf_utils
 from vgc_clf.utils import compressor_utils as cm_utils
+from vgc_clf.utils import experiments_utils as exp_utils
 
 warnings.filterwarnings(action="ignore")
 
@@ -64,7 +62,7 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
     normalizers_kwargs = transformer_dictionary["Normalizers_kwargs"]
     normalizers_input_columns = transformer_dictionary["Normalizers_input_columns"]
 
-    signal_compressors_clusters = transformer_dictionary["Signal_compressor_clusters"]
+    signal_compressor_clusters = transformer_dictionary["Signal_compressor_clusters"]
     signal_compressor_input_columns = transformer_dictionary["Signal_compressor_input_columns"]
     signal_compressor_apply_functions = \
         [ap for ap in cm_utils.get_apply_functions(transformer_dictionary["Signal_compressor_apply_estimators"])]
@@ -82,25 +80,21 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
         print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
 
         if len(encoder_list) > 0:
-            encoder_obj = Encoder(transformer_list=encoder_list,
-                                  kwargs_list=encoder_kwargs,
-                                  input_cols_list=encoders_input_columns,
-                                  target_col_list=encoders_target_columns)
-            df_fit = encoder_obj.fit_transform(df=df_fit, verbose=verbose)
-            df_val = encoder_obj.transform(df=df_val, verbose=verbose)
+            df_fit, df_val, valid_variables = exp_utils.transform_with_encoders(df, df_fit, df_val, valid_variables,
+                                                                                encoder_list, encoder_kwargs,
+                                                                                encoders_input_columns,
+                                                                                encoders_target_columns,
+                                                                                verbose=verbose)
+
         if len(normalizers_list) > 0:
-            normalizer_obj = Normalizer(transformer_list=normalizers_list,
-                                        kwargs_list=normalizers_kwargs,
-                                        input_cols_list=normalizers_input_columns)
-            df_fit = normalizer_obj.fit_transform(df=df_fit, verbose=verbose)
-            df_val = normalizer_obj.transform(df=df_val, verbose=verbose)
-        if len(signal_compressors_clusters) > 0:
-            compressor_obj = sg_com(n_clusters_list=signal_compressors_clusters,
-                                    input_cols_list=signal_compressor_input_columns,
-                                    apply_estimator_list=signal_compressor_apply_functions).fit(df=df_fit,
-                                                                                                verbose=verbose)
-            df_fit = compressor_obj.transform(df=df_fit, verbose=verbose)
-            df_val = compressor_obj.transform(df=df_val, verbose=verbose)
+            df_fit, df_val = exp_utils.transform_with_normalizers(df_fit, df_val, normalizers_list, normalizers_kwargs,
+                                                                  normalizers_input_columns, verbose=verbose)
+
+        if len(signal_compressor_clusters) > 0:
+            df_fit, df_val, valid_variables = \
+                exp_utils.transform_with_signal_compressors(df_fit, df_val, valid_variables, signal_compressor_clusters,
+                                                            signal_compressor_input_columns,
+                                                            signal_compressor_apply_functions, verbose=verbose)
 
         ts = int(np.ceil((1. - fraction) * len(train_index)))
         df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(signal_df=df_fit,

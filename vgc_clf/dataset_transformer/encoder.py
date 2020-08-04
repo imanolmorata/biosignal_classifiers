@@ -1,6 +1,6 @@
 from vgc_clf.dataset_transformer.dataset_transformer import DatasetTransformer
 
-VALID_ENCODERS = ["OneHotEncoder", "TargetEncoder"]
+VALID_ENCODERS = ["OneHotEncoder", "TargetEncoder", "type"]
 
 
 class Encoder(DatasetTransformer):

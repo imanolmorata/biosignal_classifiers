@@ -97,7 +97,7 @@ class Sampler:
         if target_variable in input_variables:
             input_variables.remove(target_variable)
 
-        assert all([var in list(df.columns) for var in input_variables]), "Some input variables are not present in" \
+        assert all([var in list(df.columns) for var in input_variables]), "Some input variables are not present in " \
                                                                           "data frame columns."
 
         self.df = df
