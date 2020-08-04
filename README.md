@@ -1,11 +1,11 @@
-**Imanol Morata vergence signal classifier**
+**Imanol Morata biosignal classifiers**
 
 ## Installation
 
 To install the package use for development purposes:
 
 ```
-git clone https://github.com/imanolmorata/vergence_adhd_classifier.git@my_branch
+git clone https://github.com/imanolmorata/biosignal_classifiers.git@my_branch
 pip install -e .
 
 ```
