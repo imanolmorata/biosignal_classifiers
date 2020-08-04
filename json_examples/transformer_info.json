@@ -21,9 +21,7 @@
 	}],
 	"Normalizers_input_columns": [
 		[
-			[
-				"trial_num", "reaction_time", "red_frog_time", "broken_fixations"
-			]
+			"trial_num", "reaction_time", "sti_time", "red_frog_time", "broken_fixations"
 		]
 	],
 	"Signal_compressor_clusters": [
@@ -46,8 +44,6 @@
 		]
 	],
 	"Signal_compressor_apply_estimators": [
-		[
-			"median"
-		]
+		"median"
 	]
 }
