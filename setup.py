@@ -9,10 +9,10 @@ extras = {
         'category_encoders'
     ]}
 
-setup(name='bio-signals-binary-classifier',
+setup(name='bio-signal-binary-classifier',
       version='0.0',
       description='Ecosystem for design and implementation of bio-signals-based binary classifiers',
-      url='http://github.com/imanolmorata/vergence_adhd_classifier',
+      url='http://github.com/imanolmorata/biosignal_classifier',
       author='Imanol Morata',
       author_email='imanol.morata@gmail.com',
       license='unknown',
