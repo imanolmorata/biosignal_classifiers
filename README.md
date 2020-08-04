@@ -1,4 +1,9 @@
-**Imanol Morata biosignal classifiers**
+#Biosignal classifiers
+**Authored by Imanol Morata, powered by B2SLab**
+
+Biosignal classifiers, nicknamed `b2s_clf`,  is a small machine-learning platform built on top 
+of popular ML libraries like `scikit-learn` that provide a set of tools focused on working with 
+bio-signal data.
 
 ## Installation
 
