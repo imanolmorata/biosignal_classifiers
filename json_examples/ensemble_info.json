@@ -1,0 +1,12 @@
+{
+	"classifier_list": ["tree"],
+	"node_sizes": [1000],
+	"kwargs_list": [{
+		"max_depth": 30,
+		"max_features": 30,
+		"min_samples_leaf": 30
+	}],
+	"score_cap": 0.6,
+	"get_best": 100,
+	"class_threshold": 0.5
+}
