@@ -1,0 +1,53 @@
+{
+	"Encoders": [
+		"one_hot"
+	],
+	"Encoders_kwargs": [{
+		"drop_invariant": false
+	}],
+	"Encoders_input_columns": [
+		[
+			"age", "sex", "oculomotor_deficiences", "school_performance"
+		]
+	],
+	"Encoders_target_columns": [
+		null
+	],
+	"Normalizers": [
+		"min_max_normalization"
+	],
+	"Normalizers_kwargs": [{
+		"copy": true
+	}],
+	"Normalizers_input_columns": [
+		[
+			[
+				"trial_num", "reaction_time", "red_frog_time", "broken_fixations"
+			]
+		]
+	],
+	"Signal_compressor_clusters": [
+		7
+	],
+	"Signal_compressor_input_columns": [
+		[
+			"feat_211", "feat_212", "feat_213", "feat_214", "feat_215", "feat_216", "feat_217", "feat_218", "feat_219",
+			"feat_220", "feat_221", "feat_222", "feat_223", "feat_224", "feat_225", "feat_226", "feat_227", "feat_228",
+			"feat_229", "feat_230", "feat_231", "feat_232", "feat_233", "feat_234", "feat_235", "feat_236", "feat_237",
+			"feat_238", "feat_239", "feat_240", "feat_241", "feat_242", "feat_243", "feat_244", "feat_245", "feat_246",
+			"feat_247", "feat_248", "feat_249", "feat_250", "feat_251", "feat_252", "feat_253", "feat_254", "feat_255",
+			"feat_256", "feat_257", "feat_258", "feat_259", "feat_260", "feat_261", "feat_262", "feat_263", "feat_264",
+			"feat_265", "feat_266", "feat_267", "feat_268", "feat_269", "feat_270", "feat_271", "feat_272", "feat_273",
+			"feat_274", "feat_275", "feat_276", "feat_277", "feat_278", "feat_279", "feat_280", "feat_281", "feat_282",
+			"feat_283", "feat_284", "feat_285", "feat_286", "feat_287", "feat_288", "feat_289", "feat_290", "feat_291",
+			"feat_292", "feat_293", "feat_294", "feat_295", "feat_296", "feat_297", "feat_298", "feat_299", "feat_300",
+			"feat_301", "feat_302", "feat_303", "feat_304", "feat_305", "feat_306", "feat_307", "feat_308", "feat_309",
+			"feat_310", "feat_311", "feat_312", "feat_313", "feat_314", "feat_315"
+		]
+	],
+	"Signal_compressor_apply_estimators": [
+		[
+			"median"
+		]
+	]
+}
