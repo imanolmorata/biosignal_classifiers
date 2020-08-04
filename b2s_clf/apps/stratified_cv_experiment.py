@@ -6,40 +6,25 @@ import warnings
 
 from sklearn.metrics import roc_auc_score
 
-from vgc_clf.ensemble.ensemble import Ensemble
-from vgc_clf.sampler.sampler import Sampler
-from vgc_clf.utils import data_frame_utils as df_utils
-from vgc_clf.utils import ensemble_utils as ens_utils
-from vgc_clf.utils import transformer_utils as trf_utils
-from vgc_clf.utils import compressor_utils as cm_utils
-from vgc_clf.utils import experiments_utils as exp_utils
+from b2s_clf.ensemble.ensemble import Ensemble
+from b2s_clf.sampler.sampler import Sampler
+from b2s_clf.utils import data_frame_utils as df_utils
+from b2s_clf.utils import ensemble_utils as ens_utils
+from b2s_clf.utils import transformer_utils as trf_utils
+from b2s_clf.utils import compressor_utils as cm_utils
+from b2s_clf.utils import experiments_utils as exp_utils
 
 warnings.filterwarnings(action="ignore")
 
 
-def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_dictionary, ensemble_dictionary,
-                                    transformer_dictionary, test_set_size=10, verbose=False):
-    """
-    Run a simple cross-validation experiment.
-    Args:
-        df:
-        cv_batches:
-        subject_dictionary:
-        sampler_dictionary:
-        ensemble_dictionary:
-        transformer_dictionary:
-        test_set_size:
-        verbose:
-
-    Returns:
-
-    """
+def run_stratified_cv_experiment(df, strata_variable, subject_dictionary, sampler_dictionary, ensemble_dictionary,
+                                 transformer_dictionary, balanced_by=None, verbose=False):
     subject_column = subject_dictionary["subject_id_column"]
     subject_info = subject_dictionary["subject_data_columns"]
     subject_target = subject_dictionary["target_variable"]
 
     fraction = sampler_dictionary["train_test_fraction"]
-    valid_variables = sampler_dictionary["input_variables"]
+    use_variables = sampler_dictionary["input_variables"]
     target_variable = sampler_dictionary["target_variable"]
     n_train_batches = sampler_dictionary["n_train_batches"]
     train_batches_size = sampler_dictionary["train_batches_size"]
@@ -70,14 +55,16 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
     df_dgn = df_utils.get_subjects_data_frame(df=df, subject_column_name=subject_column,
                                               subject_info_columns=subject_info)
 
-    cv_dfs = df_utils.generate_cross_validation_batch(n_batches=cv_batches, signal_df=df, subjects_df=df_dgn,
-                                                      subject_id_column=subject_column,
-                                                      target_variable=subject_target,
-                                                      test_size=test_set_size)
+    scv_dfs = df_utils.generate_leave_one_out_batch(signal_df=df, subjects_df=df_dgn,
+                                                    subject_id_column=subject_column,
+                                                    strata_column=strata_variable,
+                                                    balanced_by=balanced_by)
 
     scores = []
-    for k, (df_fit, df_val, train_index, _) in enumerate(cv_dfs):
+    cv_batches = len(df[strata_variable].unique())
+    for k, (df_fit, df_val, train_index, _) in enumerate(scv_dfs):
         print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
+        valid_variables = use_variables.copy()
 
         if len(encoder_list) > 0:
             df_fit, df_val, valid_variables = exp_utils.transform_with_encoders(df, df_fit, df_val, valid_variables,
@@ -120,28 +107,39 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
                                         input_variables=valid_variables,
                                         verbose=verbose)
 
-        vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes, kwargs_list=classifier_kwargs_list)
+        vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes,
+                                  kwargs_list=classifier_kwargs_list)
         vgc_classifier.fit(batch_list_train=train_samplings, batch_list_test=test_samplings,
                            score_cap=score_cap, get_best=get_best, verbose=verbose)
 
         prd_prb = vgc_classifier.predict_proba(df=df_val, verbose=verbose)
         prd = (prd_prb > class_threshold) * 1
-        it_performance = [(prd == df_val[target_variable]).mean(),
-                          1-(prd[df_val[target_variable] == 0] == [0]*len(df_val[df_val[target_variable] == 0])).mean(),
-                          1-(prd[df_val[target_variable] == 1] == [1]*len(df_val[df_val[target_variable] == 1])).mean(),
-                          roc_auc_score(df_val[target_variable], prd_prb)]
+
+        acc_score = (prd == df_val[target_variable]).mean()
+        if len(df_val[target_variable].unique()) == 1:
+            roc_score = acc_score
+        else:
+            roc_score = roc_auc_score(df_val[target_variable], prd_prb)
+
+        it_performance = [acc_score,
+                          1 - (prd[df_val[target_variable] == 0] == [0] * len(
+                              df_val[df_val[target_variable] == 0])).mean(),
+                          1 - (prd[df_val[target_variable] == 1] == [1] * len(
+                              df_val[df_val[target_variable] == 1])).mean(),
+                          roc_score,
+                          len(df_val) / (len(df_val) + len(df_fit))]
         scores.append(it_performance)
 
         print(f"---SCORE: {scores[-1][0]}", flush=True)
 
-    print("------END OF CROSS VALIDATION", flush=True)
+    print("------END OF STRATIFIED CROSS VALIDATION", flush=True)
 
-    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc"])
+    scores = pd.DataFrame(scores, columns=["accuracy", "FNR", "FPR", "roc_auc", "weights"])
 
-    print(f"Average score: {np.round(scores.accuracy.mean(), 6)}")
-    print(f"Average FNR: {np.round(scores.FNR.mean(), 6)}")
-    print(f"Average FPR: {np.round(scores.FPR.mean(), 6)}")
-    print(f"Average ROC AUC: {np.round(scores.roc_auc.mean(), 6)}")
+    print(f"Average score: {np.round((scores.accuracy * scores.weights).sum(), 6)}")
+    print(f"Average FNR: {np.round((scores.FNR * scores.weights).sum(), 6)}")
+    print(f"Average FPR: {np.round((scores.FPR * scores.weights).sum(), 6)}")
+    print(f"Average ROC AUC: {np.round((scores.roc_auc * scores.weights).sum(), 6)}")
 
 
 if __name__ == "__main__":
@@ -149,11 +147,13 @@ if __name__ == "__main__":
 
     parser.add_argument("-d", "--data_frame", help="Path to data frame containing signal data to build the experiment.",
                         type=str, required=True)
-    parser.add_argument("-b", "--n_batches", help="Number of batches to generate during cross-validation.", type=int,
-                        required=False, default=10)
+    parser.add_argument("-v", "--strata_variable", help="Variable with respect to which stratify the cross-validation"
+                                                        "batch", type=str, required=True)
+    parser.add_argument("-b", "--balancing_variable", help="OPTIONAL: Variable with respect to which the stratified "
+                                                           "data will be balanced",
+                        type=str, required=False, default=None)
     parser.add_argument("-p", "--subject_json", help="Path to json file containing subject/patient data frame "
-                                                     "generation info.", type=str,
-                        required=True)
+                                                     "generation info.", type=str, required=True)
     parser.add_argument("-s", "--sampler_json", help="Path to json file containing sampler generation info.", type=str,
                         required=True)
     parser.add_argument("-e", "--ensemble_json", help="Path to json file containing ensemble generation info.",
@@ -170,10 +170,11 @@ if __name__ == "__main__":
     ensemble_dict = json.load(open(args.ensemble_json, "r"))
     transformer_dict = json.load(open(args.transformer_json, "r"))
 
-    run_cross_validation_experiment(df=df_in,
-                                    cv_batches=args.n_batches,
-                                    subject_dictionary=subject_dict,
-                                    sampler_dictionary=sampler_dict,
-                                    ensemble_dictionary=ensemble_dict,
-                                    transformer_dictionary=transformer_dict,
-                                    verbose=args.verbose)
+    run_stratified_cv_experiment(df=df_in,
+                                 strata_variable=args.strata_variable,
+                                 subject_dictionary=subject_dict,
+                                 sampler_dictionary=sampler_dict,
+                                 ensemble_dictionary=ensemble_dict,
+                                 transformer_dictionary=transformer_dict,
+                                 balanced_by=args.balancing_variable,
+                                 verbose=args.verbose)

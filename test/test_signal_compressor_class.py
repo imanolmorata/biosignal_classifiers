@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from vgc_clf.dataset_transformer.signal_compressor import SignalCompressor
-from vgc_clf.utils import data_frame_utils as df_utils
+from b2s_clf.dataset_transformer.signal_compressor import SignalCompressor
+from b2s_clf.utils import data_frame_utils as df_utils
 
 df = pd.read_csv("/home/imanol/Escriptori/vgc_data_kids_clean.csv", sep=",")
 subjects_df = df_utils.get_subjects_data_frame(df, subject_column_name="patient",

@@ -1,8 +1,8 @@
 import numpy as np
 
-from vgc_clf.dataset_transformer.encoder import Encoder
-from vgc_clf.dataset_transformer.normalizer import Normalizer
-from vgc_clf.dataset_transformer.signal_compressor import SignalCompressor as sg_com
+from b2s_clf.dataset_transformer.encoder import Encoder
+from b2s_clf.dataset_transformer.normalizer import Normalizer
+from b2s_clf.dataset_transformer.signal_compressor import SignalCompressor as sg_com
 
 
 def transform_with_encoders(df, df_fit, df_val, valid_variables, encoder_list, encoder_kwargs, encoders_input_columns,

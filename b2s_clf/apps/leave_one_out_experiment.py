@@ -4,29 +4,25 @@ import numpy as np
 import pandas as pd
 import warnings
 
-from vgc_clf.sampler.sampler import Sampler
-from vgc_clf.ensemble.ensemble import Ensemble
-from vgc_clf.utils import data_frame_utils as df_utils
-from vgc_clf.utils import ensemble_utils as ens_utils
+from b2s_clf.ensemble.ensemble import Ensemble
+from b2s_clf.sampler.sampler import Sampler
+from b2s_clf.utils import data_frame_utils as df_utils
+from b2s_clf.utils import ensemble_utils as ens_utils
+from b2s_clf.utils import transformer_utils as trf_utils
+from b2s_clf.utils import compressor_utils as cm_utils
+from b2s_clf.utils import experiments_utils as exp_utils
 
 warnings.filterwarnings(action="ignore")
 
 
 def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_dictionary, ensemble_dictionary,
-                                 verbose=False):
+                                 transformer_dictionary, verbose=False):
     subject_column = subject_dictionary["subject_id_column"]
     subject_info = subject_dictionary["subject_data_columns"]
     subject_target = subject_dictionary["target_variable"]
 
-    df_dgn = df_utils.get_subjects_data_frame(df=df, subject_column_name=subject_column,
-                                              subject_info_columns=subject_info)
-
-    loo_dfs = df_utils.generate_leave_one_out_batch(signal_df=df, subjects_df=df_dgn,
-                                                    subject_id_column=subject_column,
-                                                    strata_column=loo_variable)
-
     fraction = sampler_dictionary["train_test_fraction"]
-    valid_variables = sampler_dictionary["input_variables"]
+    use_variables = sampler_dictionary["input_variables"]
     target_variable = sampler_dictionary["target_variable"]
     n_train_batches = sampler_dictionary["n_train_batches"]
     train_batches_size = sampler_dictionary["train_batches_size"]
@@ -35,15 +31,54 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
 
     classifier_list = [clf for clf in ens_utils.get_classifier_objects(ensemble_dictionary["classifier_list"])]
     node_sizes = ensemble_dictionary["node_sizes"]
-    kwargs_list = ensemble_dictionary["kwargs_list"]
+    classifier_kwargs_list = ensemble_dictionary["kwargs_list"]
     score_cap = ensemble_dictionary["score_cap"]
     get_best = ensemble_dictionary["get_best"]
     class_threshold = ensemble_dictionary["class_threshold"]
+
+    encoder_list = [enc for enc in trf_utils.get_transformer_objects(transformer_dictionary["Encoders"])]
+    encoder_kwargs = transformer_dictionary["Encoders_kwargs"]
+    encoders_input_columns = transformer_dictionary["Encoders_input_columns"]
+    encoders_target_columns = transformer_dictionary["Encoders_target_columns"]
+
+    normalizers_list = [nrm for nrm in trf_utils.get_transformer_objects(transformer_dictionary["Normalizers"])]
+    normalizers_kwargs = transformer_dictionary["Normalizers_kwargs"]
+    normalizers_input_columns = transformer_dictionary["Normalizers_input_columns"]
+
+    signal_compressor_clusters = transformer_dictionary["Signal_compressor_clusters"]
+    signal_compressor_input_columns = transformer_dictionary["Signal_compressor_input_columns"]
+    signal_compressor_apply_functions = \
+        [ap for ap in cm_utils.get_apply_functions(transformer_dictionary["Signal_compressor_apply_estimators"])]
+
+    df_dgn = df_utils.get_subjects_data_frame(df=df, subject_column_name=subject_column,
+                                              subject_info_columns=subject_info)
+
+    loo_dfs = df_utils.generate_leave_one_out_batch(signal_df=df, subjects_df=df_dgn,
+                                                    subject_id_column=subject_column,
+                                                    strata_column=loo_variable)
 
     scores = []
     cv_batches = len(df[loo_variable].unique())
     for k, (df_fit, df_val, train_index, _) in enumerate(loo_dfs):
         print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
+        valid_variables = use_variables.copy()
+
+        if len(encoder_list) > 0:
+            df_fit, df_val, valid_variables = exp_utils.transform_with_encoders(df, df_fit, df_val, valid_variables,
+                                                                                encoder_list, encoder_kwargs,
+                                                                                encoders_input_columns,
+                                                                                encoders_target_columns,
+                                                                                verbose=verbose)
+
+        if len(normalizers_list) > 0:
+            df_fit, df_val = exp_utils.transform_with_normalizers(df_fit, df_val, normalizers_list, normalizers_kwargs,
+                                                                  normalizers_input_columns, verbose=verbose)
+
+        if len(signal_compressor_clusters) > 0:
+            df_fit, df_val, valid_variables = \
+                exp_utils.transform_with_signal_compressors(df_fit, df_val, valid_variables, signal_compressor_clusters,
+                                                            signal_compressor_input_columns,
+                                                            signal_compressor_apply_functions, verbose=verbose)
 
         ts = int(np.ceil((1. - fraction) * len(train_index)))
         df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(signal_df=df_fit,
@@ -69,7 +104,8 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
                                         input_variables=valid_variables,
                                         verbose=verbose)
 
-        vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes, kwargs_list=kwargs_list)
+        vgc_classifier = Ensemble(classifier_list=classifier_list, node_sizes=node_sizes,
+                                  kwargs_list=classifier_kwargs_list)
         vgc_classifier.fit(batch_list_train=train_samplings, batch_list_test=test_samplings,
                            score_cap=score_cap, get_best=get_best, verbose=verbose)
 
@@ -106,6 +142,8 @@ if __name__ == "__main__":
                         required=True)
     parser.add_argument("-e", "--ensemble_json", help="Path to json file containing ensemble generation info.",
                         type=str, required=True)
+    parser.add_argument("-t", "--transformer_json", help="Path to json file containing transformer generation info.",
+                        type=str, required=True)
     parser.add_argument("--verbose", help="Be verbose on progress on screen", default=False, action="store_true")
 
     args = parser.parse_args()
@@ -114,10 +152,12 @@ if __name__ == "__main__":
     subject_dict = json.load(open(args.subject_json, "r"))
     sampler_dict = json.load(open(args.sampler_json, "r"))
     ensemble_dict = json.load(open(args.ensemble_json, "r"))
+    transformer_dict = json.load(open(args.transformer_json, "r"))
 
     run_leave_one_out_experiment(df=df_in,
                                  loo_variable=args.loo_variable,
                                  subject_dictionary=subject_dict,
                                  sampler_dictionary=sampler_dict,
                                  ensemble_dictionary=ensemble_dict,
+                                 transformer_dictionary=transformer_dict,
                                  verbose=args.verbose)

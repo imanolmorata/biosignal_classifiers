@@ -1,8 +1,8 @@
 import pandas as pd
 
-from vgc_clf.dataset_transformer.encoder import Encoder
-from vgc_clf.utils import data_frame_utils as df_utils
-from vgc_clf.utils import transformer_utils as tf_utils
+from b2s_clf.dataset_transformer.encoder import Encoder
+from b2s_clf.utils import data_frame_utils as df_utils
+from b2s_clf.utils import transformer_utils as tf_utils
 
 df = pd.read_csv("/home/imanol/Escriptori/vgc_data_kids_clean.csv", sep=",")
 subjects_df = df_utils.get_subjects_data_frame(df, subject_column_name="patient",

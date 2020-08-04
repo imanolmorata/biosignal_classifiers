@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 
 extras = {
     'complete': [
-        'matplotlib',
         'numpy',
         'pandas==1.0.4',
         'scikit-learn',
@@ -10,9 +9,9 @@ extras = {
         'category_encoders'
     ]}
 
-setup(name='vgc_adhd',
-      version='0.1',
-      description='Ecosystem for design and implementation of vergence-based classifiers',
+setup(name='bio-signals-binary-classifier',
+      version='1.0',
+      description='Ecosystem for design and implementation of bio-signals-based binary classifiers',
       url='http://github.com/imanolmorata/vergence_adhd_classifier',
       author='Imanol Morata',
       author_email='imanol.morata@gmail.com',
@@ -20,5 +19,5 @@ setup(name='vgc_adhd',
       include_package_data=True,
       python_requires='>=3.6',
       extras_require=extras,
-      packages=find_packages(include=['vgc_clf.*']),
+      packages=find_packages(include=['b2s_clf.*']),
       zip_safe=False)

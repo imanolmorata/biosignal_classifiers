@@ -1,4 +1,4 @@
-from vgc_clf.dataset_transformer.dataset_transformer import DatasetTransformer
+from b2s_clf.dataset_transformer.dataset_transformer import DatasetTransformer
 
 VALID_NORMALIZERS = ["MinMaxScaler", "StandardScaler", "type"]
 

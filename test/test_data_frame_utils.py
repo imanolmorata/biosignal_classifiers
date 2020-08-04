@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from vgc_clf.utils import data_frame_utils as df_utils
+from b2s_clf.utils import data_frame_utils as df_utils
 
 df = pd.read_csv("/home/imanol/Escriptori/vgc_data_kids_clean.csv", sep=",")
 
