@@ -10,6 +10,12 @@ class DatasetTransformer:
         self._check_transformers()
 
     def _check_transformers(self):
+        """
+        Checks that all transformers in self.transformer_list are compatible with methods fit, transform and
+        fit_transform.
+        Returns:
+
+        """
 
         assert all([hasattr(trf, "fit") for trf in self.transformer_list]), "At least one transformer object is not " \
                                                                             "compatible with 'fit' method."
