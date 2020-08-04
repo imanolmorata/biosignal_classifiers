@@ -1,4 +1,4 @@
-#Biosignal classifiers
+# Biosignal classifiers
 **Authored by Imanol Morata, powered by B2SLab**
 
 Biosignal classifiers, nicknamed `b2s_clf`,  is a small machine-learning platform built on top 
