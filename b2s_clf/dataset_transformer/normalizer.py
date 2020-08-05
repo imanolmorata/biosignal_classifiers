@@ -4,6 +4,9 @@ VALID_NORMALIZERS = ["MinMaxScaler", "StandardScaler", "type"]
 
 
 class Normalizer(DatasetTransformer):
+    """
+    A class that implements a series of transformations to a data set based in variable normalization.
+    """
 
     def __init__(self, transformer_list, kwargs_list, input_cols_list):
 
@@ -14,7 +17,6 @@ class Normalizer(DatasetTransformer):
     def _check_transformers_are_normalizers(self):
         """
         Checks if whether the self.transformer_list contains only normalizers.
-        Returns:
 
         """
 
@@ -26,11 +28,10 @@ class Normalizer(DatasetTransformer):
     def fit(self, df, verbose=False):
         """
         Fits all normalizers in present in self.transformer_list.
+
         Args:
             df: pandas.DataFrame with fit data.
             verbose: Whether to print progress on screen.
-
-        Returns:
 
         """
 
@@ -51,6 +52,7 @@ class Normalizer(DatasetTransformer):
         """
         Fits all normalizers in present in self.transformer_list and return a transformation of the training
         set.
+
         Args:
             df: pandas.DataFrame with fit data.
             verbose: Whether to print progress on screen.
@@ -80,6 +82,7 @@ class Normalizer(DatasetTransformer):
     def transform(self, df, verbose=False):
         """
         Transforms data using all normalizers fitted in self.fitted_objects.
+
         Args:
             df: pandas.DataFrame with data to transform.
             verbose: Whether to print progress on screen.

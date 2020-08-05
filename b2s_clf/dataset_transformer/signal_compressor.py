@@ -5,6 +5,9 @@ from sklearn.cluster import KMeans
 
 
 class SignalCompressor:
+    """
+    A class that performs compression on signal data.
+    """
 
     def __init__(self, n_clusters_list, input_cols_list, apply_estimator_list):
 
@@ -18,11 +21,10 @@ class SignalCompressor:
         """
         Fits clusters according to variable groups present in self.input_cols_list. These will be used to compress
         signal data.
+
         Args:
             df: pandas.DataFrame with signal data.
             verbose: Whether to print progress on screen.
-
-        Returns:
 
         """
 
@@ -56,6 +58,7 @@ class SignalCompressor:
     def transform(self, df, verbose=False):
         """
         Compresses signal data using all clusters fitted in self.signal_clusters.
+
         Args:
             df: pandas.DataFrame with signal data to compress.
             verbose: Whether to print progress on screen.
