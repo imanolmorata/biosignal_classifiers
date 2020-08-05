@@ -65,6 +65,7 @@ def get_balanced_sample_from_data_frame(df, balancing_variable, max_len=None):
 def get_train_validation_from_data_frame(signal_df, subjects_df, subject_id_column, target_variable, test_size):
     """
     Generates a train and validation pair from a data frame containing at least signal and subject data.
+
     Args:
         signal_df: pandas.DataFrame containing signal and subject data.
         subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
