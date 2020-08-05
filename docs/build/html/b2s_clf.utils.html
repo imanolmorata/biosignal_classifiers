@@ -172,11 +172,13 @@
 <dt id="b2s_clf.utils.compressor_utils.get_apply_functions">
 <code class="sig-prename descclassname">b2s_clf.utils.compressor_utils.</code><code class="sig-name descname">get_apply_functions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">apply_function_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/compressor_utils.html#get_apply_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.compressor_utils.get_apply_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports the necessary module for each potential data set transformer stored in a list. Such models shall be among the
-ones present in VALID_TRANSFORMER_CLASSES.
-:param apply_function_list: A list containing the objects to import, represented by their actual names as strings.</p>
+ones present in VALID_TRANSFORMER_CLASSES.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>An iterable that sequentially imports the needed module for each object.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>apply_function_list</strong> – A list containing the objects to import, represented by their actual names as strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An iterable that sequentially imports the needed module for each object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -189,16 +191,23 @@ ones present in VALID_TRANSFORMER_CLASSES.
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">generate_cross_validation_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_batches</span></em>, <em class="sig-param"><span class="n">signal_df</span></em>, <em class="sig-param"><span class="n">subjects_df</span></em>, <em class="sig-param"><span class="n">subject_id_column</span></em>, <em class="sig-param"><span class="n">target_variable</span></em>, <em class="sig-param"><span class="n">test_size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#generate_cross_validation_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.generate_cross_validation_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an iterable of train/test samples from a given pandas.DataFrame containing at least signal and subject
 data. It is a lazy generator, meaning that each instance of the iterator is given by the yield method rather than
-storing all instances in memory and then running over them.
-:param n_batches: How many batches to generate.
-:param signal_df: pandas.DataFrame containing signal and subject data.
-:param subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
-:param subject_id_column: Column containing subject ID or naming logic.
-:param target_variable: Binary target variable.
-:param test_size: Size of test sample.</p>
+storing all instances in memory and then running over them.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Iterable of tetrads train_sample, test_sample, train_index, test_index</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_batches</strong> – How many batches to generate.</p></li>
+<li><p><strong>signal_df</strong> – pandas.DataFrame containing signal and subject data.</p></li>
+<li><p><strong>subjects_df</strong> – pandas.DataFrame containing subject data, as in get_subjects_data_frame.</p></li>
+<li><p><strong>subject_id_column</strong> – Column containing subject ID or naming logic.</p></li>
+<li><p><strong>target_variable</strong> – Binary target variable.</p></li>
+<li><p><strong>test_size</strong> – Size of test sample.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tetrads train_sample, test_sample, train_index, test_index</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -208,15 +217,22 @@ storing all instances in memory and then running over them.
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">generate_leave_one_out_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signal_df</span></em>, <em class="sig-param"><span class="n">subjects_df</span></em>, <em class="sig-param"><span class="n">subject_id_column</span></em>, <em class="sig-param"><span class="n">strata_column</span></em>, <em class="sig-param"><span class="n">balanced_by</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#generate_leave_one_out_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.generate_leave_one_out_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an iterable of has-strata/lacks-strata samples from a given pandas.DataFrame containing at least
 signal and subject data. It is a lazy generator, meaning that each instance of the iterator is given by the
-yield method rather than storing all instances in memory and then running over them.
-:param signal_df: pandas.DataFrame containing signal and subject data.
-:param subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
-:param subject_id_column: Column containing subject ID or naming logic.
-:param strata_column: Stratification variable name in signal_df.
-:param balanced_by: [Optional] Whether to balance outcomes by a second binary variable.</p>
+yield method rather than storing all instances in memory and then running over them.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Iterable of tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal_df</strong> – pandas.DataFrame containing signal and subject data.</p></li>
+<li><p><strong>subjects_df</strong> – pandas.DataFrame containing subject data, as in get_subjects_data_frame.</p></li>
+<li><p><strong>subject_id_column</strong> – Column containing subject ID or naming logic.</p></li>
+<li><p><strong>strata_column</strong> – Stratification variable name in signal_df.</p></li>
+<li><p><strong>balanced_by</strong> – [Optional] Whether to balance outcomes by a second binary variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -224,16 +240,20 @@ yield method rather than storing all instances in memory and then running over t
 <dl class="py function">
 <dt id="b2s_clf.utils.data_frame_utils.get_balanced_sample_from_data_frame">
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">get_balanced_sample_from_data_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">balancing_variable</span></em>, <em class="sig-param"><span class="n">max_len</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#get_balanced_sample_from_data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.get_balanced_sample_from_data_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a balanced subsample of a given pandas.DataFrame according to one binary variable.
-:param df: pandas.DataFrame containing some data.
-:param balancing_variable: Binary variable with respect to which the sampling shall be made.
-:param max_len: Maximum length per class in the balancing.</p>
+<dd><p>Generates a balanced subsample of a given pandas.DataFrame according to one binary variable.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Balanced subsample of df.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing some data.</p></li>
+<li><p><strong>balancing_variable</strong> – Binary variable with respect to which the sampling shall be made.</p></li>
+<li><p><strong>max_len</strong> – Maximum length per class in the balancing.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>balanced_df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Balanced subsample of df.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -242,22 +262,26 @@ yield method rather than storing all instances in memory and then running over t
 <dt id="b2s_clf.utils.data_frame_utils.get_strata_samples_from_data_frame">
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">get_strata_samples_from_data_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signal_df</span></em>, <em class="sig-param"><span class="n">subjects_df</span></em>, <em class="sig-param"><span class="n">subject_id_column</span></em>, <em class="sig-param"><span class="n">strata_column</span></em>, <em class="sig-param"><span class="n">strata_value</span></em>, <em class="sig-param"><span class="n">balanced_by</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#get_strata_samples_from_data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.get_strata_samples_from_data_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a stratified pair of sub-samples from a data frame containing at least signal and subject data. The pair
-is generated in a leave-one-out fashion, with one containing only one strata and the other containing the rest.
-:param signal_df: pandas.DataFrame containing signal and subject data.
-:param subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
-:param subject_id_column: Column containing subject ID or naming logic.
-:param strata_column: Stratification variable.
-:param strata_value: The particular strata to be the one-left-out.
-:param balanced_by: Whether to balance the subsample by a second binary variable.</p>
+is generated in a leave-one-out fashion, with one containing only one strata and the other containing the rest.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Subsample of df without strata_value.
-signal_pos: Subsample of df with only strata_value.
-negative_index: Indices of subject_df used to get signal_neg.
-positive_index: Indices of subject_df used to get signal_pos.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal_df</strong> – pandas.DataFrame containing signal and subject data.</p></li>
+<li><p><strong>subjects_df</strong> – pandas.DataFrame containing subject data, as in get_subjects_data_frame.</p></li>
+<li><p><strong>subject_id_column</strong> – Column containing subject ID or naming logic.</p></li>
+<li><p><strong>strata_column</strong> – Stratification variable.</p></li>
+<li><p><strong>strata_value</strong> – The particular strata to be the one-left-out.</p></li>
+<li><p><strong>balanced_by</strong> – Whether to balance the subsample by a second binary variable.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>signal_neg</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Subsample of df without strata_value.
+pandas.DataFrame: Subsample of df with only strata_value.
+pandas.Index: Indices of subject_df used to get signal_neg.
+pandas.Index: Indices of subject_df used to get signal_pos.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,17 +290,21 @@ positive_index: Indices of subject_df used to get signal_pos.</p>
 <dt id="b2s_clf.utils.data_frame_utils.get_subjects_data_frame">
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">get_subjects_data_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">subject_column_name</span></em>, <em class="sig-param"><span class="n">subject_info_columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#get_subjects_data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.get_subjects_data_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract subject data from a data frame that contains signals attached to subjects. This is useful in the event
-that all subjects have more than one signal referenced to them.
-:param df: pandas.DataFrame containing, at least, signal data and subject data.
-:param subject_column_name: Specific column with (unique) subject ID or naming logic.
-:param subject_info_columns: List of columns that contain subject info.</p>
+that all subjects have more than one signal referenced to them.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>pandas.DataFrame with as many rows as unique subjects and those columns specified in
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing, at least, signal data and subject data.</p></li>
+<li><p><strong>subject_column_name</strong> – Specific column with (unique) subject ID or naming logic.</p></li>
+<li><p><strong>subject_info_columns</strong> – List of columns that contain subject info.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Data frame with as many rows as unique subjects and those columns specified in
 subject_info_columns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df_subjects</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -284,21 +312,25 @@ subject_info_columns.</p>
 <dl class="py function">
 <dt id="b2s_clf.utils.data_frame_utils.get_train_validation_from_data_frame">
 <code class="sig-prename descclassname">b2s_clf.utils.data_frame_utils.</code><code class="sig-name descname">get_train_validation_from_data_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signal_df</span></em>, <em class="sig-param"><span class="n">subjects_df</span></em>, <em class="sig-param"><span class="n">subject_id_column</span></em>, <em class="sig-param"><span class="n">target_variable</span></em>, <em class="sig-param"><span class="n">test_size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/data_frame_utils.html#get_train_validation_from_data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.data_frame_utils.get_train_validation_from_data_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a train and validation pair from a data frame containing at least signal and subject data.
-:param signal_df: pandas.DataFrame containing signal and subject data.
-:param subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
-:param subject_id_column: Column containing subject ID or naming logic.
-:param target_variable: Binary target variable.
-:param test_size: Size of test sample.</p>
+<dd><p>Generates a train and validation pair from a data frame containing at least signal and subject data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Subsample of df with training data.
-signal_val: Subsample of df with validation data.
-index_fit: Indices of subject_df used to get signal_fit.
-index_val: Indices of subject_df used to get signal_val.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal_df</strong> – pandas.DataFrame containing signal and subject data.</p></li>
+<li><p><strong>subjects_df</strong> – pandas.DataFrame containing subject data, as in get_subjects_data_frame.</p></li>
+<li><p><strong>subject_id_column</strong> – Column containing subject ID or naming logic.</p></li>
+<li><p><strong>target_variable</strong> – Binary target variable.</p></li>
+<li><p><strong>test_size</strong> – Size of test sample.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>signal_fit</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Subsample of df with training data.
+pandas.DataFrame: Subsample of df with validation data.
+pandas.Index: Indices of subject_df used to get signal_fit.
+pandas.Index: Indices of subject_df used to get signal_val.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -310,11 +342,16 @@ index_val: Indices of subject_df used to get signal_val.</p>
 <dt id="b2s_clf.utils.ensemble_utils.get_classifier_objects">
 <code class="sig-prename descclassname">b2s_clf.utils.ensemble_utils.</code><code class="sig-name descname">get_classifier_objects</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/ensemble_utils.html#get_classifier_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.ensemble_utils.get_classifier_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports the necessary module for each potential classifier model stored in a list. Such models shall be among the
-ones present in VALID_CLASSIFIER_CLASSES.
-:param classifier_list: A list containing the objects to import, represented by their actual names as strings.</p>
+ones present in VALID_CLASSIFIER_CLASSES.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>An iterable that sequentially imports the needed module for each object.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>classifier_list</strong> – A list containing the objects to import, represented by their actual names as strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sequentially imports the needed module for each object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -325,17 +362,83 @@ ones present in VALID_CLASSIFIER_CLASSES.
 <dl class="py function">
 <dt id="b2s_clf.utils.experiments_utils.transform_with_encoders">
 <code class="sig-prename descclassname">b2s_clf.utils.experiments_utils.</code><code class="sig-name descname">transform_with_encoders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">df_fit</span></em>, <em class="sig-param"><span class="n">df_val</span></em>, <em class="sig-param"><span class="n">valid_variables</span></em>, <em class="sig-param"><span class="n">encoder_list</span></em>, <em class="sig-param"><span class="n">encoder_kwargs</span></em>, <em class="sig-param"><span class="n">encoders_input_columns</span></em>, <em class="sig-param"><span class="n">encoders_target_columns</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/experiments_utils.html#transform_with_encoders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.experiments_utils.transform_with_encoders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transforms a train and test data frame according to a series of category_encoders.* objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with signal data.</p></li>
+<li><p><strong>df_fit</strong> – pandas.DataFrame with training data.</p></li>
+<li><p><strong>df_val</strong> – pandas.DataFrame with test data.</p></li>
+<li><p><strong>valid_variables</strong> – List of variables present in df_fit and df_val that should be used.</p></li>
+<li><p><strong>encoder_list</strong> – List of category_encoder objects to apply.</p></li>
+<li><p><strong>encoder_kwargs</strong> – List of additional arguments for each encoder object.</p></li>
+<li><p><strong>encoders_input_columns</strong> – List of lists of variables that correspond to each encoder step.</p></li>
+<li><p><strong>encoders_target_columns</strong> – List of target variables that correspond to each encoder step.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed training set.
+pandas.DataFrame: Transformed test set.
+list: Transformed variable names.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="b2s_clf.utils.experiments_utils.transform_with_normalizers">
 <code class="sig-prename descclassname">b2s_clf.utils.experiments_utils.</code><code class="sig-name descname">transform_with_normalizers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_fit</span></em>, <em class="sig-param"><span class="n">df_val</span></em>, <em class="sig-param"><span class="n">normalizers_list</span></em>, <em class="sig-param"><span class="n">normalizers_kwargs</span></em>, <em class="sig-param"><span class="n">normalizers_input_columns</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/experiments_utils.html#transform_with_normalizers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.experiments_utils.transform_with_normalizers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transforms a train and test data frame according to a series of sklearn.preprocessing normalizer objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_fit</strong> – pandas.DataFrame with training data.</p></li>
+<li><p><strong>df_val</strong> – pandas.DataFrame with test data.</p></li>
+<li><p><strong>normalizers_list</strong> – A list of sklearn.preprocessing objects.</p></li>
+<li><p><strong>normalizers_kwargs</strong> – Additional kwargs for normalizer objects.</p></li>
+<li><p><strong>normalizers_input_columns</strong> – List of lists of variables to apply each normalizer to.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed training set.
+pandas.DataFrame: Transformed test set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="b2s_clf.utils.experiments_utils.transform_with_signal_compressors">
 <code class="sig-prename descclassname">b2s_clf.utils.experiments_utils.</code><code class="sig-name descname">transform_with_signal_compressors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df_fit</span></em>, <em class="sig-param"><span class="n">df_val</span></em>, <em class="sig-param"><span class="n">valid_variables</span></em>, <em class="sig-param"><span class="n">signal_compressor_clusters</span></em>, <em class="sig-param"><span class="n">signal_compressor_input_columns</span></em>, <em class="sig-param"><span class="n">signal_compressor_apply_functions</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/experiments_utils.html#transform_with_signal_compressors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.experiments_utils.transform_with_signal_compressors" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transforms a data set containing signal data by compressing such signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_fit</strong> – pandas.DataFrame with training data.</p></li>
+<li><p><strong>df_val</strong> – pandas.DataFrame with test data.</p></li>
+<li><p><strong>valid_variables</strong> – List of variables present in df_fit and df_val that should be used.</p></li>
+<li><p><strong>signal_compressor_clusters</strong> – Number of signal chunks to compress.</p></li>
+<li><p><strong>signal_compressor_input_columns</strong> – List of variables that reference the signal data.</p></li>
+<li><p><strong>signal_compressor_apply_functions</strong> – List of callables to transform the chunks into single values.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed training set.
+pandas.DataFrame: Transformed test set.
+list: Transformed variable names.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-b2s_clf.utils.transformer_utils">
@@ -344,11 +447,16 @@ ones present in VALID_CLASSIFIER_CLASSES.
 <dt id="b2s_clf.utils.transformer_utils.get_transformer_objects">
 <code class="sig-prename descclassname">b2s_clf.utils.transformer_utils.</code><code class="sig-name descname">get_transformer_objects</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/utils/transformer_utils.html#get_transformer_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.utils.transformer_utils.get_transformer_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports the necessary module for each potential data set transformer stored in a list. Such models shall be among the
-ones present in VALID_TRANSFORMER_CLASSES.
-:param transformer_list: A list containing the objects to import, represented by their actual names as strings.</p>
+ones present in VALID_TRANSFORMER_CLASSES.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>An iterable that sequentially imports the needed module for each object.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>transformer_list</strong> – A list containing the objects to import, represented by their actual names as strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sequentially imports the needed module for each object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable</p>
 </dd>
 </dl>
 </dd></dl>

@@ -155,6 +155,11 @@
 
 
 <div class="viewcode-block" id="Ensemble"><a class="viewcode-back" href="../../../b2s_clf.ensemble.html#b2s_clf.ensemble.ensemble.Ensemble">[docs]</a><span class="k">class</span> <span class="nc">Ensemble</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that builds an ensemble model and uses it to predict new batches of data. It fits a set of weak classifiers</span>
+<span class="sd">    on previously-sampled data and uses them to build a final voting classifier. These weak classifiers is any</span>
+<span class="sd">    arbitrary set of sklearn-like model objects that support the methods fit, predict and predict_proba.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier_list</span><span class="p">,</span> <span class="n">node_sizes</span><span class="p">,</span> <span class="n">kwargs_list</span><span class="p">):</span>
 
@@ -169,6 +174,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_nodes</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_check_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks that all weak classifiers support fit and predict methods.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s2">&quot;fit&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier_list</span><span class="p">]),</span> <span class="s2">&quot;At least one classifier object is not &quot;</span> \
                                                                            <span class="s2">&quot;compatible with &#39;fit&#39; method.&quot;</span>
@@ -177,12 +186,11 @@
 
     <span class="k">def</span> <span class="nf">_check_batches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_list_train</span><span class="p">,</span> <span class="n">batch_list_test</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Checks the integrity of train and test batches before fitting the ensmeble.</span>
+<span class="sd">        Checks the integrity of train and test batches before fitting the ensemble.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.</span>
 <span class="sd">            batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -204,10 +212,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        In the event that get_best is not None when calling fit, this will filter the get_best weak classifiers and</span>
 <span class="sd">        keep them, discarding the rest.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            get_best: The number of best weak classifiers to keep.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -224,14 +231,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fits the ensemble with train and test batches by randomly picking couples and fitting a weak classifier from</span>
 <span class="sd">        a list provided by the user.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.</span>
 <span class="sd">            batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.</span>
 <span class="sd">            score_cap: Minimum accuracy of a weak classifier to be eligible.</span>
 <span class="sd">            get_best: The number of best weak classifiers to keep.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -291,12 +297,13 @@
 <span class="sd">        Return the probabilities that the instances of a batch of data stored in a pandas.DataFrame belong to the</span>
 <span class="sd">        positive class. This data frame such contain compatible variable names. Note that the user will still have to</span>
 <span class="sd">        make sure that such names refer to the right variables.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame with data to predict.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            numpy.array with prediction probabilities.</span>
+<span class="sd">            numpy.array: prediction probabilities.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -322,13 +329,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Classifies the instances of a batch of data contained in pandas.DataFrame into the positive or negative classes</span>
 <span class="sd">        according to a certain probability threshold.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame containing the batch of data to be classified.</span>
 <span class="sd">            threshold: Float between 0 and 1 stating the probability threshold to label an instance as positive.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            numpy.array with class labels.</span>
+<span class="sd">            numpy.array: class labels.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 

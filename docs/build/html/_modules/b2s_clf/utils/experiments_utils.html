@@ -157,6 +157,26 @@
 
 <div class="viewcode-block" id="transform_with_encoders"><a class="viewcode-back" href="../../../b2s_clf.utils.html#b2s_clf.utils.experiments_utils.transform_with_encoders">[docs]</a><span class="k">def</span> <span class="nf">transform_with_encoders</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">valid_variables</span><span class="p">,</span> <span class="n">encoder_list</span><span class="p">,</span> <span class="n">encoder_kwargs</span><span class="p">,</span> <span class="n">encoders_input_columns</span><span class="p">,</span>
                             <span class="n">encoders_target_columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a train and test data frame according to a series of category_encoders.* objects</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: pandas.DataFrame with signal data.</span>
+<span class="sd">        df_fit: pandas.DataFrame with training data.</span>
+<span class="sd">        df_val: pandas.DataFrame with test data.</span>
+<span class="sd">        valid_variables: List of variables present in df_fit and df_val that should be used.</span>
+<span class="sd">        encoder_list: List of category_encoder objects to apply.</span>
+<span class="sd">        encoder_kwargs: List of additional arguments for each encoder object.</span>
+<span class="sd">        encoders_input_columns: List of lists of variables that correspond to each encoder step.</span>
+<span class="sd">        encoders_target_columns: List of target variables that correspond to each encoder step.</span>
+<span class="sd">        verbose: Whether to print progress on screen.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: Transformed training set.</span>
+<span class="sd">        pandas.DataFrame: Transformed test set.</span>
+<span class="sd">        list: Transformed variable names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ENCODER&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">encoder_obj</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">transformer_list</span><span class="o">=</span><span class="n">encoder_list</span><span class="p">,</span>
                           <span class="n">kwargs_list</span><span class="o">=</span><span class="n">encoder_kwargs</span><span class="p">,</span>
@@ -178,6 +198,22 @@
 
 <div class="viewcode-block" id="transform_with_normalizers"><a class="viewcode-back" href="../../../b2s_clf.utils.html#b2s_clf.utils.experiments_utils.transform_with_normalizers">[docs]</a><span class="k">def</span> <span class="nf">transform_with_normalizers</span><span class="p">(</span><span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">normalizers_list</span><span class="p">,</span> <span class="n">normalizers_kwargs</span><span class="p">,</span> <span class="n">normalizers_input_columns</span><span class="p">,</span>
                                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a train and test data frame according to a series of sklearn.preprocessing normalizer objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_fit: pandas.DataFrame with training data.</span>
+<span class="sd">        df_val: pandas.DataFrame with test data.</span>
+<span class="sd">        normalizers_list: A list of sklearn.preprocessing objects.</span>
+<span class="sd">        normalizers_kwargs: Additional kwargs for normalizer objects.</span>
+<span class="sd">        normalizers_input_columns: List of lists of variables to apply each normalizer to.</span>
+<span class="sd">        verbose: Whether to print progress on screen.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: Transformed training set.</span>
+<span class="sd">        pandas.DataFrame: Transformed test set.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NORMALIZER&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">normalizer_obj</span> <span class="o">=</span> <span class="n">Normalizer</span><span class="p">(</span><span class="n">transformer_list</span><span class="o">=</span><span class="n">normalizers_list</span><span class="p">,</span>
                                 <span class="n">kwargs_list</span><span class="o">=</span><span class="n">normalizers_kwargs</span><span class="p">,</span>
@@ -191,6 +227,24 @@
 <div class="viewcode-block" id="transform_with_signal_compressors"><a class="viewcode-back" href="../../../b2s_clf.utils.html#b2s_clf.utils.experiments_utils.transform_with_signal_compressors">[docs]</a><span class="k">def</span> <span class="nf">transform_with_signal_compressors</span><span class="p">(</span><span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">valid_variables</span><span class="p">,</span> <span class="n">signal_compressor_clusters</span><span class="p">,</span>
                                       <span class="n">signal_compressor_input_columns</span><span class="p">,</span> <span class="n">signal_compressor_apply_functions</span><span class="p">,</span>
                                       <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a data set containing signal data by compressing such signals.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_fit: pandas.DataFrame with training data.</span>
+<span class="sd">        df_val: pandas.DataFrame with test data.</span>
+<span class="sd">        valid_variables: List of variables present in df_fit and df_val that should be used.</span>
+<span class="sd">        signal_compressor_clusters: Number of signal chunks to compress.</span>
+<span class="sd">        signal_compressor_input_columns: List of variables that reference the signal data.</span>
+<span class="sd">        signal_compressor_apply_functions: List of callables to transform the chunks into single values.</span>
+<span class="sd">        verbose: Whether to print progress on screen.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: Transformed training set.</span>
+<span class="sd">        pandas.DataFrame: Transformed test set.</span>
+<span class="sd">        list: Transformed variable names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;COMPRESSOR&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">compressor_obj</span> <span class="o">=</span> <span class="n">sg_com</span><span class="p">(</span><span class="n">n_clusters_list</span><span class="o">=</span><span class="n">signal_compressor_clusters</span><span class="p">,</span>
                             <span class="n">input_cols_list</span><span class="o">=</span><span class="n">signal_compressor_input_columns</span><span class="p">,</span>

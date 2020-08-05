@@ -156,13 +156,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract subject data from a data frame that contains signals attached to subjects. This is useful in the event </span>
 <span class="sd">    that all subjects have more than one signal referenced to them.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        df: pandas.DataFrame containing, at least, signal data and subject data.</span>
 <span class="sd">        subject_column_name: Specific column with (unique) subject ID or naming logic.</span>
 <span class="sd">        subject_info_columns: List of columns that contain subject info.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        df_subjects: pandas.DataFrame with as many rows as unique subjects and those columns specified in</span>
+<span class="sd">        pandas.DataFrame: Data frame with as many rows as unique subjects and those columns specified in</span>
 <span class="sd">        subject_info_columns.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -181,13 +182,14 @@
 <div class="viewcode-block" id="get_balanced_sample_from_data_frame"><a class="viewcode-back" href="../../../b2s_clf.utils.html#b2s_clf.utils.data_frame_utils.get_balanced_sample_from_data_frame">[docs]</a><span class="k">def</span> <span class="nf">get_balanced_sample_from_data_frame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">balancing_variable</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a balanced subsample of a given pandas.DataFrame according to one binary variable.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        df: pandas.DataFrame containing some data.</span>
 <span class="sd">        balancing_variable: Binary variable with respect to which the sampling shall be made.</span>
 <span class="sd">        max_len: Maximum length per class in the balancing.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        balanced_df: Balanced subsample of df.</span>
+<span class="sd">        pandas.DataFrame: Balanced subsample of df.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">balancing_variable</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Passed balancing variable is not binary.&quot;</span>
@@ -213,6 +215,7 @@
 <div class="viewcode-block" id="get_train_validation_from_data_frame"><a class="viewcode-back" href="../../../b2s_clf.utils.html#b2s_clf.utils.data_frame_utils.get_train_validation_from_data_frame">[docs]</a><span class="k">def</span> <span class="nf">get_train_validation_from_data_frame</span><span class="p">(</span><span class="n">signal_df</span><span class="p">,</span> <span class="n">subjects_df</span><span class="p">,</span> <span class="n">subject_id_column</span><span class="p">,</span> <span class="n">target_variable</span><span class="p">,</span> <span class="n">test_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a train and validation pair from a data frame containing at least signal and subject data.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        signal_df: pandas.DataFrame containing signal and subject data.</span>
 <span class="sd">        subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.</span>
@@ -221,10 +224,10 @@
 <span class="sd">        test_size: Size of test sample.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        signal_fit: Subsample of df with training data.</span>
-<span class="sd">        signal_val: Subsample of df with validation data.</span>
-<span class="sd">        index_fit: Indices of subject_df used to get signal_fit.</span>
-<span class="sd">        index_val: Indices of subject_df used to get signal_val.</span>
+<span class="sd">        pandas.DataFrame: Subsample of df with training data.</span>
+<span class="sd">        pandas.DataFrame: Subsample of df with validation data.</span>
+<span class="sd">        pandas.Index: Indices of subject_df used to get signal_fit.</span>
+<span class="sd">        pandas.Index: Indices of subject_df used to get signal_val.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">subjects_df</span><span class="p">[</span><span class="n">target_variable</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span>
@@ -254,6 +257,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a stratified pair of sub-samples from a data frame containing at least signal and subject data. The pair</span>
 <span class="sd">    is generated in a leave-one-out fashion, with one containing only one strata and the other containing the rest.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        signal_df: pandas.DataFrame containing signal and subject data.</span>
 <span class="sd">        subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.</span>
@@ -263,10 +267,10 @@
 <span class="sd">        balanced_by: Whether to balance the subsample by a second binary variable.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        signal_neg: Subsample of df without strata_value.</span>
-<span class="sd">        signal_pos: Subsample of df with only strata_value.</span>
-<span class="sd">        negative_index: Indices of subject_df used to get signal_neg.</span>
-<span class="sd">        positive_index: Indices of subject_df used to get signal_pos.</span>
+<span class="sd">        pandas.DataFrame: Subsample of df without strata_value.</span>
+<span class="sd">        pandas.DataFrame: Subsample of df with only strata_value.</span>
+<span class="sd">        pandas.Index: Indices of subject_df used to get signal_neg.</span>
+<span class="sd">        pandas.Index: Indices of subject_df used to get signal_pos.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">strata_value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subjects_df</span><span class="p">[</span><span class="n">strata_column</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()),</span> <span class="s2">&quot;strata_value not present in strata column.&quot;</span>
@@ -298,6 +302,7 @@
 <span class="sd">    Generates an iterable of train/test samples from a given pandas.DataFrame containing at least signal and subject</span>
 <span class="sd">    data. It is a lazy generator, meaning that each instance of the iterator is given by the yield method rather than</span>
 <span class="sd">    storing all instances in memory and then running over them.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        n_batches: How many batches to generate.</span>
 <span class="sd">        signal_df: pandas.DataFrame containing signal and subject data.</span>
@@ -307,7 +312,7 @@
 <span class="sd">        test_size: Size of test sample.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Iterable of tetrads train_sample, test_sample, train_index, test_index</span>
+<span class="sd">        Iterable: Tetrads train_sample, test_sample, train_index, test_index</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
@@ -323,6 +328,7 @@
 <span class="sd">        Generates an iterable of has-strata/lacks-strata samples from a given pandas.DataFrame containing at least</span>
 <span class="sd">        signal and subject data. It is a lazy generator, meaning that each instance of the iterator is given by the</span>
 <span class="sd">        yield method rather than storing all instances in memory and then running over them.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            signal_df: pandas.DataFrame containing signal and subject data.</span>
 <span class="sd">            subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.</span>
@@ -331,7 +337,7 @@
 <span class="sd">            balanced_by: [Optional] Whether to balance outcomes by a second binary variable.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Iterable of tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index</span>
+<span class="sd">            Iterable: Tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">strata</span> <span class="ow">in</span> <span class="n">subjects_df</span><span class="p">[</span><span class="n">strata_column</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>

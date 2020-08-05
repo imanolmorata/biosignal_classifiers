@@ -155,6 +155,9 @@
 
 
 <div class="viewcode-block" id="SignalCompressor"><a class="viewcode-back" href="../../../b2s_clf.dataset_transformer.html#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor">[docs]</a><span class="k">class</span> <span class="nc">SignalCompressor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that performs compression on signal data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters_list</span><span class="p">,</span> <span class="n">input_cols_list</span><span class="p">,</span> <span class="n">apply_estimator_list</span><span class="p">):</span>
 
@@ -168,11 +171,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fits clusters according to variable groups present in self.input_cols_list. These will be used to compress</span>
 <span class="sd">        signal data.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame with signal data.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -206,6 +208,7 @@
 <div class="viewcode-block" id="SignalCompressor.transform"><a class="viewcode-back" href="../../../b2s_clf.dataset_transformer.html#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compresses signal data using all clusters fitted in self.signal_clusters.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame with signal data to compress.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>

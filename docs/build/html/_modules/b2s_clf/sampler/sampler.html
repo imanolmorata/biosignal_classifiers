@@ -155,6 +155,10 @@
 
 
 <div class="viewcode-block" id="Sampler"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler">[docs]</a><span class="k">class</span> <span class="nc">Sampler</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that samples and re-samples signal data with the option to read a subject data file to sample with respect</span>
+<span class="sd">    to different strata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -169,12 +173,11 @@
 <div class="viewcode-block" id="Sampler.save_sampling"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.save_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">save_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sampling_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will save a dictionary into a local path with generated batches</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            path: Directory to store the output file.</span>
 <span class="sd">            sampling_name: Output file name.</span>
 <span class="sd">            mode: pickle or json</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -201,11 +204,10 @@
 <div class="viewcode-block" id="Sampler.load_sampling"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.load_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">load_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sampling_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will attempt to load an exsiting sampling from a local file.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            path: Path to file.</span>
 <span class="sd">            sampling_name: File name without extension.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -230,12 +232,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        In the event that a new sampling is created from a pandas.DataFrame, this will read the samling object</span>
 <span class="sd">        information that relates to it.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame from which to sample.</span>
 <span class="sd">            target_variable: User-defined target variable.</span>
 <span class="sd">            input_variables: User-defined input variable list. If None, will simply take df column names.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -258,6 +259,7 @@
                          <span class="n">resample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            df: pandas.DataFrame from which to sample.</span>
 <span class="sd">            n_batches: Total number of batches to generate.</span>
@@ -267,8 +269,6 @@
 <span class="sd">            balanced: Whether to balance the batches by target_variable.</span>
 <span class="sd">            resample: Whether to sample batches with replacement.</span>
 <span class="sd">            verbose: Whether to print progress on screen.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -326,12 +326,13 @@
 <div class="viewcode-block" id="Sampler.extract_batch"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.extract_batch">[docs]</a>    <span class="k">def</span> <span class="nf">extract_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the numpy.ndarray stored in a particular batch.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            index: Index of the particular batch to extract.</span>
 <span class="sd">            y: If true, will retrieve the target vector.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            numpy.ndarray containing the batch.</span>
+<span class="sd">            numpy.ndarray: The particular batch.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -349,10 +350,9 @@
 <span class="sd">        Adds the batches present in a second sampling to current sampling object. The second sampling must have been</span>
 <span class="sd">        generated with the same input and output variables. Note that this will only check that the names match, the</span>
 <span class="sd">        user will still have to make sure that the data is compatible or makes sense.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            new_sampling: Sampling object containing the batches to add.</span>
-
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 

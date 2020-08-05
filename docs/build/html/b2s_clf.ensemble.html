@@ -168,30 +168,45 @@
 <dt id="b2s_clf.ensemble.ensemble.Ensemble">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.ensemble.ensemble.</code><code class="sig-name descname">Ensemble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier_list</span></em>, <em class="sig-param"><span class="n">node_sizes</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/ensemble/ensemble.html#Ensemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.ensemble.ensemble.Ensemble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that builds an ensemble model and uses it to predict new batches of data. It fits a set of weak classifiers
+on previously-sampled data and uses them to build a final voting classifier. These weak classifiers is any
+arbitrary set of sklearn-like model objects that support the methods fit, predict and predict_proba.</p>
 <dl class="py method">
 <dt id="b2s_clf.ensemble.ensemble.Ensemble.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_list_train</span></em>, <em class="sig-param"><span class="n">batch_list_test</span></em>, <em class="sig-param"><span class="n">score_cap</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">get_best</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/ensemble/ensemble.html#Ensemble.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.ensemble.ensemble.Ensemble.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits the ensemble with train and test batches by randomly picking couples and fitting a weak classifier from
-a list provided by the user.
-:param batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
-:param batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
-:param score_cap: Minimum accuracy of a weak classifier to be eligible.
-:param get_best: The number of best weak classifiers to keep.
-:param verbose: Whether to print progress on screen.</p>
-<p>Returns:</p>
+a list provided by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_list_train</strong> – Object of class vgc_clf.sampler.Sampler with training batches.</p></li>
+<li><p><strong>batch_list_test</strong> – Object of class vgc_clf.sampler.Sampler with test batches.</p></li>
+<li><p><strong>score_cap</strong> – Minimum accuracy of a weak classifier to be eligible.</p></li>
+<li><p><strong>get_best</strong> – The number of best weak classifiers to keep.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.ensemble.ensemble.Ensemble.predict">
 <code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/ensemble/ensemble.html#Ensemble.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.ensemble.ensemble.Ensemble.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classifies the instances of a batch of data contained in pandas.DataFrame into the positive or negative classes
-according to a certain probability threshold.
-:param df: pandas.DataFrame containing the batch of data to be classified.
-:param threshold: Float between 0 and 1 stating the probability threshold to label an instance as positive.
-:param verbose: Whether to print progress on screen.</p>
+according to a certain probability threshold.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>numpy.array with class labels.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing the batch of data to be classified.</p></li>
+<li><p><strong>threshold</strong> – Float between 0 and 1 stating the probability threshold to label an instance as positive.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>class labels.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -201,12 +216,19 @@ according to a certain probability threshold.
 <code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/ensemble/ensemble.html#Ensemble.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.ensemble.ensemble.Ensemble.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the probabilities that the instances of a batch of data stored in a pandas.DataFrame belong to the
 positive class. This data frame such contain compatible variable names. Note that the user will still have to
-make sure that such names refer to the right variables.
-:param df: pandas.DataFrame with data to predict.
-:param verbose: Whether to print progress on screen.</p>
+make sure that such names refer to the right variables.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>numpy.array with prediction probabilities.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with data to predict.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>prediction probabilities.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array</p>
 </dd>
 </dl>
 </dd></dl>

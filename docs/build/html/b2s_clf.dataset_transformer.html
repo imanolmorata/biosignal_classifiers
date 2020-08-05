@@ -171,6 +171,7 @@
 <dt id="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.dataset_transformer.</code><code class="sig-name descname">DatasetTransformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/dataset_transformer.html#DatasetTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A superclass that initializes data set transformation child classes.</p>
 </dd></dl>
 
 </div>
@@ -180,28 +181,38 @@
 <dt id="b2s_clf.dataset_transformer.encoder.Encoder">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.encoder.</code><code class="sig-name descname">Encoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em>, <em class="sig-param"><span class="n">target_col_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer</span></code></a></p>
+<p>A class that implements a series of transformations to a data set based in categorical data encoding.</p>
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.encoder.Encoder.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fits all categorical encoders in present in self.transformer_list.
-:param df: pandas.DataFrame with fit data.
-:param verbose: Whether to print progress on screen.</p>
-<p>Returns:</p>
+<dd><p>Fits all categorical encoders in present in self.transformer_list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with fit data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.encoder.Encoder.fit_transform">
 <code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits all categorical encoders in present in self.transformer_list and return a transformation of the training
-set.
-:param df: pandas.DataFrame with fit data.
-:param verbose: Whether to print progress on screen.</p>
+set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Transformed training set.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with fit data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed training set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,15 +220,19 @@ set.
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.encoder.Encoder.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transforms data using all encoders fitted in self.fitted_objects.
-:param df: pandas.DataFrame with data to transform.
-:param verbose: Whether to print progress on screen.</p>
+<dd><p>Transforms data using all encoders fitted in self.fitted_objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Transformed data set.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with data to transform.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed data set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,28 +246,38 @@ set.
 <dt id="b2s_clf.dataset_transformer.normalizer.Normalizer">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.normalizer.</code><code class="sig-name descname">Normalizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer</span></code></a></p>
+<p>A class that implements a series of transformations to a data set based in variable normalization.</p>
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fits all normalizers in present in self.transformer_list.
-:param df: pandas.DataFrame with fit data.
-:param verbose: Whether to print progress on screen.</p>
-<p>Returns:</p>
+<dd><p>Fits all normalizers in present in self.transformer_list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with fit data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.fit_transform">
 <code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits all normalizers in present in self.transformer_list and return a transformation of the training
-set.
-:param df: pandas.DataFrame with fit data.
-:param verbose: Whether to print progress on screen.</p>
+set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Transformed training set.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with fit data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed training set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
 </dd>
 </dl>
 </dd></dl>
@@ -260,15 +285,19 @@ set.
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transforms data using all normalizers fitted in self.fitted_objects.
-:param df: pandas.DataFrame with data to transform.
-:param verbose: Whether to print progress on screen.</p>
+<dd><p>Transforms data using all normalizers fitted in self.fitted_objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Transformed data set.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with data to transform.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed data set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
 </dd>
 </dl>
 </dd></dl>
@@ -282,28 +311,38 @@ set.
 <dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.signal_compressor.</code><code class="sig-name descname">SignalCompressor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_clusters_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em>, <em class="sig-param"><span class="n">apply_estimator_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that performs compression on signal data.</p>
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits clusters according to variable groups present in self.input_cols_list. These will be used to compress
-signal data.
-:param df: pandas.DataFrame with signal data.
-:param verbose: Whether to print progress on screen.</p>
-<p>Returns:</p>
+signal data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with signal data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compresses signal data using all clusters fitted in self.signal_clusters.
-:param df: pandas.DataFrame with signal data to compress.
-:param verbose: Whether to print progress on screen.</p>
+<dd><p>Compresses signal data using all clusters fitted in self.signal_clusters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Compressed signal data set.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame with signal data to compress.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>df</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Compressed signal data set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
 </dd>
 </dl>
 </dd></dl>

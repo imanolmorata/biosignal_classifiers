@@ -168,25 +168,37 @@
 <dt id="b2s_clf.sampler.sampler.Sampler">
 <em class="property">class </em><code class="sig-prename descclassname">b2s_clf.sampler.sampler.</code><code class="sig-name descname">Sampler</code><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that samples and re-samples signal data with the option to read a subject data file to sample with respect
+to different strata.</p>
 <dl class="py method">
 <dt id="b2s_clf.sampler.sampler.Sampler.combine_samplings">
 <code class="sig-name descname">combine_samplings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_sampling</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.combine_samplings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.combine_samplings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds the batches present in a second sampling to current sampling object. The second sampling must have been
 generated with the same input and output variables. Note that this will only check that the names match, the
-user will still have to make sure that the data is compatible or makes sense.
-:param new_sampling: Sampling object containing the batches to add.</p>
-<p>Returns:</p>
+user will still have to make sure that the data is compatible or makes sense.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_sampling</strong> – Sampling object containing the batches to add.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.sampler.sampler.Sampler.extract_batch">
 <code class="sig-name descname">extract_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.extract_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.extract_batch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the numpy.ndarray stored in a particular batch.
-:param index: Index of the particular batch to extract.
-:param y: If true, will retrieve the target vector.</p>
+<dd><p>Retrieve the numpy.ndarray stored in a particular batch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>numpy.ndarray containing the batch.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – Index of the particular batch to extract.</p></li>
+<li><p><strong>y</strong> – If true, will retrieve the target vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The particular batch.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -194,35 +206,50 @@ user will still have to make sure that the data is compatible or makes sense.
 <dl class="py method">
 <dt id="b2s_clf.sampler.sampler.Sampler.generate_batches">
 <code class="sig-name descname">generate_batches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">n_batches</span></em>, <em class="sig-param"><span class="n">batch_len</span></em>, <em class="sig-param"><span class="n">target_variable</span></em>, <em class="sig-param"><span class="n">input_variables</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">balanced</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">resample</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.generate_batches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.generate_batches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.
-:param df: pandas.DataFrame from which to sample.
-:param n_batches: Total number of batches to generate.
-:param batch_len: Length of each batch.
-:param target_variable: User-defined target variable.
-:param input_variables: User-defined input variable list. If None, will simply take df column names.
-:param balanced: Whether to balance the batches by target_variable.
-:param resample: Whether to sample batches with replacement.
-:param verbose: Whether to print progress on screen.</p>
-<p>Returns:</p>
+<dd><p>Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame from which to sample.</p></li>
+<li><p><strong>n_batches</strong> – Total number of batches to generate.</p></li>
+<li><p><strong>batch_len</strong> – Length of each batch.</p></li>
+<li><p><strong>target_variable</strong> – User-defined target variable.</p></li>
+<li><p><strong>input_variables</strong> – User-defined input variable list. If None, will simply take df column names.</p></li>
+<li><p><strong>balanced</strong> – Whether to balance the batches by target_variable.</p></li>
+<li><p><strong>resample</strong> – Whether to sample batches with replacement.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.sampler.sampler.Sampler.load_sampling">
 <code class="sig-name descname">load_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.load_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.load_sampling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will attempt to load an exsiting sampling from a local file.
-:param path: Path to file.
-:param sampling_name: File name without extension.</p>
-<p>Returns:</p>
+<dd><p>Will attempt to load an exsiting sampling from a local file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path to file.</p></li>
+<li><p><strong>sampling_name</strong> – File name without extension.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="b2s_clf.sampler.sampler.Sampler.save_sampling">
 <code class="sig-name descname">save_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'pickle'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.save_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.save_sampling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will save a dictionary into a local path with generated batches
-:param path: Directory to store the output file.
-:param sampling_name: Output file name.
-:param mode: pickle or json</p>
-<p>Returns:</p>
+<dd><p>Will save a dictionary into a local path with generated batches</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Directory to store the output file.</p></li>
+<li><p><strong>sampling_name</strong> – Output file name.</p></li>
+<li><p><strong>mode</strong> – pickle or json</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
