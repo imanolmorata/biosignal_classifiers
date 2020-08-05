@@ -1,3 +1,18 @@
+"""
+App to run a leave-one-out cross-validation experiment with random sampling. Paths to json files containing the
+experiment  build instructions are needed. Such instructions are classified in four kinds:
+* Data structure
+* Sampling build
+* Ensemble build
+* Data set transformation steps.
+
+The app returns accuracy, FPR and FNR.
+
+Example call:
+    python leave_one_out_experiment.py -v target -p subject.json -s sampling.json -e ensemble.json -t transform.json
+    --verbose
+"""
+
 import argparse
 import json
 import numpy as np
@@ -17,6 +32,21 @@ warnings.filterwarnings(action="ignore")
 
 def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_dictionary, ensemble_dictionary,
                                  transformer_dictionary, verbose=False):
+    """
+    Run a simple leave-one-out (LOO) experiment. It will run all the process provided that signal data, sampling,
+    ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
+    folder to see examples of this.
+
+    Args:
+        df: pandas.DataFrame containing signal data.
+        loo_variable: Strata variable with respect to which to perform the LOO samplings.
+        subject_dictionary: Dict with subject data build information.
+        sampler_dictionary: Dict with sampling instructions.
+        ensemble_dictionary: Dict with ensemble build instructions.
+        transformer_dictionary: Dict with data set transformation build instructions.
+        verbose: Whether to print progress on screen.
+
+    """
     subject_column = subject_dictionary["subject_id_column"]
     subject_info = subject_dictionary["subject_data_columns"]
     subject_target = subject_dictionary["target_variable"]

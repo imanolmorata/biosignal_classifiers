@@ -12,11 +12,12 @@ def get_transformer_objects(transformer_list):
     """
     Imports the necessary module for each potential data set transformer stored in a list. Such models shall be among the
     ones present in VALID_TRANSFORMER_CLASSES.
+
     Args:
         transformer_list: A list containing the objects to import, represented by their actual names as strings.
 
     Returns:
-        An iterable that sequentially imports the needed module for each object.
+        Iterable: Sequentially imports the needed module for each object.
 
     """
 

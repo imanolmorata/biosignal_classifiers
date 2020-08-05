@@ -4,6 +4,9 @@ VALID_ENCODERS = ["OneHotEncoder", "TargetEncoder", "type"]
 
 
 class Encoder(DatasetTransformer):
+    """
+    A class that implements a series of transformations to a data set based in categorical data encoding.
+    """
 
     def __init__(self, transformer_list, kwargs_list, input_cols_list, target_col_list):
 
@@ -17,7 +20,6 @@ class Encoder(DatasetTransformer):
     def _add_input_cols_to_kwargs(self):
         """
         Input column names are only needed in encoder transformation, thus are added to encoder kwargs list.
-        Returns:
 
         """
 
@@ -38,11 +40,10 @@ class Encoder(DatasetTransformer):
     def fit(self, df, verbose=False):
         """
         Fits all categorical encoders in present in self.transformer_list.
+
         Args:
             df: pandas.DataFrame with fit data.
             verbose: Whether to print progress on screen.
-
-        Returns:
 
         """
 
@@ -67,6 +68,7 @@ class Encoder(DatasetTransformer):
         """
         Fits all categorical encoders in present in self.transformer_list and return a transformation of the training
         set.
+
         Args:
             df: pandas.DataFrame with fit data.
             verbose: Whether to print progress on screen.
@@ -100,6 +102,7 @@ class Encoder(DatasetTransformer):
     def transform(self, df, verbose=False):
         """
         Transforms data using all encoders fitted in self.fitted_objects.
+
         Args:
             df: pandas.DataFrame with data to transform.
             verbose: Whether to print progress on screen.

@@ -5,6 +5,11 @@ from b2s_clf.sampler.sampler import Sampler
 
 
 class Ensemble:
+    """
+    A class that builds an ensemble model and uses it to predict new batches of data. It fits a set of weak classifiers
+    on previously-sampled data and uses them to build a final voting classifier. These weak classifiers is any
+    arbitrary set of sklearn-like model objects that support the methods fit, predict and predict_proba.
+    """
 
     def __init__(self, classifier_list, node_sizes, kwargs_list):
 
@@ -19,6 +24,10 @@ class Ensemble:
         self._check_nodes()
 
     def _check_nodes(self):
+        """
+        Checks that all weak classifiers support fit and predict methods.
+
+        """
 
         assert all([hasattr(clf, "fit") for clf in self.classifier_list]), "At least one classifier object is not " \
                                                                            "compatible with 'fit' method."
@@ -27,12 +36,11 @@ class Ensemble:
 
     def _check_batches(self, batch_list_train, batch_list_test):
         """
-        Checks the integrity of train and test batches before fitting the ensmeble.
+        Checks the integrity of train and test batches before fitting the ensemble.
+
         Args:
             batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
             batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
-
-        Returns:
 
         """
 
@@ -54,10 +62,9 @@ class Ensemble:
         """
         In the event that get_best is not None when calling fit, this will filter the get_best weak classifiers and
         keep them, discarding the rest.
+
         Args:
             get_best: The number of best weak classifiers to keep.
-
-        Returns:
 
         """
 
@@ -74,14 +81,13 @@ class Ensemble:
         """
         Fits the ensemble with train and test batches by randomly picking couples and fitting a weak classifier from
         a list provided by the user.
+
         Args:
             batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
             batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
             score_cap: Minimum accuracy of a weak classifier to be eligible.
             get_best: The number of best weak classifiers to keep.
             verbose: Whether to print progress on screen.
-
-        Returns:
 
         """
 
@@ -141,12 +147,13 @@ class Ensemble:
         Return the probabilities that the instances of a batch of data stored in a pandas.DataFrame belong to the
         positive class. This data frame such contain compatible variable names. Note that the user will still have to
         make sure that such names refer to the right variables.
+
         Args:
             df: pandas.DataFrame with data to predict.
             verbose: Whether to print progress on screen.
 
         Returns:
-            numpy.array with prediction probabilities.
+            numpy.array: prediction probabilities.
 
         """
 
@@ -172,13 +179,14 @@ class Ensemble:
         """
         Classifies the instances of a batch of data contained in pandas.DataFrame into the positive or negative classes
         according to a certain probability threshold.
+
         Args:
             df: pandas.DataFrame containing the batch of data to be classified.
             threshold: Float between 0 and 1 stating the probability threshold to label an instance as positive.
             verbose: Whether to print progress on screen.
 
         Returns:
-            numpy.array with class labels.
+            numpy.array: class labels.
 
         """
 

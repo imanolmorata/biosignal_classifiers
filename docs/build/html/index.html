@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Biosignal Binary Classifiers documentation &mdash; b2s_clf 0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> b2s_clf
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Biosignal Binary Classifiers documentation</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#module-b2s_clf">b2s_clf module</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">b2s_clf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to Biosignal Binary Classifiers documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-biosignal-binary-classifiers-documentation">
+<h1>Welcome to Biosignal Binary Classifiers documentation<a class="headerlink" href="#welcome-to-biosignal-binary-classifiers-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="module-b2s_clf">
+<span id="b2s-clf-module"></span><h1>b2s_clf module<a class="headerlink" href="#module-b2s_clf" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p><strong>b2s_clf</strong> is a small auto-contained machine-learning platform built on top of <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> and
+designed to focus in one-dimensional, time-dependant signal data. It was written with bio-signal data in mind, thus it
+can handle subject-related data that gives context to the signals put into study (e.g. ECG data that contains patient
+information such as age or sex). For that reason, it is designed to work with dual entry data: a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+containing the signal data proper and a second <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> that contains subject data, the only requirement
+being that they both share a common subject ID-like column that allows linking the two. This is especially useful when
+the signal data contains many signals from the same subject and one wants to perform samplings based on the subject
+instead of the signal itself.</p>
+<p>The main feature is the class <a class="reference internal" href="b2s_clf.ensemble.html#b2s_clf.ensemble.ensemble.Ensemble" title="b2s_clf.ensemble.ensemble.Ensemble"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.ensemble.ensemble.Ensemble</span></code></a> that implements a binary ensemble classifier
+especially designed to work with both scarce and noisy data. This is a generalization of classical ensemble models in
+the sense that it allows any combination of weak classifiers (i.e. it can train trees <em>and</em> linear classifiers at the
+same time) in the fitting process. The way it re-samples training data to fit those weak classifiers is also thought
+to be more general and capable of identifying scarce and specific yet prediction-bearing patterns.</p>
+<p>The ensemble fit process or re-sampling the data can actually be customized and performed in a completely separated
+fashion through the class <a class="reference internal" href="b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler" title="b2s_clf.sampler.sampler.Sampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.sampler.sampler.Sampler</span></code></a>, designed to be fed with a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+and produce as many train and test batches <em>as one desires</em>.</p>
+<p>Other tools included are the package <code class="docutils literal notranslate"><span class="pre">b2s_clf.dataset_transform</span></code> with modules for encoding, normalization and signal
+treatment. In particular, the module <code class="docutils literal notranslate"><span class="pre">b2s_clf.dataset_transform.compressor</span></code> implements a signal compression algorithm
+designed to catch continuous portions of a signal that carry the same relevant information. In next releases, more tools
+will be added to this, such as signal smoothing, de-noising and time-alignment.</p>
+<p>Finally, the module implements the library <code class="docutils literal notranslate"><span class="pre">b2s_clf.apps</span></code> with tools to perform classical ML experiments directly
+from the shell.</p>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>At least two purposes gave rise to the <code class="docutils literal notranslate"><span class="pre">b2s_clf</span></code> project:</p>
+<ul class="simple">
+<li><p>A lack of bio-signal-focused data science and machine-learning libraries in the python ecosystem.</p></li>
+<li><p>Exploit the power of <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> and <code class="docutils literal notranslate"><span class="pre">pandas</span></code> to build bio-signal-based classifiers building a platform that
+handles the hard work of sampling and treating signal data that may be stratified in many ways at the same time.</p></li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>This is a binary classifier library. It does not, nor wants to, implement multi-label classifiers or regressions.</p></li>
+<li><p>Currently it only implements ensemble models though it is prepared to support future implementations of other families
+of models such as linear models.</p></li>
+<li><p>It is still lacking in performance metrics, at the moment it still implements very basic score computations.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Imanol Morata
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,4 +1,7 @@
 class DatasetTransformer:
+    """
+    A superclass that initializes data set transformation child classes.
+    """
 
     def __init__(self, transformer_list, kwargs_list, input_cols_list):
 
@@ -13,7 +16,6 @@ class DatasetTransformer:
         """
         Checks that all transformers in self.transformer_list are compatible with methods fit, transform and
         fit_transform.
-        Returns:
 
         """
 

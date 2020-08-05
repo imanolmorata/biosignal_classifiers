@@ -12,6 +12,7 @@ def get_apply_functions(apply_function_list):
     """
     Imports the necessary module for each potential data set transformer stored in a list. Such models shall be among the
     ones present in VALID_TRANSFORMER_CLASSES.
+
     Args:
         apply_function_list: A list containing the objects to import, represented by their actual names as strings.
 
