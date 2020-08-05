@@ -1,3 +1,18 @@
+"""
+App to run a k-fold cross-validation experiment with random sampling. Paths to json files containing the experiment
+build instructions are needed. Such instructions are classified in four kinds:
+* Data structure
+* Sampling build
+* Ensemble build
+* Data set transformation steps.
+
+The app returns accuracy, FPR, FNR and ROC AUC score.
+
+Example call:
+    python cross_validation_experiment.py -b 10 -p subject.json -s sampling.json -e ensemble.json -t transform.json
+    -z 15 --verbose
+"""
+
 import argparse
 import json
 import numpy as np
@@ -20,16 +35,18 @@ warnings.filterwarnings(action="ignore")
 def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_dictionary, ensemble_dictionary,
                                     transformer_dictionary, test_set_size, verbose=False):
     """
-    Run a simple cross-validation experiment.
+    Run a simple cross-validation experiment. It will run all the process provided that signal data, sampling,
+    ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
+    folder to see examples of this.
     Args:
-        df:
-        cv_batches:
-        subject_dictionary:
-        sampler_dictionary:
-        ensemble_dictionary:
-        transformer_dictionary:
-        test_set_size:
-        verbose:
+        df: pandas.DataFrame containing signal data.
+        cv_batches: How many CV iterations/batches to generate.
+        subject_dictionary: Dict with subject data build information.
+        sampler_dictionary: Dict with sampling instructions.
+        ensemble_dictionary: Dict with ensemble build instructions.
+        transformer_dictionary: Dict with data set transformation build instructions.
+        test_set_size: How many member of each class in the testing samples.
+        verbose: Whether to print progress on screen.
 
     Returns:
 
