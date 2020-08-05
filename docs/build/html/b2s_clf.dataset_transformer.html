@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>b2s_clf.dataset_transformer package &mdash; b2s_clf 0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> b2s_clf
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">b2s_clf.dataset_transformer package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.dataset_transformer.dataset_transformer">b2s_clf.dataset_transformer.dataset_transformer module</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.dataset_transformer.encoder">b2s_clf.dataset_transformer.encoder module</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.dataset_transformer.normalizer">b2s_clf.dataset_transformer.normalizer module</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.dataset_transformer.signal_compressor">b2s_clf.dataset_transformer.signal_compressor module</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.dataset_transformer">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">b2s_clf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>b2s_clf.dataset_transformer package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/b2s_clf.dataset_transformer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="b2s-clf-dataset-transformer-package">
+<h1>b2s_clf.dataset_transformer package<a class="headerlink" href="#b2s-clf-dataset-transformer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-b2s_clf.dataset_transformer.dataset_transformer">
+<span id="b2s-clf-dataset-transformer-dataset-transformer-module"></span><h2>b2s_clf.dataset_transformer.dataset_transformer module<a class="headerlink" href="#module-b2s_clf.dataset_transformer.dataset_transformer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer">
+<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.dataset_transformer.</code><code class="sig-name descname">DatasetTransformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/dataset_transformer.html#DatasetTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-b2s_clf.dataset_transformer.encoder">
+<span id="b2s-clf-dataset-transformer-encoder-module"></span><h2>b2s_clf.dataset_transformer.encoder module<a class="headerlink" href="#module-b2s_clf.dataset_transformer.encoder" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="b2s_clf.dataset_transformer.encoder.Encoder">
+<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.encoder.</code><code class="sig-name descname">Encoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em>, <em class="sig-param"><span class="n">target_col_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer</span></code></a></p>
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.encoder.Encoder.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits all categorical encoders in present in self.transformer_list.
+:param df: pandas.DataFrame with fit data.
+:param verbose: Whether to print progress on screen.</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.encoder.Encoder.fit_transform">
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits all categorical encoders in present in self.transformer_list and return a transformation of the training
+set.
+:param df: pandas.DataFrame with fit data.
+:param verbose: Whether to print progress on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Transformed training set.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.encoder.Encoder.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/encoder.html#Encoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.encoder.Encoder.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms data using all encoders fitted in self.fitted_objects.
+:param df: pandas.DataFrame with data to transform.
+:param verbose: Whether to print progress on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Transformed data set.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-b2s_clf.dataset_transformer.normalizer">
+<span id="b2s-clf-dataset-transformer-normalizer-module"></span><h2>b2s_clf.dataset_transformer.normalizer module<a class="headerlink" href="#module-b2s_clf.dataset_transformer.normalizer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="b2s_clf.dataset_transformer.normalizer.Normalizer">
+<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.normalizer.</code><code class="sig-name descname">Normalizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer_list</span></em>, <em class="sig-param"><span class="n">kwargs_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer" title="b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.dataset_transformer.dataset_transformer.DatasetTransformer</span></code></a></p>
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits all normalizers in present in self.transformer_list.
+:param df: pandas.DataFrame with fit data.
+:param verbose: Whether to print progress on screen.</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.fit_transform">
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits all normalizers in present in self.transformer_list and return a transformation of the training
+set.
+:param df: pandas.DataFrame with fit data.
+:param verbose: Whether to print progress on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Transformed training set.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.normalizer.Normalizer.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/normalizer.html#Normalizer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.normalizer.Normalizer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms data using all normalizers fitted in self.fitted_objects.
+:param df: pandas.DataFrame with data to transform.
+:param verbose: Whether to print progress on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Transformed data set.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-b2s_clf.dataset_transformer.signal_compressor">
+<span id="b2s-clf-dataset-transformer-signal-compressor-module"></span><h2>b2s_clf.dataset_transformer.signal_compressor module<a class="headerlink" href="#module-b2s_clf.dataset_transformer.signal_compressor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor">
+<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.dataset_transformer.signal_compressor.</code><code class="sig-name descname">SignalCompressor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_clusters_list</span></em>, <em class="sig-param"><span class="n">input_cols_list</span></em>, <em class="sig-param"><span class="n">apply_estimator_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits clusters according to variable groups present in self.input_cols_list. These will be used to compress
+signal data.
+:param df: pandas.DataFrame with signal data.
+:param verbose: Whether to print progress on screen.</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/dataset_transformer/signal_compressor.html#SignalCompressor.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.dataset_transformer.signal_compressor.SignalCompressor.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compresses signal data using all clusters fitted in self.signal_clusters.
+:param df: pandas.DataFrame with signal data to compress.
+:param verbose: Whether to print progress on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Compressed signal data set.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-b2s_clf.dataset_transformer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-b2s_clf.dataset_transformer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Imanol Morata
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
