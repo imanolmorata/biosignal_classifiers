@@ -38,6 +38,7 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
     Run a simple cross-validation experiment. It will run all the process provided that signal data, sampling,
     ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
     folder to see examples of this.
+
     Args:
         df: pandas.DataFrame containing signal data.
         cv_batches: How many CV iterations/batches to generate.
@@ -47,8 +48,6 @@ def run_cross_validation_experiment(df, cv_batches, subject_dictionary, sampler_
         transformer_dictionary: Dict with data set transformation build instructions.
         test_set_size: How many member of each class in the testing samples.
         verbose: Whether to print progress on screen.
-
-    Returns:
 
     """
     subject_column = subject_dictionary["subject_id_column"]

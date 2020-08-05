@@ -38,6 +38,7 @@ def run_stratified_cv_experiment(df, strata_variable, subject_dictionary, sample
     Run a simple stratified cross-validation (SCV) experiment. It will run all the process provided that signal data,
     sampling, ensemble and transformation build instructions are given in the form of dictionaries. See the
     ../../json_examples folder to see examples of this.
+
     Args:
         df: pandas.DataFrame containing signal data.
         strata_variable: Strata variable with respect to which to perform the CV samplings.
@@ -47,8 +48,6 @@ def run_stratified_cv_experiment(df, strata_variable, subject_dictionary, sample
         transformer_dictionary: Dict with data set transformation build instructions.
         balanced_by: [Optional] Secondary binary variable name to balance the samplings upon.
         verbose: Whether to print progress on screen.
-
-    Returns:
 
     """
     subject_column = subject_dictionary["subject_id_column"]

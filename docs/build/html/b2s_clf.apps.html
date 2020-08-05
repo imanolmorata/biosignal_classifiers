@@ -166,36 +166,112 @@
 </div>
 <div class="section" id="module-b2s_clf.apps.cross_validation_experiment">
 <span id="b2s-clf-apps-cross-validation-experiment-module"></span><h2>b2s_clf.apps.cross_validation_experiment module<a class="headerlink" href="#module-b2s_clf.apps.cross_validation_experiment" title="Permalink to this headline">¶</a></h2>
+<p>App to run a k-fold cross-validation experiment with random sampling. Paths to json files containing the experiment
+build instructions are needed. Such instructions are classified in four kinds:
+* Data structure
+* Sampling build
+* Ensemble build
+* Data set transformation steps.</p>
+<p>The app returns accuracy, FPR, FNR and ROC AUC score.</p>
+<dl class="simple">
+<dt>Example call:</dt><dd><p>python cross_validation_experiment.py -b 10 -p subject.json -s sampling.json -e ensemble.json -t transform.json
+-z 15 –verbose</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt id="b2s_clf.apps.cross_validation_experiment.run_cross_validation_experiment">
 <code class="sig-prename descclassname">b2s_clf.apps.cross_validation_experiment.</code><code class="sig-name descname">run_cross_validation_experiment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">cv_batches</span></em>, <em class="sig-param"><span class="n">subject_dictionary</span></em>, <em class="sig-param"><span class="n">sampler_dictionary</span></em>, <em class="sig-param"><span class="n">ensemble_dictionary</span></em>, <em class="sig-param"><span class="n">transformer_dictionary</span></em>, <em class="sig-param"><span class="n">test_set_size</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/apps/cross_validation_experiment.html#run_cross_validation_experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.apps.cross_validation_experiment.run_cross_validation_experiment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run a simple cross-validation experiment.
-:param df:
-:param cv_batches:
-:param subject_dictionary:
-:param sampler_dictionary:
-:param ensemble_dictionary:
-:param transformer_dictionary:
-:param test_set_size:
-:param verbose:</p>
-<p>Returns:</p>
+<dd><p>Run a simple cross-validation experiment. It will run all the process provided that signal data, sampling,
+ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
+folder to see examples of this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing signal data.</p></li>
+<li><p><strong>cv_batches</strong> – How many CV iterations/batches to generate.</p></li>
+<li><p><strong>subject_dictionary</strong> – Dict with subject data build information.</p></li>
+<li><p><strong>sampler_dictionary</strong> – Dict with sampling instructions.</p></li>
+<li><p><strong>ensemble_dictionary</strong> – Dict with ensemble build instructions.</p></li>
+<li><p><strong>transformer_dictionary</strong> – Dict with data set transformation build instructions.</p></li>
+<li><p><strong>test_set_size</strong> – How many member of each class in the testing samples.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 <div class="section" id="module-b2s_clf.apps.leave_one_out_experiment">
 <span id="b2s-clf-apps-leave-one-out-experiment-module"></span><h2>b2s_clf.apps.leave_one_out_experiment module<a class="headerlink" href="#module-b2s_clf.apps.leave_one_out_experiment" title="Permalink to this headline">¶</a></h2>
+<p>App to run a leave-one-out cross-validation experiment with random sampling. Paths to json files containing the
+experiment  build instructions are needed. Such instructions are classified in four kinds:
+* Data structure
+* Sampling build
+* Ensemble build
+* Data set transformation steps.</p>
+<p>The app returns accuracy, FPR and FNR.</p>
+<dl class="simple">
+<dt>Example call:</dt><dd><p>python leave_one_out_experiment.py -v target -p subject.json -s sampling.json -e ensemble.json -t transform.json
+–verbose</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt id="b2s_clf.apps.leave_one_out_experiment.run_leave_one_out_experiment">
 <code class="sig-prename descclassname">b2s_clf.apps.leave_one_out_experiment.</code><code class="sig-name descname">run_leave_one_out_experiment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">loo_variable</span></em>, <em class="sig-param"><span class="n">subject_dictionary</span></em>, <em class="sig-param"><span class="n">sampler_dictionary</span></em>, <em class="sig-param"><span class="n">ensemble_dictionary</span></em>, <em class="sig-param"><span class="n">transformer_dictionary</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/apps/leave_one_out_experiment.html#run_leave_one_out_experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.apps.leave_one_out_experiment.run_leave_one_out_experiment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Run a simple leave-one-out (LOO) experiment. It will run all the process provided that signal data, sampling,
+ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
+folder to see examples of this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing signal data.</p></li>
+<li><p><strong>loo_variable</strong> – Strata variable with respect to which to perform the LOO samplings.</p></li>
+<li><p><strong>subject_dictionary</strong> – Dict with subject data build information.</p></li>
+<li><p><strong>sampler_dictionary</strong> – Dict with sampling instructions.</p></li>
+<li><p><strong>ensemble_dictionary</strong> – Dict with ensemble build instructions.</p></li>
+<li><p><strong>transformer_dictionary</strong> – Dict with data set transformation build instructions.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-b2s_clf.apps.stratified_cv_experiment">
 <span id="b2s-clf-apps-stratified-cv-experiment-module"></span><h2>b2s_clf.apps.stratified_cv_experiment module<a class="headerlink" href="#module-b2s_clf.apps.stratified_cv_experiment" title="Permalink to this headline">¶</a></h2>
+<p>App to run a stratified cross-validation experiment with random sampling. Paths to json files containing the experiment
+build instructions are needed. Such instructions are classified in four kinds:
+* Data structure
+* Sampling build
+* Ensemble build
+* Data set transformation steps.</p>
+<p>The app returns accuracy, FPR, FNR and ROC AUC score.</p>
+<dl class="simple">
+<dt>Example call:</dt><dd><p>python stratified_cv_experiment.py -v device -b target -p subject.json -s sampling.json -e ensemble.json
+-t transform.json –verbose</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt id="b2s_clf.apps.stratified_cv_experiment.run_stratified_cv_experiment">
 <code class="sig-prename descclassname">b2s_clf.apps.stratified_cv_experiment.</code><code class="sig-name descname">run_stratified_cv_experiment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">strata_variable</span></em>, <em class="sig-param"><span class="n">subject_dictionary</span></em>, <em class="sig-param"><span class="n">sampler_dictionary</span></em>, <em class="sig-param"><span class="n">ensemble_dictionary</span></em>, <em class="sig-param"><span class="n">transformer_dictionary</span></em>, <em class="sig-param"><span class="n">balanced_by</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/apps/stratified_cv_experiment.html#run_stratified_cv_experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.apps.stratified_cv_experiment.run_stratified_cv_experiment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Run a simple stratified cross-validation (SCV) experiment. It will run all the process provided that signal data,
+sampling, ensemble and transformation build instructions are given in the form of dictionaries. See the
+../../json_examples folder to see examples of this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – pandas.DataFrame containing signal data.</p></li>
+<li><p><strong>strata_variable</strong> – Strata variable with respect to which to perform the CV samplings.</p></li>
+<li><p><strong>subject_dictionary</strong> – Dict with subject data build information.</p></li>
+<li><p><strong>sampler_dictionary</strong> – Dict with sampling instructions.</p></li>
+<li><p><strong>ensemble_dictionary</strong> – Dict with ensemble build instructions.</p></li>
+<li><p><strong>transformer_dictionary</strong> – Dict with data set transformation build instructions.</p></li>
+<li><p><strong>balanced_by</strong> – [Optional] Secondary binary variable name to balance the samplings upon.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress on screen.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-b2s_clf.apps">

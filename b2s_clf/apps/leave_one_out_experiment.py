@@ -36,6 +36,7 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
     Run a simple leave-one-out (LOO) experiment. It will run all the process provided that signal data, sampling,
     ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples
     folder to see examples of this.
+
     Args:
         df: pandas.DataFrame containing signal data.
         loo_variable: Strata variable with respect to which to perform the LOO samplings.
@@ -44,8 +45,6 @@ def run_leave_one_out_experiment(df, loo_variable, subject_dictionary, sampler_d
         ensemble_dictionary: Dict with ensemble build instructions.
         transformer_dictionary: Dict with data set transformation build instructions.
         verbose: Whether to print progress on screen.
-
-    Returns:
 
     """
     subject_column = subject_dictionary["subject_id_column"]

@@ -148,7 +148,22 @@
            <div itemprop="articleBody">
             
   <h1>Source code for b2s_clf.apps.leave_one_out_experiment</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">App to run a leave-one-out cross-validation experiment with random sampling. Paths to json files containing the</span>
+<span class="sd">experiment  build instructions are needed. Such instructions are classified in four kinds:</span>
+<span class="sd">* Data structure</span>
+<span class="sd">* Sampling build</span>
+<span class="sd">* Ensemble build</span>
+<span class="sd">* Data set transformation steps.</span>
+
+<span class="sd">The app returns accuracy, FPR and FNR.</span>
+
+<span class="sd">Example call:</span>
+<span class="sd">    python leave_one_out_experiment.py -v target -p subject.json -s sampling.json -e ensemble.json -t transform.json</span>
+<span class="sd">    --verbose</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -167,6 +182,21 @@
 
 <div class="viewcode-block" id="run_leave_one_out_experiment"><a class="viewcode-back" href="../../../b2s_clf.apps.html#b2s_clf.apps.leave_one_out_experiment.run_leave_one_out_experiment">[docs]</a><span class="k">def</span> <span class="nf">run_leave_one_out_experiment</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">loo_variable</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span>
                                  <span class="n">transformer_dictionary</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run a simple leave-one-out (LOO) experiment. It will run all the process provided that signal data, sampling,</span>
+<span class="sd">    ensemble and transformation build instructions are given in the form of dictionaries. See the ../../json_examples</span>
+<span class="sd">    folder to see examples of this.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: pandas.DataFrame containing signal data.</span>
+<span class="sd">        loo_variable: Strata variable with respect to which to perform the LOO samplings.</span>
+<span class="sd">        subject_dictionary: Dict with subject data build information.</span>
+<span class="sd">        sampler_dictionary: Dict with sampling instructions.</span>
+<span class="sd">        ensemble_dictionary: Dict with ensemble build instructions.</span>
+<span class="sd">        transformer_dictionary: Dict with data set transformation build instructions.</span>
+<span class="sd">        verbose: Whether to print progress on screen.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">subject_column</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;subject_id_column&quot;</span><span class="p">]</span>
     <span class="n">subject_info</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;subject_data_columns&quot;</span><span class="p">]</span>
     <span class="n">subject_target</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
