@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>b2s_clf.sampler.sampler &mdash; b2s_clf 0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> b2s_clf
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">b2s_clf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>b2s_clf.sampler.sampler</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for b2s_clf.sampler.sampler</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+
+<div class="viewcode-block" id="Sampler"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler">[docs]</a><span class="k">class</span> <span class="nc">Sampler</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Sampler.save_sampling"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.save_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">save_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sampling_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will save a dictionary into a local path with generated batches</span>
+<span class="sd">        Args:</span>
+<span class="sd">            path: Directory to store the output file.</span>
+<span class="sd">            sampling_name: Output file name.</span>
+<span class="sd">            mode: pickle or json</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;No sampling has been done yet.&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">output_dictionary</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;input_variables&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">,</span>
+            <span class="s2">&quot;target_variable&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">,</span>
+            <span class="s2">&quot;balanced&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span><span class="p">,</span>
+            <span class="s2">&quot;resample&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span><span class="p">,</span>
+            <span class="s2">&quot;batches&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;pickle&quot;</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">output_dictionary</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sampling_name</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">output_dictionary</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sampling_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File save in format </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> not implemented yet.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sampler.load_sampling"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.load_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">load_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sampling_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will attempt to load an exsiting sampling from a local file.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            path: Path to file.</span>
+<span class="sd">            sampling_name: File name without extension.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Directory </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> not found.&quot;</span>
+
+        <span class="n">path_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">f</span><span class="p">))]</span>
+        <span class="k">if</span> <span class="n">sampling_name</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">path_contents</span><span class="p">:</span>
+            <span class="n">input_dictionary</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sampling_name</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">sampling_name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">in</span> <span class="n">path_contents</span><span class="p">:</span>
+            <span class="n">input_dictionary</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sampling_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No valid file formats found in </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;input_variables&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span> <span class="o">=</span> <span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="o">=</span> <span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;balanced&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="o">=</span> <span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;resample&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;batches&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_dictionary</span><span class="p">[</span><span class="s2">&quot;batches&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_data_frame_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">target_variable</span><span class="p">,</span> <span class="n">input_variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        In the event that a new sampling is created from a pandas.DataFrame, this will read the samling object</span>
+<span class="sd">        information that relates to it.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            df: pandas.DataFrame from which to sample.</span>
+<span class="sd">            target_variable: User-defined target variable.</span>
+<span class="sd">            input_variables: User-defined input variable list. If None, will simply take df column names.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="n">target_variable</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="s2">&quot;Target variable not present in data frame columns.&quot;</span>
+
+        <span class="k">if</span> <span class="n">input_variables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">input_variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">target_variable</span> <span class="ow">in</span> <span class="n">input_variables</span><span class="p">:</span>
+            <span class="n">input_variables</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">target_variable</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">input_variables</span><span class="p">]),</span> <span class="s2">&quot;Some input variables are not present in &quot;</span> \
+                                                                          <span class="s2">&quot;data frame columns.&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="n">input_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span> <span class="o">=</span> <span class="n">target_variable</span>
+
+<div class="viewcode-block" id="Sampler.generate_batches"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.generate_batches">[docs]</a>    <span class="k">def</span> <span class="nf">generate_batches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">n_batches</span><span class="p">,</span> <span class="n">batch_len</span><span class="p">,</span> <span class="n">target_variable</span><span class="p">,</span> <span class="n">input_variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">balanced</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">resample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            df: pandas.DataFrame from which to sample.</span>
+<span class="sd">            n_batches: Total number of batches to generate.</span>
+<span class="sd">            batch_len: Length of each batch.</span>
+<span class="sd">            target_variable: User-defined target variable.</span>
+<span class="sd">            input_variables: User-defined input variable list. If None, will simply take df column names.</span>
+<span class="sd">            balanced: Whether to balance the batches by target_variable.</span>
+<span class="sd">            resample: Whether to sample batches with replacement.</span>
+<span class="sd">            verbose: Whether to print progress on screen.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_frame_info</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">target_variable</span><span class="o">=</span><span class="n">target_variable</span><span class="p">,</span> <span class="n">input_variables</span><span class="o">=</span><span class="n">input_variables</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="o">=</span> <span class="n">balanced</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="o">=</span> <span class="n">resample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Working on batch </span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">n_batches</span><span class="si">}</span><span class="s2">...                &quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">balanced</span><span class="p">:</span>
+                <span class="n">_df_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">_df_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">resample</span><span class="p">:</span>
+                    <span class="n">max_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_len</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">max_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">_df_0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">_df_1</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_len</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+
+                <span class="n">_s0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">_df_0</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">resample</span><span class="p">)</span>
+                <span class="n">_s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">_df_1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">resample</span><span class="p">)</span>
+
+                <span class="n">_sX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">_s0</span><span class="p">,</span> <span class="n">_s1</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]</span>
+                <span class="n">_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">_s0</span><span class="p">,</span> <span class="n">_s1</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">resample</span><span class="p">:</span>
+                    <span class="n">max_len</span> <span class="o">=</span> <span class="n">batch_len</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">max_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">batch_len</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)])</span>
+
+                <span class="n">_sS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">resample</span><span class="p">)</span>
+
+                <span class="n">_sX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">_sS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]</span>
+                <span class="n">_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">_sS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span>
+
+            <span class="n">_batch</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_sX</span><span class="p">),</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_sy</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="n">_batches</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;batch_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">_batch</span>
+            <span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_batches</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Batch sampling complete.                  &quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sampler.extract_batch"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.extract_batch">[docs]</a>    <span class="k">def</span> <span class="nf">extract_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the numpy.ndarray stored in a particular batch.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            index: Index of the particular batch to extract.</span>
+<span class="sd">            y: If true, will retrieve the target vector.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray containing the batch.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span><span class="p">,</span> <span class="s2">&quot;Given index is out of bounds&quot;</span>
+
+        <span class="n">to_extract</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="s2">&quot;batch_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">y</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_extract</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_extract</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Sampler.combine_samplings"><a class="viewcode-back" href="../../../b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler.combine_samplings">[docs]</a>    <span class="k">def</span> <span class="nf">combine_samplings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_sampling</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds the batches present in a second sampling to current sampling object. The second sampling must have been</span>
+<span class="sd">        generated with the same input and output variables. Note that this will only check that the names match, the</span>
+<span class="sd">        user will still have to make sure that the data is compatible or makes sense.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            new_sampling: Sampling object containing the batches to add.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">new_sampling</span><span class="p">)</span> <span class="o">==</span> <span class="n">Sampler</span>
+        <span class="k">assert</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">target_variable</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">,</span> <span class="s2">&quot;Target variable names do not match.&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_sampling</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">),</span> <span class="s2">&quot;Input variables length mismatch.&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]),</span> <span class="s2">&quot;Input variable mismatch&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">var</span> <span class="ow">in</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">input_variables</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]),</span> <span class="s2">&quot;Input variable mismatch&quot;</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;batch_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">balanced</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="ow">and</span> <span class="n">new_sampling</span><span class="o">.</span><span class="n">resample</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out_string</span> <span class="o">=</span> <span class="s2">&quot;Empty Sampler object.&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Sampler object consisting of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_batches</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">balanced</span><span class="p">:</span>
+                <span class="n">out_string</span> <span class="o">+=</span> <span class="s2">&quot;balanced &quot;</span>
+            <span class="n">out_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;batches &quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span><span class="p">:</span>
+                <span class="n">out_string</span> <span class="o">+=</span> <span class="s2">&quot;with resampling &quot;</span>
+            <span class="n">out_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;generated with target variable </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="si">}</span><span class="s2"> and input variables&quot;</span> \
+                          <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span><span class="si">}</span><span class="s2">.&quot;</span>
+
+        <span class="k">return</span> <span class="n">out_string</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Imanol Morata
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
