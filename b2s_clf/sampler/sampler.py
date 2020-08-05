@@ -5,6 +5,10 @@ import pickle
 
 
 class Sampler:
+    """
+    A class that samples and re-samples signal data with the option to read a subject data file to sample with respect
+    to different strata.
+    """
 
     def __init__(self):
 
@@ -19,12 +23,11 @@ class Sampler:
     def save_sampling(self, path, sampling_name, mode="pickle"):
         """
         Will save a dictionary into a local path with generated batches
+
         Args:
             path: Directory to store the output file.
             sampling_name: Output file name.
             mode: pickle or json
-
-        Returns:
 
         """
 
@@ -51,11 +54,10 @@ class Sampler:
     def load_sampling(self, path, sampling_name):
         """
         Will attempt to load an exsiting sampling from a local file.
+
         Args:
             path: Path to file.
             sampling_name: File name without extension.
-
-        Returns:
 
         """
 
@@ -80,12 +82,11 @@ class Sampler:
         """
         In the event that a new sampling is created from a pandas.DataFrame, this will read the samling object
         information that relates to it.
+
         Args:
             df: pandas.DataFrame from which to sample.
             target_variable: User-defined target variable.
             input_variables: User-defined input variable list. If None, will simply take df column names.
-
-        Returns:
 
         """
 
@@ -108,6 +109,7 @@ class Sampler:
                          resample=True, verbose=True):
         """
         Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.
+
         Args:
             df: pandas.DataFrame from which to sample.
             n_batches: Total number of batches to generate.
@@ -117,8 +119,6 @@ class Sampler:
             balanced: Whether to balance the batches by target_variable.
             resample: Whether to sample batches with replacement.
             verbose: Whether to print progress on screen.
-
-        Returns:
 
         """
 
@@ -176,12 +176,13 @@ class Sampler:
     def extract_batch(self, index, y=False):
         """
         Retrieve the numpy.ndarray stored in a particular batch.
+
         Args:
             index: Index of the particular batch to extract.
             y: If true, will retrieve the target vector.
 
         Returns:
-            numpy.ndarray containing the batch.
+            numpy.ndarray: The particular batch.
 
         """
 
@@ -199,10 +200,9 @@ class Sampler:
         Adds the batches present in a second sampling to current sampling object. The second sampling must have been
         generated with the same input and output variables. Note that this will only check that the names match, the
         user will still have to make sure that the data is compatible or makes sense.
+
         Args:
             new_sampling: Sampling object containing the batches to add.
-
-        Returns:
 
         """
 
