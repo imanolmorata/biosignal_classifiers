@@ -16,7 +16,3 @@ pip install -e .
 ```
 
 Be sure of being in administrator command terminal if you are using windows.
-
-## Documentation
-
-A (rather modest) user guide can be found [here](https://htmlpreview.github.io/?https://github.com/imanolmorata/biosignal_classifiers/blob/feature/sphinx-docu/docs/build/html/index.html).
