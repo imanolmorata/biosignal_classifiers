@@ -6,13 +6,14 @@ def get_subjects_data_frame(df, subject_column_name, subject_info_columns=None):
     """
     Extract subject data from a data frame that contains signals attached to subjects. This is useful in the event 
     that all subjects have more than one signal referenced to them.
+
     Args:
         df: pandas.DataFrame containing, at least, signal data and subject data.
         subject_column_name: Specific column with (unique) subject ID or naming logic.
         subject_info_columns: List of columns that contain subject info.
 
     Returns:
-        df_subjects: pandas.DataFrame with as many rows as unique subjects and those columns specified in
+        pandas.DataFrame: Data frame with as many rows as unique subjects and those columns specified in
         subject_info_columns.
 
     """
@@ -31,13 +32,14 @@ def get_subjects_data_frame(df, subject_column_name, subject_info_columns=None):
 def get_balanced_sample_from_data_frame(df, balancing_variable, max_len=None):
     """
     Generates a balanced subsample of a given pandas.DataFrame according to one binary variable.
+
     Args:
         df: pandas.DataFrame containing some data.
         balancing_variable: Binary variable with respect to which the sampling shall be made.
         max_len: Maximum length per class in the balancing.
 
     Returns:
-        balanced_df: Balanced subsample of df.
+        pandas.DataFrame: Balanced subsample of df.
 
     """
     assert len(df[balancing_variable].unique()) == 2, "Passed balancing variable is not binary."
@@ -71,10 +73,10 @@ def get_train_validation_from_data_frame(signal_df, subjects_df, subject_id_colu
         test_size: Size of test sample.
 
     Returns:
-        signal_fit: Subsample of df with training data.
-        signal_val: Subsample of df with validation data.
-        index_fit: Indices of subject_df used to get signal_fit.
-        index_val: Indices of subject_df used to get signal_val.
+        pandas.DataFrame: Subsample of df with training data.
+        pandas.DataFrame: Subsample of df with validation data.
+        pandas.Index: Indices of subject_df used to get signal_fit.
+        pandas.Index: Indices of subject_df used to get signal_val.
 
     """
     assert len(subjects_df[target_variable].unique()) == 2
@@ -104,6 +106,7 @@ def get_strata_samples_from_data_frame(signal_df, subjects_df, subject_id_column
     """
     Generates a stratified pair of sub-samples from a data frame containing at least signal and subject data. The pair
     is generated in a leave-one-out fashion, with one containing only one strata and the other containing the rest.
+
     Args:
         signal_df: pandas.DataFrame containing signal and subject data.
         subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
@@ -113,10 +116,10 @@ def get_strata_samples_from_data_frame(signal_df, subjects_df, subject_id_column
         balanced_by: Whether to balance the subsample by a second binary variable.
 
     Returns:
-        signal_neg: Subsample of df without strata_value.
-        signal_pos: Subsample of df with only strata_value.
-        negative_index: Indices of subject_df used to get signal_neg.
-        positive_index: Indices of subject_df used to get signal_pos.
+        pandas.DataFrame: Subsample of df without strata_value.
+        pandas.DataFrame: Subsample of df with only strata_value.
+        pandas.Index: Indices of subject_df used to get signal_neg.
+        pandas.Index: Indices of subject_df used to get signal_pos.
 
     """
     assert strata_value in list(subjects_df[strata_column].unique()), "strata_value not present in strata column."
@@ -148,6 +151,7 @@ def generate_cross_validation_batch(n_batches, signal_df, subjects_df, subject_i
     Generates an iterable of train/test samples from a given pandas.DataFrame containing at least signal and subject
     data. It is a lazy generator, meaning that each instance of the iterator is given by the yield method rather than
     storing all instances in memory and then running over them.
+
     Args:
         n_batches: How many batches to generate.
         signal_df: pandas.DataFrame containing signal and subject data.
@@ -157,7 +161,7 @@ def generate_cross_validation_batch(n_batches, signal_df, subjects_df, subject_i
         test_size: Size of test sample.
 
     Returns:
-        Iterable of tetrads train_sample, test_sample, train_index, test_index
+        Iterable: Tetrads train_sample, test_sample, train_index, test_index
 
     """
     for _ in np.arange(n_batches):
@@ -173,6 +177,7 @@ def generate_leave_one_out_batch(signal_df, subjects_df, subject_id_column, stra
         Generates an iterable of has-strata/lacks-strata samples from a given pandas.DataFrame containing at least
         signal and subject data. It is a lazy generator, meaning that each instance of the iterator is given by the
         yield method rather than storing all instances in memory and then running over them.
+
         Args:
             signal_df: pandas.DataFrame containing signal and subject data.
             subjects_df: pandas.DataFrame containing subject data, as in get_subjects_data_frame.
@@ -181,7 +186,7 @@ def generate_leave_one_out_batch(signal_df, subjects_df, subject_id_column, stra
             balanced_by: [Optional] Whether to balance outcomes by a second binary variable.
 
         Returns:
-            Iterable of tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index
+            Iterable: Tetrads has_strata_sample, lacks_strata_sample, has_strata_index, lacks_strata_index
 
         """
     for strata in subjects_df[strata_column].unique():
