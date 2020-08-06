@@ -174,13 +174,13 @@ containing the signal data proper and a second <code class="docutils literal not
 being that they both share a common subject ID-like column that allows linking the two. This is especially useful when
 the signal data contains many signals from the same subject and one wants to perform samplings based on the subject
 instead of the signal itself.</p>
-<p>The main feature is the class <a class="reference internal" href="b2s_clf.ensemble.html#b2s_clf.ensemble.ensemble.Ensemble" title="b2s_clf.ensemble.ensemble.Ensemble"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.ensemble.ensemble.Ensemble</span></code></a> that implements a binary ensemble classifier
+<p>The main feature is the class <code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.ensemble.ensemble.Ensemble</span></code> that implements a binary ensemble classifier
 especially designed to work with both scarce and noisy data. This is a generalization of classical ensemble models in
 the sense that it allows any combination of weak classifiers (i.e. it can train trees <em>and</em> linear classifiers at the
 same time) in the fitting process. The way it re-samples training data to fit those weak classifiers is also thought
 to be more general and capable of identifying scarce and specific yet prediction-bearing patterns.</p>
 <p>The ensemble fit process or re-sampling the data can actually be customized and performed in a completely separated
-fashion through the class <a class="reference internal" href="b2s_clf.sampler.html#b2s_clf.sampler.sampler.Sampler" title="b2s_clf.sampler.sampler.Sampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.sampler.sampler.Sampler</span></code></a>, designed to be fed with a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+fashion through the class <code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.sampler.sampler.Sampler</span></code>, designed to be fed with a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
 and produce as many train and test batches <em>as one desires</em>.</p>
 <p>Other tools included are the package <code class="docutils literal notranslate"><span class="pre">b2s_clf.dataset_transform</span></code> with modules for encoding, normalization and signal
 treatment. In particular, the module <code class="docutils literal notranslate"><span class="pre">b2s_clf.dataset_transform.compressor</span></code> implements a signal compression algorithm

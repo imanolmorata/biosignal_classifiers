@@ -1,7 +1,4 @@
-import numpy as np
-
-from b2s_clf.ensemble.ensemble import Ensemble
-from b2s_clf.sampler.sampler import Sampler
+from b2s_clf.ensemble.ensemble_module import Ensemble
 from b2s_clf.utils import data_frame_utils as df_utils
 from b2s_clf.utils import ensemble_utils as ens_utils
 from b2s_clf.utils import transformer_utils as trf_utils
@@ -182,37 +179,19 @@ class Experiment:
                                                                 self.signal_compressor_apply_functions,
                                                                 verbose=verbose)
 
-            ts = int(np.ceil((1. - self.fraction) * len(train_index)))
-            df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(
-                signal_df=df_fit,
-                subjects_df=self.subject_df.loc[train_index, :],
-                subject_id_column=self.subject_column,
-                target_variable=self.subject_target,
-                test_size=ts
-            )
-
-            train_samplings = Sampler()
-            test_samplings = Sampler()
-
-            train_samplings.generate_batches(df_train,
-                                             n_batches=self.n_train_batches,
-                                             batch_len=self.train_batches_size,
-                                             target_variable=self.target_variable,
-                                             input_variables=valid_variables,
-                                             verbose=verbose)
-
-            test_samplings.generate_batches(df_test,
-                                            n_batches=self.n_test_batches,
-                                            batch_len=self.test_batches_size,
-                                            target_variable=self.target_variable,
-                                            input_variables=valid_variables,
-                                            verbose=verbose)
-
             classifier_object = Ensemble(classifier_list=self.classifier_list,
                                          node_sizes=self.node_sizes,
                                          kwargs_list=self.classifier_kwargs_list)
-            classifier_object.fit(batch_list_train=train_samplings,
-                                  batch_list_test=test_samplings,
+            classifier_object.fit(df=df_fit,
+                                  subject_df=self.subject_df.loc[train_index, :],
+                                  subject_column=self.subject_column,
+                                  target_variable=self.subject_target,
+                                  split_fraction=self.fraction,
+                                  fit_variables=valid_variables,
+                                  n_train_batches=self.n_train_batches,
+                                  n_test_batches=self.n_test_batches,
+                                  train_batch_size=self.train_batches_size,
+                                  test_batch_size=self.test_batches_size,
                                   score_cap=self.score_cap,
                                   get_best=self.get_best,
                                   verbose=verbose)

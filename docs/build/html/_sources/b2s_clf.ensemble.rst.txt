@@ -7,7 +7,7 @@ Submodules
 b2s\_clf.ensemble.ensemble module
 ---------------------------------
 
-.. automodule:: b2s_clf.ensemble.ensemble
+.. automodule:: b2s_clf.ensemble.ensemble_module
    :members:
    :undoc-members:
    :show-inheritance:
