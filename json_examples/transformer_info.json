@@ -7,7 +7,7 @@
 	}],
 	"Encoders_input_columns": [
 		[
-			"age", "sex", "oculomotor_deficiences", "school_performance"
+			"age", "sex"
 		]
 	],
 	"Encoders_target_columns": [
@@ -21,26 +21,35 @@
 	}],
 	"Normalizers_input_columns": [
 		[
-			"trial_num", "reaction_time", "sti_time", "red_frog_time", "broken_fixations"
+			"trial_num", "total_session_time"
 		]
 	],
 	"Signal_compressor_clusters": [
 		7
 	],
 	"Signal_compressor_input_columns": [
-		[
-			"feat_211", "feat_212", "feat_213", "feat_214", "feat_215", "feat_216", "feat_217", "feat_218", "feat_219",
-			"feat_220", "feat_221", "feat_222", "feat_223", "feat_224", "feat_225", "feat_226", "feat_227", "feat_228",
-			"feat_229", "feat_230", "feat_231", "feat_232", "feat_233", "feat_234", "feat_235", "feat_236", "feat_237",
-			"feat_238", "feat_239", "feat_240", "feat_241", "feat_242", "feat_243", "feat_244", "feat_245", "feat_246",
-			"feat_247", "feat_248", "feat_249", "feat_250", "feat_251", "feat_252", "feat_253", "feat_254", "feat_255",
-			"feat_256", "feat_257", "feat_258", "feat_259", "feat_260", "feat_261", "feat_262", "feat_263", "feat_264",
-			"feat_265", "feat_266", "feat_267", "feat_268", "feat_269", "feat_270", "feat_271", "feat_272", "feat_273",
-			"feat_274", "feat_275", "feat_276", "feat_277", "feat_278", "feat_279", "feat_280", "feat_281", "feat_282",
-			"feat_283", "feat_284", "feat_285", "feat_286", "feat_287", "feat_288", "feat_289", "feat_290", "feat_291",
-			"feat_292", "feat_293", "feat_294", "feat_295", "feat_296", "feat_297", "feat_298", "feat_299", "feat_300",
-			"feat_301", "feat_302", "feat_303", "feat_304", "feat_305", "feat_306", "feat_307", "feat_308", "feat_309",
-			"feat_310", "feat_311", "feat_312", "feat_313", "feat_314", "feat_315"
+		["signal_frame211", "signal_frame212", "signal_frame213",
+		"signal_frame214", "signal_frame215", "signal_frame216", "signal_frame217", "signal_frame218",
+		"signal_frame219", "signal_frame220", "signal_frame221", "signal_frame222", "signal_frame223",
+		"signal_frame224", "signal_frame225", "signal_frame226", "signal_frame227", "signal_frame228",
+		"signal_frame229", "signal_frame230", "signal_frame231", "signal_frame232", "signal_frame233",
+		"signal_frame234", "signal_frame235", "signal_frame236", "signal_frame237", "signal_frame238",
+		"signal_frame239", "signal_frame240", "signal_frame241", "signal_frame242", "signal_frame243",
+		"signal_frame244", "signal_frame245", "signal_frame246", "signal_frame247", "signal_frame248",
+		"signal_frame249", "signal_frame250", "signal_frame251", "signal_frame252", "signal_frame253",
+		"signal_frame254", "signal_frame255", "signal_frame256", "signal_frame257", "signal_frame258",
+		"signal_frame259", "signal_frame260", "signal_frame261", "signal_frame262", "signal_frame263",
+		"signal_frame264", "signal_frame265", "signal_frame266", "signal_frame267", "signal_frame268",
+		"signal_frame269", "signal_frame270", "signal_frame271", "signal_frame272", "signal_frame273",
+		"signal_frame274", "signal_frame275", "signal_frame276", "signal_frame277", "signal_frame278",
+		"signal_frame279", "signal_frame280", "signal_frame281", "signal_frame282", "signal_frame283",
+		"signal_frame284", "signal_frame285", "signal_frame286", "signal_frame287", "signal_frame288",
+		"signal_frame289", "signal_frame290", "signal_frame291", "signal_frame292", "signal_frame293",
+		"signal_frame294", "signal_frame295", "signal_frame296", "signal_frame297", "signal_frame298",
+		"signal_frame299", "signal_frame300", "signal_frame301", "signal_frame302", "signal_frame303",
+		"signal_frame304", "signal_frame305", "signal_frame306", "signal_frame307", "signal_frame308",
+		"signal_frame309", "signal_frame310", "signal_frame311", "signal_frame312", "signal_frame313",
+		"signal_frame314", "signal_frame315"
 		]
 	],
 	"Signal_compressor_apply_estimators": [
