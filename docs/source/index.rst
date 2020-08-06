@@ -42,15 +42,15 @@ being that they both share a common subject ID-like column that allows linking t
 the signal data contains many signals from the same subject and one wants to perform samplings based on the subject
 instead of the signal itself.
 
-The main feature is the class :class:`b2s_clf.ensemble.ensemble.Ensemble` that implements a binary ensemble classifier
-especially designed to work with both scarce and noisy data. This is a generalization of classical ensemble models in
-the sense that it allows any combination of weak classifiers (i.e. it can train trees *and* linear classifiers at the
-same time) in the fitting process. The way it re-samples training data to fit those weak classifiers is also thought
-to be more general and capable of identifying scarce and specific yet prediction-bearing patterns.
+The main feature is the class :class:`b2s_clf.ensemble.ensemble_module.Ensemble` that implements a binary ensemble
+classifier especially designed to work with both scarce and noisy data. This is a generalization of classical ensemble
+models in the sense that it allows any combination of weak classifiers (i.e. it can train trees *and* linear classifiers
+at the same time) in the fitting process. The way it re-samples training data to fit those weak classifiers is also
+thought to be more general and capable of identifying scarce and specific yet prediction-bearing patterns.
 
 The ensemble fit process or re-sampling the data can actually be customized and performed in a completely separated
-fashion through the class :class:`b2s_clf.sampler.sampler.Sampler`, designed to be fed with a ``pandas.DataFrame``
-and produce as many train and test batches *as one desires*.
+fashion through the class :class:`b2s_clf.sampler.sampler_module.Sampler`, designed to be fed with a
+``pandas.DataFrame`` and produce as many train and test batches *as one desires*.
 
 Other tools included are the package ``b2s_clf.dataset_transform`` with modules for encoding, normalization and signal
 treatment. In particular, the module ``b2s_clf.dataset_transform.compressor`` implements a signal compression algorithm
