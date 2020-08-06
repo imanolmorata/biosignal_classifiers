@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Biosignal Binary Classifiers documentation &mdash; b2s_clf 0.0 documentation</title>
+  <title>Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation &mdash; b2s_clf 0.0 documentation</title>
   
 
   
@@ -86,7 +86,7 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to Biosignal Binary Classifiers documentation</a></li>
+<li><a class="reference internal" href="#">Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 <li><a class="reference internal" href="#module-b2s_clf">b2s_clf module</a><ul>
 <li><a class="reference internal" href="#motivation">Motivation</a></li>
@@ -139,7 +139,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Welcome to Biosignal Binary Classifiers documentation</li>
+      <li>Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -158,8 +158,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-biosignal-binary-classifiers-documentation">
-<h1>Welcome to Biosignal Binary Classifiers documentation<a class="headerlink" href="#welcome-to-biosignal-binary-classifiers-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-binary-bio-signal-classifiers-b2s-clf-documentation">
+<h1>Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation<a class="headerlink" href="#welcome-to-binary-bio-signal-classifiers-b2s-clf-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 </div>
@@ -194,8 +194,9 @@ and produce as many train and test batches <em>as one desires</em>.</p>
 treatment. In particular, the module <code class="docutils literal notranslate"><span class="pre">b2s_clf.dataset_transform.compressor</span></code> implements a signal compression algorithm
 designed to catch continuous portions of a signal that carry the same relevant information. In next releases, more tools
 will be added to this, such as signal smoothing, de-noising and time-alignment.</p>
-<p>Finally, the module implements the library <code class="docutils literal notranslate"><span class="pre">b2s_clf.apps</span></code> with tools to perform classical ML experiments directly
-from the shell.</p>
+<p>Finally, the module implements the package <code class="docutils literal notranslate"><span class="pre">b2s_clf.apps</span></code> with tools to perform classical ML experiments directly
+from the shell. This is achieved thanks to the package <code class="docutils literal notranslate"><span class="pre">b2s_clf.experiments</span></code>, which implements the super-class
+<code class="xref py py-class docutils literal notranslate"><span class="pre">b2s_clf.experiments.experiment.Experiment</span></code> that supports specific experiments through its sub-classes.</p>
 <div class="section" id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
 <p>At least two purposes gave rise to the <code class="docutils literal notranslate"><span class="pre">b2s_clf</span></code> project:</p>
@@ -211,7 +212,10 @@ handles the hard work of sampling and treating signal data that may be stratifie
 <li><p>This is a binary classifier library. It does not, nor wants to, implement multi-label classifiers or regressions.</p></li>
 <li><p>Currently it only implements ensemble models though it is prepared to support future implementations of other families
 of models such as linear models.</p></li>
-<li><p>It is still lacking in performance metrics, at the moment it still implements very basic score computations.</p></li>
+<li><p>Still, one can sort of train a linear model by setting an ensemble model whose only
+weak classifier is the linear model itself and the invention will work (we have tested it).</p></li>
+<li><p>It is still lacking in performance metrics, at the moment it just implements very basic score computations.</p></li>
+<li><p>Future releases intend to offer more load/save options and (hopefully) a better experiment interface.</p></li>
 </ul>
 </div>
 </div>
