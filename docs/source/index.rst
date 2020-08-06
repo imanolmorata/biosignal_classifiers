@@ -12,17 +12,8 @@ Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation
 
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
-
-b2s_clf module
-==============
+Introduction
+============
 
 .. automodule:: b2s_clf
     :members:
@@ -80,3 +71,12 @@ Limitations
   weak classifier is the linear model itself and the invention will work (we have tested it).
 - It is still lacking in performance metrics, at the moment it just implements very basic score computations.
 - Future releases intend to offer more load/save options and (hopefully) a better experiment interface.
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
