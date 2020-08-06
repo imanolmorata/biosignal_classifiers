@@ -226,7 +226,7 @@ class Experiment:
 
         output_dict = {}
         for key in vars(self).keys():
-            if key in ["cv_dfs", "performance_method", "dataframe_method"]:
+            if key in ["df", "subject_df", "cv_dfs", "performance_method", "dataframe_method"]:
                 continue
             output_dict[key] = vars(self)[key]
 
