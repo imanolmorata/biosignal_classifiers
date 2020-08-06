@@ -19,4 +19,4 @@ Be sure of being in administrator command terminal if you are using windows.
 
 ## Documentation
 
-A (rather modest) user guide can be found [here](https://htmlpreview.github.io/?https://github.com/imanolmorata/biosignal_classifiers/blob/master/docs/build/html/index.html).
+A (rather modest) user guide can be found [here](https://biosignal-classifiers.readthedocs.io/en/latest/).
