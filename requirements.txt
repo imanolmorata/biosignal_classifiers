@@ -1,3 +1,4 @@
+b2s_lab
 category_encoders
 numpy
 pandas==1.0.4
