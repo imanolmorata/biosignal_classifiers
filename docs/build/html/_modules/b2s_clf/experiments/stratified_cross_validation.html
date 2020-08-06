@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>b2s_clf.experiments.stratified_cross_validation &mdash; b2s_clf 0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> b2s_clf
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">b2s_clf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>b2s_clf.experiments.stratified_cross_validation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for b2s_clf.experiments.stratified_cross_validation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+
+<span class="kn">from</span> <span class="nn">b2s_clf.experiments.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">data_frame_utils</span> <span class="k">as</span> <span class="n">df_utils</span>
+
+
+<div class="viewcode-block" id="StratifiedCrossValidationExperiment"><a class="viewcode-back" href="../../../b2s_clf.experiments.html#b2s_clf.experiments.stratified_cross_validation.StratifiedCrossValidationExperiment">[docs]</a><span class="k">class</span> <span class="nc">StratifiedCrossValidationExperiment</span><span class="p">(</span><span class="n">Experiment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that calls parent class Experiment to run a stratified cross-validation (SCV) experiment.The class works by</span>
+<span class="sd">    reading a bunch of information stored in different dictionaries. Refer to /json_examples and library b2s_clf/apps/</span>
+<span class="sd">    for specific information and templates on these dictionaries.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor. Calls parent class and sets additional arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df: pandas.DataFrame containing signal data.</span>
+<span class="sd">            subject_dictionary: Dict with subject data build information.</span>
+<span class="sd">            sampler_dictionary: Dict with sampling instructions.</span>
+<span class="sd">            ensemble_dictionary: Dict with ensemble build instructions.</span>
+<span class="sd">            transformer_dictionary: Dict with data set transformation build</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_type</span> <span class="o">=</span> <span class="s2">&quot;STRATIFIED CV&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">performance_method</span> <span class="o">=</span> <span class="s2">&quot;_compute_scv_performance&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span> <span class="o">=</span> <span class="s2">&quot;_get_scv_data_frame&quot;</span>
+
+<div class="viewcode-block" id="StratifiedCrossValidationExperiment.run"><a class="viewcode-back" href="../../../b2s_clf.experiments.html#b2s_clf.experiments.stratified_cross_validation.StratifiedCrossValidationExperiment.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strata_variable</span><span class="p">,</span> <span class="n">balanced_by</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls b2s_clf.experiments.Experiment._run() with specific SCV parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strata_variable: Strata or discrete variable used to build the SCV batches.</span>
+<span class="sd">            balanced_by: A second binary variable to balance the SCV batches upon.</span>
+<span class="sd">            verbose: Whether to print progress on screen.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cv_dfs</span> <span class="o">=</span> <span class="n">df_utils</span><span class="o">.</span><span class="n">generate_leave_one_out_batch</span><span class="p">(</span><span class="n">signal_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">subjects_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_df</span><span class="p">,</span>
+                                                            <span class="n">subject_id_column</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span><span class="p">,</span>
+                                                            <span class="n">strata_column</span><span class="o">=</span><span class="n">strata_variable</span><span class="p">,</span>
+                                                            <span class="n">balanced_by</span><span class="o">=</span><span class="n">balanced_by</span><span class="p">)</span>
+
+        <span class="n">cv_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">strata_variable</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">(</span><span class="n">cv_batches</span><span class="o">=</span><span class="n">cv_batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_compute_scv_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prd</span><span class="p">,</span> <span class="n">prd_prb</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specific way of computing experiment performance metrics.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prd: numpy.array with predictions.</span>
+<span class="sd">            prd_prb: numpy.array with prediction probabilities.</span>
+<span class="sd">            df_val: pandas.DataFrame with validation set.</span>
+<span class="sd">            df_fit: pandas.DataFrame with training set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            performance: A list with performance metrics for each iteration of the experiment.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">acc_score</span> <span class="o">=</span> <span class="p">(</span><span class="n">prd</span> <span class="o">==</span> <span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">roc_score</span> <span class="o">=</span> <span class="n">acc_score</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">roc_score</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">],</span> <span class="n">prd_prb</span><span class="p">)</span>
+
+        <span class="n">performance</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc_score</span><span class="p">,</span>
+                       <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">prd</span><span class="p">[</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span>
+                           <span class="n">df_val</span><span class="p">[</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+                       <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">prd</span><span class="p">[</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span>
+                           <span class="n">df_val</span><span class="p">[</span><span class="n">df_val</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+                       <span class="n">roc_score</span><span class="p">,</span>
+                       <span class="nb">len</span><span class="p">(</span><span class="n">df_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_val</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_fit</span><span class="p">))]</span>
+
+        <span class="k">return</span> <span class="n">performance</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_scv_data_frame</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms performance scores into a data frame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            scores: List with performance metrics for each iteration of the experiment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame with structured performance data.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;FNR&quot;</span><span class="p">,</span> <span class="s2">&quot;FPR&quot;</span><span class="p">,</span> <span class="s2">&quot;ROC AUC score&quot;</span><span class="p">,</span> <span class="s2">&quot;strata weight&quot;</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Imanol Morata
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
