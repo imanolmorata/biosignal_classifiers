@@ -148,7 +148,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for b2s_clf.experiments.experiment</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">b2s_clf.ensemble.ensemble_module</span> <span class="kn">import</span> <span class="n">Ensemble</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="kn">from</span> <span class="nn">b2s_clf.ensemble.ensemble_module</span> <span class="kn">import</span> <span class="n">Ensemble</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">data_frame_utils</span> <span class="k">as</span> <span class="n">df_utils</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">ensemble_utils</span> <span class="k">as</span> <span class="n">ens_utils</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">transformer_utils</span> <span class="k">as</span> <span class="n">trf_utils</span>
@@ -355,7 +358,32 @@
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;------END OF </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span><span class="p">)(</span><span class="n">scores</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span><span class="p">)(</span><span class="n">scores</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Experiment.save_experiment_results"><a class="viewcode-back" href="../../../b2s_clf.experiments.html#b2s_clf.experiments.experiment.Experiment.save_experiment_results">[docs]</a>    <span class="k">def</span> <span class="nf">save_experiment_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">,</span> <span class="n">experiment_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will save a pickle file with experiment results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            experiment_name: Name of the experiment.</span>
+<span class="sd">            experiment_path: Path to folder where experiment data is to be stored.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Experiment has not run yet.&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+
+        <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;cv_dfs&quot;</span><span class="p">,</span> <span class="s2">&quot;performance_method&quot;</span><span class="p">,</span> <span class="s2">&quot;dataframe_method&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="n">filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">experiment_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">experiment_name</span><span class="si">}</span><span class="s2">.pkl&quot;</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">output_dict</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Experiment saved to </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
