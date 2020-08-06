@@ -1,8 +1,5 @@
 category_encoders
-json
 numpy
-os
-pandas
-pickle
+pandas==1.0.4
 scipy
 scikit-learn

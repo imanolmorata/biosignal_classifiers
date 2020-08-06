@@ -175,7 +175,7 @@ build instructions are needed. Such instructions are classified in four kinds:
 <p>The app returns accuracy, FPR, FNR and ROC AUC score.</p>
 <dl class="simple">
 <dt>Example call:</dt><dd><p>python cross_validation_experiment.py -b 10 -p subject.json -s sampling.json -e ensemble.json -t transform.json
--z 15 –verbose</p>
+-z 15  –save_experiment /home/my_path –verbose</p>
 </dd>
 </dl>
 </div>
@@ -189,8 +189,10 @@ experiment  build instructions are needed. Such instructions are classified in f
 * Data set transformation steps.</p>
 <p>The app returns accuracy, FPR and FNR.</p>
 <dl class="simple">
-<dt>Example call:</dt><dd><p>python leave_one_out_experiment.py -v target -p subject.json -s sampling.json -e ensemble.json -t transform.json
-–verbose</p>
+<dt>Example call:</dt><dd><dl class="simple">
+<dt>python leave_one_out_experiment.py -v target -p subject.json -s sampling.json -e ensemble.json -t transform.json</dt><dd><p>–save_experiment /home/my_path –verbose</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
@@ -205,7 +207,7 @@ build instructions are needed. Such instructions are classified in four kinds:
 <p>The app returns accuracy, FPR, FNR and ROC AUC score.</p>
 <dl class="simple">
 <dt>Example call:</dt><dd><p>python stratified_cv_experiment.py -v device -b target -p subject.json -s sampling.json -e ensemble.json
--t transform.json –verbose</p>
+-t transform.json –save_experiment /home/my_path –verbose</p>
 </dd>
 </dl>
 </div>

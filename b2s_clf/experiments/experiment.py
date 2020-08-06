@@ -1,3 +1,6 @@
+import os
+import pickle
+
 from b2s_clf.ensemble.ensemble_module import Ensemble
 from b2s_clf.utils import data_frame_utils as df_utils
 from b2s_clf.utils import ensemble_utils as ens_utils
@@ -206,3 +209,28 @@ class Experiment:
         print(f"------END OF {self.experiment_type}", flush=True)
 
         self.experiment_stats = getattr(self.__class__, self.dataframe_method)(scores)
+
+    def save_experiment_results(self, experiment_name, experiment_path):
+        """
+        Will save a pickle file with experiment results.
+
+        Args:
+            experiment_name: Name of the experiment.
+            experiment_path: Path to folder where experiment data is to be stored.
+
+        """
+        assert self.experiment_stats is not None, "Experiment has not run yet."
+
+        if not os.path.exists(experiment_path):
+            os.mkdir(experiment_path)
+
+        output_dict = {}
+        for key in vars(self).keys():
+            if key in ["cv_dfs", "performance_method", "dataframe_method"]:
+                continue
+            output_dict[key] = vars(self)[key]
+
+        filepath = f"{experiment_path}/{experiment_name}.pkl"
+        pickle.dump(output_dict, open(filepath, "wb"))
+
+        print(f"Experiment saved to {filepath}", flush=True)

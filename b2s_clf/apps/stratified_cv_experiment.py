@@ -10,10 +10,11 @@ The app returns accuracy, FPR, FNR and ROC AUC score.
 
 Example call:
     python stratified_cv_experiment.py -v device -b target -p subject.json -s sampling.json -e ensemble.json
-    -t transform.json --verbose
+    -t transform.json --save_experiment /home/my_path --verbose
 """
 
 import argparse
+import datetime
 import json
 import pandas as pd
 import warnings
@@ -41,6 +42,8 @@ if __name__ == "__main__":
                         type=str, required=True)
     parser.add_argument("-t", "--transformer_json", help="Path to json file containing transformer generation info.",
                         type=str, required=True)
+    parser.add_argument("--save_experiment", help="Path to save experiment results.", type=str, required=False,
+                        default=None)
     parser.add_argument("--verbose", help="Be verbose on progress on screen", default=False, action="store_true")
 
     args = parser.parse_args()
@@ -55,4 +58,11 @@ if __name__ == "__main__":
                                                             transformer_dict)
     experiment_object.run(strata_variable=args.strata_variable, balanced_by=args.balancing_variable,
                           verbose=args.verbose)
-    print(experiment_object.experiment_stats)
+
+    if args.save_experiment is not None:
+        today_date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        exp_name = f"{'_'.join(experiment_object.experiment_type).split(' ')}_{today_date}"
+        experiment_object.save_experiment_results(experiment_name=exp_name, experiment_path=args.save_experiment)
+    else:
+        print("\nEXPERIMENT RESULTS")
+        print(experiment_object.experiment_stats.mean())
