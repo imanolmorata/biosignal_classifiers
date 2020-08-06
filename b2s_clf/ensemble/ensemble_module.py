@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from b2s_clf.sampler.sampler import Sampler
+from b2s_clf.sampler.sampler_module import Sampler
+from b2s_clf.utils import data_frame_utils as df_utils
 
 
 class Ensemble:
@@ -58,6 +59,76 @@ class Ensemble:
         self.ensemble_input_variables = batch_list_train.input_variables
         self.ensemble_target_variable = batch_list_train.target_variable
 
+    @staticmethod
+    def _prepare_batches(df, target_variable, subject_df, subject_column, split_fraction=0.8, fit_variables=None,
+                         n_train_batches=None, n_test_batches=None, train_batch_size=None, test_batch_size=None,
+                         verbose=False):
+        """
+        Prepares batches for the ensemble fit process.
+        Args:
+            df: pandas.DataFrame with signal data.
+            target_variable: Target variable to fit the ensemble.
+            subject_df: pandas.DataFrame with subject data.
+            subject_column: subject ID columns in subject_df.
+            split_fraction: Train/test sampling in batching process.
+            fit_variables: Variable to consider upon fit.
+            n_train_batches: Number of training batches.
+            n_test_batches: Number of test batches.
+            train_batch_size: Size of training batches.
+            test_batch_size: Size of test batches.
+            verbose: Whether to print progress on screen.
+
+        Returns:
+            dict: Train and test batches for the ensemble fit.
+
+        """
+
+        if fit_variables is None:
+            fit_variables = list(df.columns)
+
+        if target_variable in fit_variables:
+            fit_variables.remove(target_variable)
+
+        if n_train_batches is None:
+            n_train_batches = len(subject_df[subject_df].unique())
+
+        if n_test_batches is None:
+            n_test_batches = n_train_batches
+
+        if train_batch_size is None:
+            train_batch_size = int(split_fraction * len(df))
+
+        if test_batch_size is None:
+            test_batch_size = int((1. - split_fraction) * len(df))
+
+        ts = int(np.ceil((1. - split_fraction) * len(subject_df)))
+        df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(
+            signal_df=df,
+            subjects_df=subject_df,
+            subject_id_column=subject_column,
+            target_variable=target_variable,
+            test_size=ts
+        )
+
+        train_samplings = Sampler()
+        test_samplings = Sampler()
+
+        train_samplings.generate_batches(df_train,
+                                         n_batches=n_train_batches,
+                                         batch_len=train_batch_size,
+                                         target_variable=target_variable,
+                                         input_variables=fit_variables,
+                                         verbose=verbose)
+
+        test_samplings.generate_batches(df_test,
+                                        n_batches=n_test_batches,
+                                        batch_len=test_batch_size,
+                                        target_variable=target_variable,
+                                        input_variables=fit_variables,
+                                        verbose=verbose)
+
+        return train_samplings, test_samplings
+
     def _filter_nodes(self, get_best):
         """
         In the event that get_best is not None when calling fit, this will filter the get_best weak classifiers and
@@ -77,19 +148,41 @@ class Ensemble:
         self.nodes = list(ensemble_clf)
         self.node_names = list(ensemble_names)
 
-    def fit(self, batch_list_train, batch_list_test, score_cap=0.5, get_best=None, verbose=False):
+    def fit(self, df, target_variable, subject_df, subject_column, split_fraction=0.8, fit_variables=None,
+            n_train_batches=None, n_test_batches=None, train_batch_size=None, test_batch_size=None, score_cap=0.5,
+            get_best=None, verbose=False):
         """
         Fits the ensemble with train and test batches by randomly picking couples and fitting a weak classifier from
         a list provided by the user.
 
         Args:
-            batch_list_train: Object of class vgc_clf.sampler.Sampler with training batches.
-            batch_list_test: Object of class vgc_clf.sampler.Sampler with test batches.
+            df: pandas.DataFrame with signal data.
+            target_variable: Target variable to fit the ensemble.
+            subject_df: pandas.DataFrame with subject data.
+            subject_column: subject ID columns in subject_df.
+            split_fraction: Train/test sampling in batching process.
+            fit_variables: Variable to consider upon fit.
+            n_train_batches: Number of training batches.
+            n_test_batches: Number of test batches.
+            train_batch_size: Size of training batches.
+            test_batch_size: Size of test batches.
             score_cap: Minimum accuracy of a weak classifier to be eligible.
             get_best: The number of best weak classifiers to keep.
             verbose: Whether to print progress on screen.
 
         """
+
+        batch_list_train, batch_list_test = self._prepare_batches(df=df,
+                                                                  target_variable=target_variable,
+                                                                  subject_df=subject_df,
+                                                                  subject_column=subject_column,
+                                                                  split_fraction=split_fraction,
+                                                                  fit_variables=fit_variables,
+                                                                  n_train_batches=n_train_batches,
+                                                                  n_test_batches=n_test_batches,
+                                                                  train_batch_size=train_batch_size,
+                                                                  test_batch_size=test_batch_size,
+                                                                  verbose=verbose)
 
         self._check_batches(batch_list_train, batch_list_test)
 

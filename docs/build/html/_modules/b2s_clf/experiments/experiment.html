@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>b2s_clf.experiments.experiment &mdash; b2s_clf 0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> b2s_clf
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">b2s_clf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>b2s_clf.experiments.experiment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for b2s_clf.experiments.experiment</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">b2s_clf.ensemble.ensemble_module</span> <span class="kn">import</span> <span class="n">Ensemble</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">data_frame_utils</span> <span class="k">as</span> <span class="n">df_utils</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">ensemble_utils</span> <span class="k">as</span> <span class="n">ens_utils</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">transformer_utils</span> <span class="k">as</span> <span class="n">trf_utils</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">compressor_utils</span> <span class="k">as</span> <span class="n">cm_utils</span>
+<span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">experiments_utils</span> <span class="k">as</span> <span class="n">exp_utils</span>
+
+
+<div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../../b2s_clf.experiments.html#b2s_clf.experiments.experiment.Experiment">[docs]</a><span class="k">class</span> <span class="nc">Experiment</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to perform cross-validation experiments. It supports k-fold cross-validation, leave-one-out cross-validation</span>
+<span class="sd">    and stratified cross-validation, which implements through the corresponding sub-classes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor. Will initialize all needed variables for the cross-validation experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df: pandas.DataFrame containing signal data.</span>
+<span class="sd">            subject_dictionary: Dict with subject data build information.</span>
+<span class="sd">            sampler_dictionary: Dict with sampling instructions.</span>
+<span class="sd">            ensemble_dictionary: Dict with ensemble build instructions.</span>
+<span class="sd">            transformer_dictionary: Dict with data set transformation build</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_dictionaries</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_subject_variables</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_sampling_variables</span><span class="p">(</span><span class="n">sampler_dictionary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_ensemble_variables</span><span class="p">(</span><span class="n">ensemble_dictionary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_data_set_transform_variables</span><span class="p">(</span><span class="n">transformer_dictionary</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cv_dfs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">performance_method</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_dictionaries</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks that all experiment dictionaries contain the proper data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subject_dictionary: Dict with subject data build information.</span>
+<span class="sd">            sampler_dictionary: Dict with sampling instructions.</span>
+<span class="sd">            ensemble_dictionary: Dict with ensemble build instructions.</span>
+<span class="sd">            transformer_dictionary: Dict with data set transformation build</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_subject_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;subject_id_column&quot;</span><span class="p">,</span> <span class="s2">&quot;subject_data_columns&quot;</span><span class="p">,</span> <span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
+        <span class="n">_sampler_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train_test_fraction&quot;</span><span class="p">,</span> <span class="s2">&quot;input_variables&quot;</span><span class="p">,</span> <span class="s2">&quot;target_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;n_train_batches&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;train_batches_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_test_batches&quot;</span><span class="p">,</span> <span class="s2">&quot;test_batches_size&quot;</span><span class="p">]</span>
+        <span class="n">_ensemble_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;classifier_list&quot;</span><span class="p">,</span> <span class="s2">&quot;node_sizes&quot;</span><span class="p">,</span> <span class="s2">&quot;kwargs_list&quot;</span><span class="p">,</span> <span class="s2">&quot;score_cap&quot;</span><span class="p">,</span> <span class="s2">&quot;get_best&quot;</span><span class="p">,</span> <span class="s2">&quot;class_threshold&quot;</span><span class="p">]</span>
+        <span class="n">_transformer_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Encoders&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_kwargs&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_input_columns&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_target_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Normalizers&quot;</span><span class="p">,</span> <span class="s2">&quot;Normalizers_kwargs&quot;</span><span class="p">,</span> <span class="s2">&quot;Normalizers_input_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Signal_compressor_clusters&quot;</span><span class="p">,</span> <span class="s2">&quot;Signal_compressor_input_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Signal_compressor_apply_estimators&quot;</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">subject_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_subject_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                 <span class="s2">&quot;subject dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">sampler_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_sampler_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                 <span class="s2">&quot;sampler dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">ensemble_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ensemble_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                   <span class="s2">&quot;ensemble dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">transformer_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_transformer_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong &quot;</span> \
+                                                                                         <span class="s2">&quot;information in transformer &quot;</span> \
+                                                                                         <span class="s2">&quot;dictionary&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_subject_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepares subject variables for the experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subject_dictionary: Dict with subject data build information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;subject_id_column&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_info</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;subject_data_columns&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_target</span> <span class="o">=</span> <span class="n">subject_dictionary</span><span class="p">[</span><span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_df</span> <span class="o">=</span> <span class="n">df_utils</span><span class="o">.</span><span class="n">get_subjects_data_frame</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+                                                           <span class="n">subject_column_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span><span class="p">,</span>
+                                                           <span class="n">subject_info_columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_info</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_sampling_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepares sampling variables for the experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sampler_dictionary: Dict with sampling data build information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fraction</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;train_test_fraction&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_variables</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;input_variables&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_train_batches</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;n_train_batches&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_batches_size</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;train_batches_size&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_test_batches</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;n_test_batches&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_batches_size</span> <span class="o">=</span> <span class="n">sampler_dictionary</span><span class="p">[</span><span class="s2">&quot;test_batches_size&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_set_ensemble_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepares ensemble variables for the experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ensemble_dictionary: Dict with ensemble data build information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">clf</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="n">ens_utils</span><span class="o">.</span><span class="n">get_classifier_objects</span><span class="p">(</span><span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;classifier_list&quot;</span><span class="p">])]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_sizes</span> <span class="o">=</span> <span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;node_sizes&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_kwargs_list</span> <span class="o">=</span> <span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;kwargs_list&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_cap</span> <span class="o">=</span> <span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;score_cap&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_best</span> <span class="o">=</span> <span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;get_best&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_threshold</span> <span class="o">=</span> <span class="n">ensemble_dictionary</span><span class="p">[</span><span class="s2">&quot;class_threshold&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_set_data_set_transform_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepares data set transformation variables for the experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transformer_dictionary: Dict with data set transformation data build information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">enc</span> <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="n">trf_utils</span><span class="o">.</span><span class="n">get_transformer_objects</span><span class="p">(</span><span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Encoders&quot;</span><span class="p">])]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_kwargs</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Encoders_kwargs&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoders_input_columns</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Encoders_input_columns&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoders_target_columns</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Encoders_target_columns&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_list</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">nrm</span> <span class="k">for</span> <span class="n">nrm</span> <span class="ow">in</span> <span class="n">trf_utils</span><span class="o">.</span><span class="n">get_transformer_objects</span><span class="p">(</span><span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Normalizers&quot;</span><span class="p">])]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_kwargs</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Normalizers_kwargs&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_input_columns</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Normalizers_input_columns&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_clusters</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Signal_compressor_clusters&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_input_columns</span> <span class="o">=</span> <span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Signal_compressor_input_columns&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_apply_functions</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">ap</span> <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="n">cm_utils</span><span class="o">.</span><span class="n">get_apply_functions</span><span class="p">(</span><span class="n">transformer_dictionary</span><span class="p">[</span><span class="s2">&quot;Signal_compressor_apply_estimators&quot;</span><span class="p">])]</span>
+
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cv_batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private method that runs the whole experiment with all the parameters set in previous steps. It is called from</span>
+<span class="sd">        the sub-classes&#39; public run method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cv_batches: Number of batches in the cross-validation.</span>
+<span class="sd">            verbose: Whether to print progress on screen.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cv_dfs</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;------ITERATION </span><span class="si">{</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">cv_batches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">valid_variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_variables</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">valid_variables</span> <span class="o">=</span> <span class="n">exp_utils</span><span class="o">.</span><span class="n">transform_with_encoders</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span>
+                    <span class="n">valid_variables</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoder_list</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoder_kwargs</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoders_input_columns</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">encoders_target_columns</span><span class="p">,</span>
+                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normalizers_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span> <span class="o">=</span> <span class="n">exp_utils</span><span class="o">.</span><span class="n">transform_with_normalizers</span><span class="p">(</span><span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_list</span><span class="p">,</span>
+                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_kwargs</span><span class="p">,</span>
+                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">normalizers_input_columns</span><span class="p">,</span>
+                                                                      <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_clusters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">valid_variables</span> <span class="o">=</span> \
+                    <span class="n">exp_utils</span><span class="o">.</span><span class="n">transform_with_signal_compressors</span><span class="p">(</span><span class="n">df_fit</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">valid_variables</span><span class="p">,</span>
+                                                                <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_clusters</span><span class="p">,</span>
+                                                                <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_input_columns</span><span class="p">,</span>
+                                                                <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_apply_functions</span><span class="p">,</span>
+                                                                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+            <span class="n">classifier_object</span> <span class="o">=</span> <span class="n">Ensemble</span><span class="p">(</span><span class="n">classifier_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_list</span><span class="p">,</span>
+                                         <span class="n">node_sizes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_sizes</span><span class="p">,</span>
+                                         <span class="n">kwargs_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_kwargs_list</span><span class="p">)</span>
+            <span class="n">classifier_object</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_fit</span><span class="p">,</span>
+                                  <span class="n">subject_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_index</span><span class="p">,</span> <span class="p">:],</span>
+                                  <span class="n">subject_column</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span><span class="p">,</span>
+                                  <span class="n">target_variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_target</span><span class="p">,</span>
+                                  <span class="n">split_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fraction</span><span class="p">,</span>
+                                  <span class="n">fit_variables</span><span class="o">=</span><span class="n">valid_variables</span><span class="p">,</span>
+                                  <span class="n">n_train_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_train_batches</span><span class="p">,</span>
+                                  <span class="n">n_test_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_test_batches</span><span class="p">,</span>
+                                  <span class="n">train_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batches_size</span><span class="p">,</span>
+                                  <span class="n">test_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_batches_size</span><span class="p">,</span>
+                                  <span class="n">score_cap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_cap</span><span class="p">,</span>
+                                  <span class="n">get_best</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_best</span><span class="p">,</span>
+                                  <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+            <span class="n">prd_prb</span> <span class="o">=</span> <span class="n">classifier_object</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="n">prd</span> <span class="o">=</span> <span class="p">(</span><span class="n">prd_prb</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_threshold</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
+            <span class="n">it_performance</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">performance_method</span><span class="p">)(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prd</span><span class="p">,</span> <span class="n">prd_prb</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_fit</span><span class="p">)</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it_performance</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;---SCORE: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;------END OF </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span><span class="p">)(</span><span class="n">scores</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Imanol Morata
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

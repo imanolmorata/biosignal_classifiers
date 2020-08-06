@@ -4,3 +4,4 @@ get-pip.py
 __pycache__
 venv_b2s
 .idea
+json_experiments

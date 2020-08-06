@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Biosignal Binary Classifiers documentation
-=====================================================
+Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation
+================================================================
 
 .. toctree::
    :maxdepth: 3
@@ -12,17 +12,8 @@ Welcome to Biosignal Binary Classifiers documentation
 
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
-
-b2s_clf module
-==============
+Introduction
+============
 
 .. automodule:: b2s_clf
     :members:
@@ -57,8 +48,9 @@ treatment. In particular, the module ``b2s_clf.dataset_transform.compressor`` im
 designed to catch continuous portions of a signal that carry the same relevant information. In next releases, more tools
 will be added to this, such as signal smoothing, de-noising and time-alignment.
 
-Finally, the module implements the library ``b2s_clf.apps`` with tools to perform classical ML experiments directly
-from the shell.
+Finally, the module implements the package ``b2s_clf.apps`` with tools to perform classical ML experiments directly
+from the shell. This is achieved thanks to the package ``b2s_clf.experiments``, which implements the super-class
+:class:`b2s_clf.experiments.experiment.Experiment` that supports specific experiments through its sub-classes.
 
 Motivation
 **********
@@ -75,4 +67,16 @@ Limitations
 - This is a binary classifier library. It does not, nor wants to, implement multi-label classifiers or regressions.
 - Currently it only implements ensemble models though it is prepared to support future implementations of other families
   of models such as linear models.
-- It is still lacking in performance metrics, at the moment it still implements very basic score computations.
+- Still, one can sort of train a linear model by setting an ensemble model whose only
+  weak classifier is the linear model itself and the invention will work (we have tested it).
+- It is still lacking in performance metrics, at the moment it just implements very basic score computations.
+- Future releases intend to offer more load/save options and (hopefully) a better experiment interface.
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

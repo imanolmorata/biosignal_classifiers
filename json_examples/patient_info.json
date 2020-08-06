@@ -1,7 +1,5 @@
 {
 	"subject_id_column": "patient",
-	"subject_data_columns": ["patient", "group", "population", "age", "sex", "oculomotor_deficiences",
-		"school_performance", "diagnosis"
-	],
+	"subject_data_columns": ["patient", "group", "population", "age", "sex"],
 	"target_variable": "diagnosis"
 }
