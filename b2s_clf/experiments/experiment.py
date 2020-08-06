@@ -10,8 +10,22 @@ from b2s_clf.utils import experiments_utils as exp_utils
 
 
 class Experiment:
+    """
+    A class to perform cross-validation experiments. It supports k-fold cross-validation, leave-one-out cross-validation
+    and stratified cross-validation, which implements through the corresponding sub-classes.
+    """
 
     def __init__(self, df, subject_dictionary, sampler_dictionary, ensemble_dictionary, transformer_dictionary):
+        """
+        Class constructor. Will initialize all needed variables for the cross-validation experiment.
+
+        Args:
+            df: pandas.DataFrame containing signal data.
+            subject_dictionary: Dict with subject data build information.
+            sampler_dictionary: Dict with sampling instructions.
+            ensemble_dictionary: Dict with ensemble build instructions.
+            transformer_dictionary: Dict with data set transformation build
+        """
         self.df = df
         self._set_subject_variables(subject_dictionary)
         self._set_sampling_variables(sampler_dictionary)
@@ -26,6 +40,13 @@ class Experiment:
         self.experiment_stats = None
 
     def _set_subject_variables(self, subject_dictionary):
+        """
+        Prepares subject variables for the experiment.
+
+        Args:
+            subject_dictionary: Dict with subject data build information.
+
+        """
         self.subject_column = subject_dictionary["subject_id_column"]
         self.subject_info = subject_dictionary["subject_data_columns"]
         self.subject_target = subject_dictionary["target_variable"]
@@ -34,6 +55,13 @@ class Experiment:
                                                            subject_info_columns=self.subject_info)
 
     def _set_sampling_variables(self, sampler_dictionary):
+        """
+        Prepares sampling variables for the experiment.
+
+        Args:
+            sampler_dictionary: Dict with sampling data build information.
+
+        """
         self.fraction = sampler_dictionary["train_test_fraction"]
         self.use_variables = sampler_dictionary["input_variables"]
         self.target_variable = sampler_dictionary["target_variable"]
@@ -43,6 +71,13 @@ class Experiment:
         self.test_batches_size = sampler_dictionary["test_batches_size"]
 
     def _set_ensemble_variables(self, ensemble_dictionary):
+        """
+        Prepares ensemble variables for the experiment.
+
+        Args:
+            ensemble_dictionary: Dict with ensemble data build information.
+
+        """
         self.classifier_list = [clf for clf in ens_utils.get_classifier_objects(ensemble_dictionary["classifier_list"])]
         self.node_sizes = ensemble_dictionary["node_sizes"]
         self.classifier_kwargs_list = ensemble_dictionary["kwargs_list"]
@@ -51,6 +86,13 @@ class Experiment:
         self.class_threshold = ensemble_dictionary["class_threshold"]
 
     def _set_data_set_transform_variables(self, transformer_dictionary):
+        """
+        Prepares data set transformation variables for the experiment.
+
+        Args:
+            transformer_dictionary: Dict with data set transformation data build information.
+
+        """
         self.encoder_list = [enc for enc in trf_utils.get_transformer_objects(transformer_dictionary["Encoders"])]
         self.encoder_kwargs = transformer_dictionary["Encoders_kwargs"]
         self.encoders_input_columns = transformer_dictionary["Encoders_input_columns"]
@@ -67,6 +109,15 @@ class Experiment:
             [ap for ap in cm_utils.get_apply_functions(transformer_dictionary["Signal_compressor_apply_estimators"])]
 
     def _run(self, cv_batches, verbose=False):
+        """
+        Private method that runs the whole experiment with all the parameters set in previous steps. It is called from
+        the sub-classes' public run method.
+
+        Args:
+            cv_batches: Number of batches in the cross-validation.
+            verbose: Whether to print progress on screen.
+
+        """
         scores = []
         for k, (df_fit, df_val, train_index, _) in enumerate(self.cv_dfs):
             print(f"------ITERATION {k + 1} of {cv_batches}", flush=True)
@@ -134,7 +185,7 @@ class Experiment:
 
             prd_prb = classifier_object.predict_proba(df=df_val, verbose=verbose)
             prd = (prd_prb > self.class_threshold) * 1
-            it_performance = getattr(self.__class__, self.performance_method)(self, prd, prd_prb, df_val)
+            it_performance = getattr(self.__class__, self.performance_method)(self, prd, prd_prb, df_val, df_fit)
             scores.append(it_performance)
 
             print(f"---SCORE: {scores[-1][0]}", flush=True)
