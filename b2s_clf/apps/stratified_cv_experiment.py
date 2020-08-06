@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     if args.save_experiment is not None:
         today_date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        exp_name = f"{'_'.join(experiment_object.experiment_type).split(' ')}_{today_date}"
+        exp_name = f"{'_'.join(experiment_object.experiment_type.split(' '))}_{today_date}"
         experiment_object.save_experiment_results(experiment_name=exp_name, experiment_path=args.save_experiment)
     else:
         print("\nEXPERIMENT RESULTS")
