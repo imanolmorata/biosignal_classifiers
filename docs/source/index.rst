@@ -10,6 +10,15 @@ Welcome to Binary Bio-signal Classifiers (b2s_clf) documentation
    :maxdepth: 3
    :caption: Contents:
 
+   b2s_clf.rst
+   b2s_clf.apps.rst
+   b2s_clf.dataset_transformer.rst
+   b2s_clf.ensemble.rst
+   b2s_clf.experiments.rst
+   b2s_clf.sampler.rst
+   b2s_clf.utils.rst
+   modules.rst
+
 
 
 Introduction
