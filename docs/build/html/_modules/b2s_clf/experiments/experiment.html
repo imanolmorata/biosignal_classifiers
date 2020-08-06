@@ -148,10 +148,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for b2s_clf.experiments.experiment</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">from</span> <span class="nn">b2s_clf.ensemble.ensemble</span> <span class="kn">import</span> <span class="n">Ensemble</span>
-<span class="kn">from</span> <span class="nn">b2s_clf.sampler.sampler</span> <span class="kn">import</span> <span class="n">Sampler</span>
+<span></span><span class="kn">from</span> <span class="nn">b2s_clf.ensemble.ensemble_module</span> <span class="kn">import</span> <span class="n">Ensemble</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">data_frame_utils</span> <span class="k">as</span> <span class="n">df_utils</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">ensemble_utils</span> <span class="k">as</span> <span class="n">ens_utils</span>
 <span class="kn">from</span> <span class="nn">b2s_clf.utils</span> <span class="kn">import</span> <span class="n">transformer_utils</span> <span class="k">as</span> <span class="n">trf_utils</span>
@@ -332,37 +329,19 @@
                                                                 <span class="bp">self</span><span class="o">.</span><span class="n">signal_compressor_apply_functions</span><span class="p">,</span>
                                                                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
-            <span class="n">ts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">fraction</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_index</span><span class="p">)))</span>
-            <span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">df_utils</span><span class="o">.</span><span class="n">get_train_validation_from_data_frame</span><span class="p">(</span>
-                <span class="n">signal_df</span><span class="o">=</span><span class="n">df_fit</span><span class="p">,</span>
-                <span class="n">subjects_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_index</span><span class="p">,</span> <span class="p">:],</span>
-                <span class="n">subject_id_column</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span><span class="p">,</span>
-                <span class="n">target_variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_target</span><span class="p">,</span>
-                <span class="n">test_size</span><span class="o">=</span><span class="n">ts</span>
-            <span class="p">)</span>
-
-            <span class="n">train_samplings</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span>
-            <span class="n">test_samplings</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span>
-
-            <span class="n">train_samplings</span><span class="o">.</span><span class="n">generate_batches</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span>
-                                             <span class="n">n_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_train_batches</span><span class="p">,</span>
-                                             <span class="n">batch_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batches_size</span><span class="p">,</span>
-                                             <span class="n">target_variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">,</span>
-                                             <span class="n">input_variables</span><span class="o">=</span><span class="n">valid_variables</span><span class="p">,</span>
-                                             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-
-            <span class="n">test_samplings</span><span class="o">.</span><span class="n">generate_batches</span><span class="p">(</span><span class="n">df_test</span><span class="p">,</span>
-                                            <span class="n">n_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_test_batches</span><span class="p">,</span>
-                                            <span class="n">batch_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_batches_size</span><span class="p">,</span>
-                                            <span class="n">target_variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_variable</span><span class="p">,</span>
-                                            <span class="n">input_variables</span><span class="o">=</span><span class="n">valid_variables</span><span class="p">,</span>
-                                            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-
             <span class="n">classifier_object</span> <span class="o">=</span> <span class="n">Ensemble</span><span class="p">(</span><span class="n">classifier_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_list</span><span class="p">,</span>
                                          <span class="n">node_sizes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_sizes</span><span class="p">,</span>
                                          <span class="n">kwargs_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_kwargs_list</span><span class="p">)</span>
-            <span class="n">classifier_object</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">batch_list_train</span><span class="o">=</span><span class="n">train_samplings</span><span class="p">,</span>
-                                  <span class="n">batch_list_test</span><span class="o">=</span><span class="n">test_samplings</span><span class="p">,</span>
+            <span class="n">classifier_object</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_fit</span><span class="p">,</span>
+                                  <span class="n">subject_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_index</span><span class="p">,</span> <span class="p">:],</span>
+                                  <span class="n">subject_column</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_column</span><span class="p">,</span>
+                                  <span class="n">target_variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_target</span><span class="p">,</span>
+                                  <span class="n">split_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fraction</span><span class="p">,</span>
+                                  <span class="n">fit_variables</span><span class="o">=</span><span class="n">valid_variables</span><span class="p">,</span>
+                                  <span class="n">n_train_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_train_batches</span><span class="p">,</span>
+                                  <span class="n">n_test_batches</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_test_batches</span><span class="p">,</span>
+                                  <span class="n">train_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batches_size</span><span class="p">,</span>
+                                  <span class="n">test_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_batches_size</span><span class="p">,</span>
                                   <span class="n">score_cap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_cap</span><span class="p">,</span>
                                   <span class="n">get_best</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_best</span><span class="p">,</span>
                                   <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>

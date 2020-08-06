@@ -7,7 +7,7 @@ Submodules
 b2s\_clf.sampler.sampler module
 -------------------------------
 
-.. automodule:: b2s_clf.sampler.sampler
+.. automodule:: b2s_clf.sampler.sampler_module
    :members:
    :undoc-members:
    :show-inheritance:

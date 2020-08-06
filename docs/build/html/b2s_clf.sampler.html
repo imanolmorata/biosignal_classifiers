@@ -88,7 +88,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">b2s_clf.sampler package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-b2s_clf.sampler.sampler">b2s_clf.sampler.sampler module</a></li>
+<li><a class="reference internal" href="#module-b2s_clf.sampler.sampler_module">b2s_clf.sampler.sampler module</a></li>
 <li><a class="reference internal" href="#module-b2s_clf.sampler">Module contents</a></li>
 </ul>
 </li>
@@ -162,17 +162,17 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-b2s_clf.sampler.sampler">
-<span id="b2s-clf-sampler-sampler-module"></span><h2>b2s_clf.sampler.sampler module<a class="headerlink" href="#module-b2s_clf.sampler.sampler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-b2s_clf.sampler.sampler_module">
+<span id="b2s-clf-sampler-sampler-module"></span><h2>b2s_clf.sampler.sampler module<a class="headerlink" href="#module-b2s_clf.sampler.sampler_module" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="b2s_clf.sampler.sampler.Sampler">
-<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.sampler.sampler.</code><code class="sig-name descname">Sampler</code><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler">
+<em class="property">class </em><code class="sig-prename descclassname">b2s_clf.sampler.sampler_module.</code><code class="sig-name descname">Sampler</code><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class that samples and re-samples signal data with the option to read a subject data file to sample with respect
 to different strata.</p>
 <dl class="py method">
-<dt id="b2s_clf.sampler.sampler.Sampler.combine_samplings">
-<code class="sig-name descname">combine_samplings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_sampling</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.combine_samplings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.combine_samplings" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler.combine_samplings">
+<code class="sig-name descname">combine_samplings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_sampling</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler.combine_samplings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler.combine_samplings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds the batches present in a second sampling to current sampling object. The second sampling must have been
 generated with the same input and output variables. Note that this will only check that the names match, the
 user will still have to make sure that the data is compatible or makes sense.</p>
@@ -184,8 +184,8 @@ user will still have to make sure that the data is compatible or makes sense.</p
 </dd></dl>
 
 <dl class="py method">
-<dt id="b2s_clf.sampler.sampler.Sampler.extract_batch">
-<code class="sig-name descname">extract_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.extract_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.extract_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler.extract_batch">
+<code class="sig-name descname">extract_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler.extract_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler.extract_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the numpy.ndarray stored in a particular batch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,8 +204,8 @@ user will still have to make sure that the data is compatible or makes sense.</p
 </dd></dl>
 
 <dl class="py method">
-<dt id="b2s_clf.sampler.sampler.Sampler.generate_batches">
-<code class="sig-name descname">generate_batches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">n_batches</span></em>, <em class="sig-param"><span class="n">batch_len</span></em>, <em class="sig-param"><span class="n">target_variable</span></em>, <em class="sig-param"><span class="n">input_variables</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">balanced</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">resample</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.generate_batches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.generate_batches" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler.generate_batches">
+<code class="sig-name descname">generate_batches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">n_batches</span></em>, <em class="sig-param"><span class="n">batch_len</span></em>, <em class="sig-param"><span class="n">target_variable</span></em>, <em class="sig-param"><span class="n">input_variables</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">balanced</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">resample</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler.generate_batches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler.generate_batches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates batches from a pandas.DataFrame. Note that this will overwrite any existing batches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -224,8 +224,8 @@ user will still have to make sure that the data is compatible or makes sense.</p
 </dd></dl>
 
 <dl class="py method">
-<dt id="b2s_clf.sampler.sampler.Sampler.load_sampling">
-<code class="sig-name descname">load_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.load_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.load_sampling" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler.load_sampling">
+<code class="sig-name descname">load_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler.load_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler.load_sampling" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will attempt to load an exsiting sampling from a local file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -238,8 +238,8 @@ user will still have to make sure that the data is compatible or makes sense.</p
 </dd></dl>
 
 <dl class="py method">
-<dt id="b2s_clf.sampler.sampler.Sampler.save_sampling">
-<code class="sig-name descname">save_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'pickle'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler.html#Sampler.save_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler.Sampler.save_sampling" title="Permalink to this definition">¶</a></dt>
+<dt id="b2s_clf.sampler.sampler_module.Sampler.save_sampling">
+<code class="sig-name descname">save_sampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">sampling_name</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'pickle'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/b2s_clf/sampler/sampler_module.html#Sampler.save_sampling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#b2s_clf.sampler.sampler_module.Sampler.save_sampling" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will save a dictionary into a local path with generated batches</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
