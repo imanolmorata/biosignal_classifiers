@@ -8,7 +8,9 @@ from b2s_clf.utils import data_frame_utils as df_utils
 
 class CrossValidationExperiment(Experiment):
     """
-    A class that calls parent class Experiment to run a k-fold cross-validation experiment.
+    A class that calls parent class Experiment to run a k-fold cross-validation experiment. The class works by reading
+    a bunch of information stored in different dictionaries. Refer to /json_examples and library b2s_clf/apps/ for
+    specific information and templates on these dictionaries.
     """
 
     def __init__(self, df, subject_dictionary, sampler_dictionary, ensemble_dictionary, transformer_dictionary):

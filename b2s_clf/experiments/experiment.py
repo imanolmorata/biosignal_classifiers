@@ -27,6 +27,9 @@ class Experiment:
             transformer_dictionary: Dict with data set transformation build
         """
         self.df = df
+
+        self._check_dictionaries(subject_dictionary, sampler_dictionary, ensemble_dictionary, transformer_dictionary)
+
         self._set_subject_variables(subject_dictionary)
         self._set_sampling_variables(sampler_dictionary)
         self._set_ensemble_variables(ensemble_dictionary)
@@ -38,6 +41,37 @@ class Experiment:
         self.dataframe_method = None
 
         self.experiment_stats = None
+
+    @staticmethod
+    def _check_dictionaries(subject_dictionary, sampler_dictionary, ensemble_dictionary, transformer_dictionary):
+        """
+        Checks that all experiment dictionaries contain the proper data.
+
+        Args:
+            subject_dictionary: Dict with subject data build information.
+            sampler_dictionary: Dict with sampling instructions.
+            ensemble_dictionary: Dict with ensemble build instructions.
+            transformer_dictionary: Dict with data set transformation build
+
+        """
+        _subject_keys = ["subject_id_column", "subject_data_columns", "target_variable"]
+        _sampler_keys = ["train_test_fraction", "input_variables", "target_variable", "n_train_batches",
+                         "train_batches_size", "n_test_batches", "test_batches_size"]
+        _ensemble_keys = ["classifier_list", "node_sizes", "kwargs_list", "score_cap", "get_best", "class_threshold"]
+        _transformer_keys = ["Encoders", "Encoders_kwargs", "Encoders_input_columns", "Encoders_target_columns",
+                             "Normalizers", "Normalizers_kwargs", "Normalizers_input_columns",
+                             "Signal_compressor_clusters", "Signal_compressor_input_columns",
+                             "Signal_compressor_apply_estimators"]
+
+        assert all([key in subject_dictionary.keys() for key in _subject_keys]), "Missing or wrong information in " \
+                                                                                 "subject dictionary"
+        assert all([key in sampler_dictionary.keys() for key in _sampler_keys]), "Missing or wrong information in " \
+                                                                                 "sampler dictionary"
+        assert all([key in ensemble_dictionary.keys() for key in _ensemble_keys]), "Missing or wrong information in " \
+                                                                                   "ensemble dictionary"
+        assert all([key in transformer_dictionary.keys() for key in _transformer_keys]), "Missing or wrong " \
+                                                                                         "information in transformer " \
+                                                                                         "dictionary"
 
     def _set_subject_variables(self, subject_dictionary):
         """
