@@ -179,32 +179,6 @@ class Experiment:
                                                                 self.signal_compressor_apply_functions,
                                                                 verbose=verbose)
 
-            # ts = int(np.ceil((1. - self.fraction) * len(train_index)))
-            # df_train, df_test, _, _ = df_utils.get_train_validation_from_data_frame(
-            #     signal_df=df_fit,
-            #     subjects_df=self.subject_df.loc[train_index, :],
-            #     subject_id_column=self.subject_column,
-            #     target_variable=self.subject_target,
-            #     test_size=ts
-            # )
-            #
-            # train_samplings = Sampler()
-            # test_samplings = Sampler()
-            #
-            # train_samplings.generate_batches(df_train,
-            #                                  n_batches=self.n_train_batches,
-            #                                  batch_len=self.train_batches_size,
-            #                                  target_variable=self.target_variable,
-            #                                  input_variables=valid_variables,
-            #                                  verbose=verbose)
-            #
-            # test_samplings.generate_batches(df_test,
-            #                                 n_batches=self.n_test_batches,
-            #                                 batch_len=self.test_batches_size,
-            #                                 target_variable=self.target_variable,
-            #                                 input_variables=valid_variables,
-            #                                 verbose=verbose)
-
             classifier_object = Ensemble(classifier_list=self.classifier_list,
                                          node_sizes=self.node_sizes,
                                          kwargs_list=self.classifier_kwargs_list)
