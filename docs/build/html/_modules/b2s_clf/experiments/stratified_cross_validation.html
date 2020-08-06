@@ -158,7 +158,9 @@
 
 <div class="viewcode-block" id="StratifiedCrossValidationExperiment"><a class="viewcode-back" href="../../../b2s_clf.experiments.html#b2s_clf.experiments.stratified_cross_validation.StratifiedCrossValidationExperiment">[docs]</a><span class="k">class</span> <span class="nc">StratifiedCrossValidationExperiment</span><span class="p">(</span><span class="n">Experiment</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class that calls parent class Experiment to run a stratified cross-validation (SCV) experiment.</span>
+<span class="sd">    A class that calls parent class Experiment to run a stratified cross-validation (SCV) experiment.The class works by</span>
+<span class="sd">    reading a bunch of information stored in different dictionaries. Refer to /json_examples and library b2s_clf/apps/</span>
+<span class="sd">    for specific information and templates on these dictionaries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>

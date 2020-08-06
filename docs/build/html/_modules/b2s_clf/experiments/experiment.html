@@ -177,6 +177,9 @@
 <span class="sd">            transformer_dictionary: Dict with data set transformation build</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_dictionaries</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_subject_variables</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_sampling_variables</span><span class="p">(</span><span class="n">sampler_dictionary</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_ensemble_variables</span><span class="p">(</span><span class="n">ensemble_dictionary</span><span class="p">)</span>
@@ -188,6 +191,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_method</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">experiment_stats</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_dictionaries</span><span class="p">(</span><span class="n">subject_dictionary</span><span class="p">,</span> <span class="n">sampler_dictionary</span><span class="p">,</span> <span class="n">ensemble_dictionary</span><span class="p">,</span> <span class="n">transformer_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks that all experiment dictionaries contain the proper data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subject_dictionary: Dict with subject data build information.</span>
+<span class="sd">            sampler_dictionary: Dict with sampling instructions.</span>
+<span class="sd">            ensemble_dictionary: Dict with ensemble build instructions.</span>
+<span class="sd">            transformer_dictionary: Dict with data set transformation build</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_subject_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;subject_id_column&quot;</span><span class="p">,</span> <span class="s2">&quot;subject_data_columns&quot;</span><span class="p">,</span> <span class="s2">&quot;target_variable&quot;</span><span class="p">]</span>
+        <span class="n">_sampler_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train_test_fraction&quot;</span><span class="p">,</span> <span class="s2">&quot;input_variables&quot;</span><span class="p">,</span> <span class="s2">&quot;target_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;n_train_batches&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;train_batches_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_test_batches&quot;</span><span class="p">,</span> <span class="s2">&quot;test_batches_size&quot;</span><span class="p">]</span>
+        <span class="n">_ensemble_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;classifier_list&quot;</span><span class="p">,</span> <span class="s2">&quot;node_sizes&quot;</span><span class="p">,</span> <span class="s2">&quot;kwargs_list&quot;</span><span class="p">,</span> <span class="s2">&quot;score_cap&quot;</span><span class="p">,</span> <span class="s2">&quot;get_best&quot;</span><span class="p">,</span> <span class="s2">&quot;class_threshold&quot;</span><span class="p">]</span>
+        <span class="n">_transformer_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Encoders&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_kwargs&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_input_columns&quot;</span><span class="p">,</span> <span class="s2">&quot;Encoders_target_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Normalizers&quot;</span><span class="p">,</span> <span class="s2">&quot;Normalizers_kwargs&quot;</span><span class="p">,</span> <span class="s2">&quot;Normalizers_input_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Signal_compressor_clusters&quot;</span><span class="p">,</span> <span class="s2">&quot;Signal_compressor_input_columns&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Signal_compressor_apply_estimators&quot;</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">subject_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_subject_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                 <span class="s2">&quot;subject dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">sampler_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_sampler_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                 <span class="s2">&quot;sampler dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">ensemble_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ensemble_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong information in &quot;</span> \
+                                                                                   <span class="s2">&quot;ensemble dictionary&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">transformer_dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_transformer_keys</span><span class="p">]),</span> <span class="s2">&quot;Missing or wrong &quot;</span> \
+                                                                                         <span class="s2">&quot;information in transformer &quot;</span> \
+                                                                                         <span class="s2">&quot;dictionary&quot;</span>
 
     <span class="k">def</span> <span class="nf">_set_subject_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_dictionary</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
