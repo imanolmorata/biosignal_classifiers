@@ -1,7 +1,7 @@
 import numpy as np
 
-from b2s_clf.ensemble.ensemble import Ensemble
-from b2s_clf.sampler.sampler import Sampler
+from b2s_clf.ensemble import Ensemble
+from b2s_clf.sampler import Sampler
 from b2s_clf.utils import data_frame_utils as df_utils
 from b2s_clf.utils import ensemble_utils as ens_utils
 from b2s_clf.utils import transformer_utils as trf_utils
