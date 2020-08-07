@@ -5,3 +5,5 @@ __pycache__
 venv_b2s
 .idea
 json_experiments
+jupyter_notebooks
+test
