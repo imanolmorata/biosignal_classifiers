@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 extras = {
     'complete': [
         'numpy',
-        'pandas==1.0.4',
+        'pandas==1.3.0',
         'scikit-learn',
         'scipy',
         'category_encoders'
