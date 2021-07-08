@@ -1,3 +1,5 @@
+import pandas as pd
+
 from b2s_clf.dataset_transformer.dataset_transformer import DatasetTransformer
 
 VALID_ENCODERS = ["OneHotEncoder", "TargetEncoder", "type"]
@@ -120,9 +122,9 @@ class Encoder(DatasetTransformer):
                 print(f"Transforming with encoder {k + 1} of {len(self.transformer_list)}...              ", flush=True,
                       end="\r")
 
-            df = trf_obj.transform(df)
+            df_encoded = trf_obj.transform(df)
 
         if verbose:
             print("---Transform complete.                        ", flush=True)
 
-        return df
+        return df_encoded
