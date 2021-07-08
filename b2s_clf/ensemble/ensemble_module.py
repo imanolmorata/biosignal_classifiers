@@ -187,6 +187,7 @@ class Ensemble:
         self._check_batches(batch_list_train, batch_list_test)
 
         print("---Fitting...")
+        empty_string = " "
 
         m = 1
         for clf, length, args in zip(self.classifier_list, self.node_sizes, self.kwargs_list):
@@ -222,7 +223,8 @@ class Ensemble:
                 if test_score >= score_cap:
 
                     if verbose:
-                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}                                 ",
+                        to_print = f"node_test_acc_{test_score}_train_acc_{train_score}"
+                        print(m, to_print, empty_string * (108 - len(to_print)),
                               flush=True, end="\r")
 
                     self.node_names.append([m, f"node_test_acc_{test_score}_train_acc_{train_score}"])
@@ -230,8 +232,7 @@ class Ensemble:
                     m += 1
                     n += 1
 
-            print("                                                                                                   ",
-                  flush=True, end="\r")
+            print(empty_string * 108, flush=True, end="\r")
 
         if get_best is not None:
             self._filter_nodes(get_best=get_best)
