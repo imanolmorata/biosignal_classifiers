@@ -222,13 +222,16 @@ class Ensemble:
                 if test_score >= score_cap:
 
                     if verbose:
-                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}                ",
+                        print(m, f"node_test_acc_{test_score}_train_acc_{train_score}                                 ",
                               flush=True, end="\r")
 
                     self.node_names.append([m, f"node_test_acc_{test_score}_train_acc_{train_score}"])
                     self.nodes.append(_clf)
                     m += 1
                     n += 1
+
+            print("                                                                                                   ",
+                  flush=True, end="\r")
 
         if get_best is not None:
             self._filter_nodes(get_best=get_best)
