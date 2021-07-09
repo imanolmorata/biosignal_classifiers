@@ -223,8 +223,8 @@ class Ensemble:
                 if test_score >= score_cap:
 
                     if verbose:
-                        to_print = f"node_test_acc_{test_score}_train_acc_{train_score}"
-                        print(m, to_print, empty_string * (108 - len(to_print)),
+                        to_print = f"{m} node_test_acc_{test_score}_train_acc_{train_score}"
+                        print(to_print + empty_string * (115 - len(to_print)),
                               flush=True, end="\r")
 
                     self.node_names.append([m, f"node_test_acc_{test_score}_train_acc_{train_score}"])
@@ -232,7 +232,7 @@ class Ensemble:
                     m += 1
                     n += 1
 
-            print(empty_string * 108, flush=True, end="\r")
+            print(empty_string * 115, flush=True, end="\r")
 
         if get_best is not None:
             self._filter_nodes(get_best=get_best)
